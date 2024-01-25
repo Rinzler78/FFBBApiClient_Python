@@ -46,6 +46,7 @@ Quick start
 ===========
 
 .. code-block:: python
+
     import os
     from ffbb_api_client import FFBBApiClient
 
@@ -57,8 +58,9 @@ Quick start
     basic_auth_pass = os.getenv("FFBB_BASIC_AUTH_PASS")
 
     # Create an instance of the api client
-    api_client: FFBBApiClient = FFBBApiClient(
-        basic_auth_user=basic_auth_user, basic_auth_pass=basic_auth_pass
+    api_client = FFBBApiClient(
+        basic_auth_user=basic_auth_user,
+        basic_auth_pass=basic_auth_pass
     )
 
 Examples
