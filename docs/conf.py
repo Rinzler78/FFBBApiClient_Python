@@ -88,7 +88,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "FFBBApiClient-Python"
-copyright = "2024, Boris LECLERE"
+copyright = "2024, Rinzler78"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
