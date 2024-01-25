@@ -20,9 +20,9 @@
     .. image:: https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter
         :alt: Twitter
         :target: https://twitter.com/FFBBApiClient-Python
-.. image:: https://img.shields.io/pypi/v/FFBBApiClient-Python.svg
+.. image:: https://img.shields.io/pypi/v/ffbb_api_client.svg
     :alt: PyPI-Server
-    :target: https://pypi.org/project/FFBBApiClient-Python/
+    :target: https://pypi.org/project/ffbb_api_client/
 
 .. image:: https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold
     :alt: Project generated with PyScaffold
@@ -41,6 +41,13 @@ ffbb_api_client
 ffbb_api_client allow to interact with FFBB api.
 You can retrieve information about clubs, teams, matches, etc...
 
+
+Installation
+============
+
+.. code-block:: bash
+
+    pip install ffbb_api_client
 
 Quick start
 ===========
