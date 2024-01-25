@@ -38,9 +38,28 @@ ffbb_api_client
     Allow to interact with FFBB apis
 
 
-A longer description of your project goes here...
+ffbb_api_client allow to interact with FFBB api.
+You can retrieve information about clubs, teams, matches, etc...
 
-.. _pre-commit: https://pre-commit.com/
+Quick start
+====
+
+    import os
+    from ffbb_api_client.ffbb_api_client import FFBBApiClient
+
+    # Retrieve api user / pass
+    basic_auth_user = os.getenv("FFBB_BASIC_AUTH_USER")
+    basic_auth_pass = os.getenv("FFBB_BASIC_AUTH_PASS")
+
+    # Create an instance of the api client
+    api_client: FFBBApiClient = FFBBApiClient(
+        basic_auth_user=basic_auth_user, basic_auth_pass=basic_auth_pass
+    )
+
+Examples
+====
+
+Take a look at quick_start.py to see how to use the library.
 
 Note
 ====
@@ -51,4 +70,4 @@ information on PyScaffold see https://pyscaffold.org/.
 Licence
 =======
 
-ffbb_api_client is distributed under the MIT license.
+ffbb_api_client is distributed under the Apache 2.0 license.
