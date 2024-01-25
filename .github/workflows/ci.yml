@@ -77,6 +77,9 @@ jobs:
         uses: actions/download-artifact@v3
         with: {name: python-distribution-files, path: dist/}
       - name: Run tests
+        env:
+          FFBB_BASIC_AUTH_USER: ${{ secrets.FFBB_BASIC_AUTH_USER }}
+          FFBB_BASIC_AUTH_PASS: ${{ secrets.FFBB_BASIC_AUTH_PASS }}
         run: >-
           pipx run --python '${{ steps.setup-python.outputs.python-path }}'
           tox --installpkg '${{ needs.prepare.outputs.wheel-distribution }}'
