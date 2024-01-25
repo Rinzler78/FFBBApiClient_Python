@@ -41,11 +41,16 @@ ffbb_api_client
 ffbb_api_client allow to interact with FFBB api.
 You can retrieve information about clubs, teams, matches, etc...
 
-Quick start
-====
 
+Quick start
+===========
+
+.. code-block:: python
     import os
-    from ffbb_api_client.ffbb_api_client import FFBBApiClient
+    from ffbb_api_client import FFBBApiClient
+
+    # Load env from file if needed
+    # load_dotenv()
 
     # Retrieve api user / pass
     basic_auth_user = os.getenv("FFBB_BASIC_AUTH_USER")
@@ -57,7 +62,7 @@ Quick start
     )
 
 Examples
-====
+========
 
 Take a look at quick_start.py to see how to use the library.
 
