@@ -4,8 +4,8 @@ from typing import List
 
 from dotenv import load_dotenv
 
-from ffbb_api_client.ffbb_api_client import FFBBApiClient
-from ffbb_api_client.ffbb_api_client_types import (
+from ffbb_api_client import FFBBApiClient
+from ffbb_api_client.api_types import (
     AgendaAndResults,
     Area,
     Championship,
@@ -140,9 +140,9 @@ class TestFFBBApiClient(unittest.TestCase):
     def _get_known_results(self):
         if not self._known_results:
             self._known_results = self.api_client.get_results(
-                id=self._get_known_team().id,
+                team_id=self._get_known_team().id,
                 sub_competition=self._get_known_team().sub_competition,
-                group=self._get_known_team().group,
+                team_group=self._get_known_team().group,
             )
 
         return self._known_results
@@ -343,11 +343,11 @@ class Test_GetResults(TestFFBBApiClient):
         self.assertIsNone(result)
 
     def test_with_known_team_id(self):
-        result = self.api_client.get_results(id=self._get_known_team().id)
+        result = self.api_client.get_results(team_id=self._get_known_team().id)
         self.assertIsNotNone(result)
 
     def test_with_known_0_team_id(self):
-        result = self.api_client.get_results(id=0)
+        result = self.api_client.get_results(team_id=0)
         self.assertIsNone(result)
 
     def test_with_known_sub_competition(self):
@@ -357,12 +357,12 @@ class Test_GetResults(TestFFBBApiClient):
         self.assertIsNone(result)
 
     def test_with_known_group(self):
-        result = self.api_client.get_results(group=self._get_known_team().group)
+        result = self.api_client.get_results(team_group=self._get_known_team().group)
         self.assertIsNone(result)
 
     def test_with_known_team_id_sub_competition(self):
         result = self.api_client.get_results(
-            id=self._get_known_team().id,
+            team_id=self._get_known_team().id,
             sub_competition=self._get_known_team().sub_competition,
         )
         self.assertIsNotNone(result)

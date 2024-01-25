@@ -58,6 +58,7 @@ Quick start
     from ffbb_api_client import FFBBApiClient
 
     # Load env from file if needed
+    # from dotenv import load_dotenv
     # load_dotenv()
 
     # Retrieve api user / pass

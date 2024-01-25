@@ -8,13 +8,13 @@ from requests import Response
 
 def to_json_from_response(response: Response) -> Dict[str, Any]:
     """
-    Convertit la réponse HTTP en un dictionnaire JSON.
+    Converts the HTTP response to a JSON dictionary.
 
     Args:
-        response (Response): La réponse HTTP.
+        response (Response): The HTTP response.
 
     Returns:
-        Dict[str, Any]: Le dictionnaire JSON extrait de la réponse.
+        Dict[str, Any]: The JSON dictionary extracted from the response.
     """
     try:
         data_str = response.text.strip()
@@ -27,45 +27,47 @@ def to_json_from_response(response: Response) -> Dict[str, Any]:
 
 def http_get(url: str, headers: Dict[str, str]) -> Response:
     """
-    Effectue une requête HTTP GET.
+    Performs an HTTP GET request.
 
     Args:
-        url (str): L'URL de la requête.
-        headers (Dict[str, str]): Les en-têtes de la requête.
+        url (str): The URL of the request.
+        headers (Dict[str, str]): The headers of the request.
 
     Returns:
-        Response: La réponse HTTP.
+        Response: The HTTP response.
     """
-    response = requests.get(url, headers=headers)
+    response = requests.get(
+        url, headers=headers, timeout=10
+    )  # Adding timeout argument with a value of 10 seconds.
     return response
 
 
 def http_post(url: str, headers: Dict[str, str], data: Dict[str, Any]) -> Response:
     """
-    Effectue une requête HTTP POST.
+    Performs an HTTP POST request.
 
     Args:
-        url (str): L'URL de la requête.
-        headers (Dict[str, str]): Les en-têtes de la requête.
-        data (Dict[str, Any]): Les données de la requête.
+        url (str): The URL of the request.
+        headers (Dict[str, str]): The headers of the request.
+        data (Dict[str, Any]): The data of the request.
 
     Returns:
-        Response: La réponse HTTP.
+        Response: The HTTP response.
     """
-    response = requests.post(url, headers=headers, data=data)
+    response = requests.post(url, headers=headers, data=data, timeout=10)
     return response
 
 
 def http_get_json(url: str, headers: Dict[str, str]) -> Dict[str, Any]:
     """
-    Effectue une requête HTTP GET et retourne le résultat au format JSON.
+    Performs an HTTP GET request and returns the result in JSON format.
 
     Args:
-        url (str): L'URL de la requête.
-        headers (Dict[str, str]): Les en-têtes de la requête.
+        url (str): The URL of the request.
+        headers (Dict[str, str]): The headers of the request.
 
     Returns:
-        Dict[str, Any]: Le résultat de la requête au format JSON.
+        Dict[str, Any]: The result of the request in JSON format.
     """
     response = http_get(url, headers)
     return to_json_from_response(response)
@@ -75,15 +77,15 @@ def http_post_json(
     url: str, headers: Dict[str, str], data: Dict[str, Any]
 ) -> Dict[str, Any]:
     """
-    Effectue une requête HTTP POST et retourne le résultat au format JSON.
+    Performs an HTTP POST request and returns the result in JSON format.
 
     Args:
-        url (str): L'URL de la requête.
-        headers (Dict[str, str]): Les en-têtes de la requête.
-        data (Dict[str, Any]): Les données de la requête.
+        url (str): The URL of the request.
+        headers (Dict[str, str]): The headers of the request.
+        data (Dict[str, Any]): The data of the request.
 
     Returns:
-        Dict[str, Any]: Le résultat de la requête au format JSON.
+        Dict[str, Any]: The result of the request in JSON format.
     """
     filtered_data = {k: v for k, v in data.items() if v is not None}
     response = http_post(url, headers, filtered_data)
@@ -92,13 +94,13 @@ def http_post_json(
 
 def encode_params(params: Dict[str, Any]) -> str:
     """
-    Encode les paramètres de la requête en une chaîne de requête.
+    Encodes the request parameters into a query string.
 
     Args:
-        params (Dict[str, Any]): Les paramètres de la requête.
+        params (Dict[str, Any]): The request parameters.
 
     Returns:
-        str: La chaîne de requête encodée.
+        str: The encoded query string.
     """
     encoded_params = urlencode({k: v for k, v in params.items() if v is not None})
     return encoded_params
@@ -106,14 +108,14 @@ def encode_params(params: Dict[str, Any]) -> str:
 
 def url_with_params(url: str, params: Dict[str, Any]) -> str:
     """
-    Ajoute les paramètres de la requête à l'URL.
+    Adds the request parameters to the URL.
 
     Args:
-        url (str): L'URL de la requête.
-        params (Dict[str, Any]): Les paramètres de la requête.
+        url (str): The URL of the request.
+        params (Dict[str, Any]): The request parameters.
 
     Returns:
-        str: L'URL avec les paramètres de la requête.
+        str: The URL with the request parameters.
     """
     encoded_params = encode_params(params)
     if encoded_params:
@@ -123,6 +125,15 @@ def url_with_params(url: str, params: Dict[str, Any]) -> str:
 
 
 def catch_result(callback):
+    """
+    Executes a function and catches any raised exception.
+
+    Args:
+        callback: The function to execute.
+
+    Returns:
+        Any: The result of the function or None in case of exception.
+    """
     try:
         return callback()
     except Exception:

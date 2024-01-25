@@ -1,8 +1,8 @@
 import os
 from typing import List
 
-from ffbb_api_client.ffbb_api_client import FFBBApiClient
-from ffbb_api_client.ffbb_api_client_types import (
+from ffbb_api_client import FFBBApiClient
+from ffbb_api_client.api_types import (
     AgendaAndResults,
     Area,
     Championship,
@@ -63,7 +63,7 @@ top_championships_departments_championship: Championship = next(
 
 # Get agenda and results for team
 results: AgendaAndResults = api_client.get_results(
-    id=u13_team_D4_phase_2.id,
+    team_id=u13_team_D4_phase_2.id,
     sub_competition=u13_team_D4_phase_2.sub_competition,
-    group=u13_team_D4_phase_2.group,
+    team_group=u13_team_D4_phase_2.group,
 )
