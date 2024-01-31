@@ -1050,12 +1050,18 @@ class Group:
 
 
 @dataclass
+class Score:
+    home: int
+    visitor: int
+
+
+@dataclass
 class Match:
     formatted_date: Optional[datetime] = None
     time: Optional[str] = None
     hometeam: Optional[str] = None
     visitorteam: Optional[str] = None
-    score: Optional[str] = None
+    score: Optional[Score] = None
     date: Optional[datetime] = None  # Modified property type
     remise: Optional[int] = None
     round: Optional[int] = None
@@ -1071,7 +1077,11 @@ class Match:
         time = from_union([from_str, from_none], obj.get("time"))
         hometeam = from_union([from_str, from_none], obj.get("hometeam"))
         visitorteam = from_union([from_str, from_none], obj.get("visitorteam"))
-        score = from_union([from_str, from_none], obj.get("score"))
+        score_str = from_union([from_str, from_none], obj.get("score"))
+        score = None
+        if score_str:
+            home_score, visitor_score = map(int, score_str.split(" - "))
+            score = Score(home_score, visitor_score)
         date_str = from_union([from_str, from_none], obj.get("date"))
         date = (
             datetime.strptime(f"{time} {date_str}", "%H:%M %d/%m/%Y")
@@ -1106,7 +1116,9 @@ class Match:
         if self.visitorteam is not None:
             result["visitorteam"] = from_union([from_str, from_none], self.visitorteam)
         if self.score is not None:
-            result["score"] = from_union([from_str, from_none], self.score)
+            result["score"] = from_union(
+                [from_str, from_none], f"{self.score.home} - {self.score.visitor}"
+            )
         if self.date is not None:
             result["date"] = self.date.strftime("%d/%m/%Y")
         if self.remise is not None:
