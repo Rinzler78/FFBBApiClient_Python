@@ -1057,6 +1057,9 @@ class Score:
     def __str__(self):
         return f"{self.home} - {self.visitor}"
 
+    def played(self) -> bool:
+        return self.home is not None and self.visitor is not None
+
 
 @dataclass
 class Match:
@@ -1127,9 +1130,9 @@ class Match:
         if self.visitorteam is not None:
             result["visitorteam"] = from_union([from_str, from_none], self.visitorteam)
         if self.score is not None:
-            result["score"] = from_union(
-                [from_str, from_none], f"{self.score.home} - {self.score.visitor}"
-            )
+            home = "" if self.score.home is None else self.score.home
+            visitor = "" if self.score.visitor is None else self.score.visitor
+            result["score"] = from_union([from_str, from_none], f"{home} - {visitor}")
         if self.date is not None:
             result["date"] = self.date.strftime("%d/%m/%Y")
         if self.remise is not None:
