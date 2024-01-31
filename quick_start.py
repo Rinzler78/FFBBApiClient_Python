@@ -23,7 +23,7 @@ api_client: FFBBApiClient = FFBBApiClient(
 )
 
 # Get communes by name
-commune: Commune = api_client.get_communes("Senas")[0]
+commune: List[Commune] = api_client.get_communes("Senas")[0]
 
 # Get clubs from the commune
 club_infos: ClubInfos = api_client.search_club(commune.id)[0]
@@ -67,3 +67,5 @@ results: AgendaAndResults = api_client.get_results(
     sub_competition=u13_team_D4_phase_2.sub_competition,
     team_group=u13_team_D4_phase_2.group,
 )
+
+print(results)

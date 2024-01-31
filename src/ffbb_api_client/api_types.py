@@ -1051,12 +1051,12 @@ class Group:
 
 @dataclass
 class Match:
-    formatted_date: Optional[int] = None
+    formatted_date: Optional[datetime] = None
     time: Optional[str] = None
     hometeam: Optional[str] = None
     visitorteam: Optional[str] = None
     score: Optional[str] = None
-    date: Optional[str] = None
+    date: Optional[datetime] = None  # Modified property type
     remise: Optional[int] = None
     round: Optional[int] = None
     match_id: Optional[int] = None
@@ -1064,12 +1064,20 @@ class Match:
     @staticmethod
     def from_dict(obj: Any) -> "Match":
         assert isinstance(obj, dict)
-        formatted_date = from_union([from_int, from_none], obj.get("formattedDate"))
+        formatted_date_str = from_union([from_int, from_none], obj.get("formattedDate"))
+        formatted_date = (
+            datetime.fromtimestamp(formatted_date_str) if formatted_date_str else None
+        )
         time = from_union([from_str, from_none], obj.get("time"))
         hometeam = from_union([from_str, from_none], obj.get("hometeam"))
         visitorteam = from_union([from_str, from_none], obj.get("visitorteam"))
         score = from_union([from_str, from_none], obj.get("score"))
-        date = from_union([from_str, from_none], obj.get("date"))
+        date_str = from_union([from_str, from_none], obj.get("date"))
+        date = (
+            datetime.strptime(f"{time} {date_str}", "%H:%M %d/%m/%Y")
+            if date_str
+            else None
+        )
         remise = from_union([from_int, from_none], obj.get("remise"))
         round = from_union([from_int, from_none], obj.get("round"))
         match_id = from_union([from_int, from_none], obj.get("matchId"))
@@ -1088,11 +1096,11 @@ class Match:
     def to_dict(self) -> dict:
         result: dict = {}
         if self.formatted_date is not None:
-            result["formattedDate"] = from_union(
-                [from_int, from_none], self.formatted_date
-            )
+            result["formattedDate"] = int(self.formatted_date.timestamp())
         if self.time is not None:
-            result["time"] = from_union([from_str, from_none], self.time)
+            result["time"] = from_union(
+                [from_str, from_none], f"{self.date.hour}:{self.date.minute}"
+            )
         if self.hometeam is not None:
             result["hometeam"] = from_union([from_str, from_none], self.hometeam)
         if self.visitorteam is not None:
@@ -1100,7 +1108,7 @@ class Match:
         if self.score is not None:
             result["score"] = from_union([from_str, from_none], self.score)
         if self.date is not None:
-            result["date"] = from_union([from_str, from_none], self.date)
+            result["date"] = self.date.strftime("%d/%m/%Y")
         if self.remise is not None:
             result["remise"] = from_union([from_int, from_none], self.remise)
         if self.round is not None:
