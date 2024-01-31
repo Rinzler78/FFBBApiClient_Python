@@ -1054,6 +1054,9 @@ class Score:
     home: int
     visitor: int
 
+    def __str__(self):
+        return f"{self.home} - {self.visitor}"
+
 
 @dataclass
 class Match:
@@ -1080,8 +1083,16 @@ class Match:
         score_str = from_union([from_str, from_none], obj.get("score"))
         score = None
         if score_str:
-            home_score, visitor_score = map(int, score_str.split(" - "))
+            home_score = None
+            visitor_score = None
+
+            try:
+                home_score, visitor_score = map(int, score_str.split(" - "))
+            except (ValueError, TypeError):
+                pass
+
             score = Score(home_score, visitor_score)
+
         date_str = from_union([from_str, from_none], obj.get("date"))
         date = (
             datetime.strptime(f"{time} {date_str}", "%H:%M %d/%m/%Y")

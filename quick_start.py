@@ -61,11 +61,84 @@ top_championships_departments_championship: Championship = next(
     if championship.name == "CHAMPIONNATS DEPARTEMENTAUX"
 )
 
+
 # Get agenda and results for team
-results: AgendaAndResults = api_client.get_results(
-    team_id=u13_team_D4_phase_2.id,
-    sub_competition=u13_team_D4_phase_2.sub_competition,
-    team_group=u13_team_D4_phase_2.group,
-)
+def get_all_results_for_team(team: Team) -> AgendaAndResults:
+
+    day: int = 0
+    results: AgendaAndResults = None
+
+    while True:
+        day += 1
+
+        day_results: AgendaAndResults = api_client.get_results(
+            team_id=team.id,
+            sub_competition=team.sub_competition,
+            team_group=team.group,
+            day=day,
+        )
+
+        if not day_results or len(day_results.matchs) == 0:
+            break
+
+        if not results:
+            results = day_results
+            continue
+
+        for day_results_day in day_results.days:
+            existing_day = next(
+                (day for day in results.days if day.name == day_results_day.name), None
+            )
+
+            if existing_day:
+                continue
+
+            results.days.append(day_results_day)
+
+        for day_results_group in day_results.groups:
+            existing_group = next(
+                (group for group in results.groups if group.id == day_results_group.id),
+                None,
+            )
+
+            if existing_group:
+                continue
+
+            results.groups.append(day_results_group)
+
+        for day_results_match in day_results.matchs:
+            existing_match = next(
+                (
+                    match
+                    for match in results.matchs
+                    if match.match_id == day_results_match.match_id
+                ),
+                None,
+            )
+
+            if existing_match:
+                continue
+
+            results.matchs.append(day_results_match)
+
+        for day_results_sub_competition in day_results.sub_competitions:
+            existing_sub_competition = next(
+                (
+                    sub_competition
+                    for sub_competition in day_results.sub_competitions
+                    if sub_competition.id == day_results_sub_competition.id
+                ),
+                None,
+            )
+
+            if existing_sub_competition:
+                continue
+
+            results.sub_competitions.append(day_results_sub_competition)
+
+    return results
+
+
+results = get_all_results_for_team(u13_team_D4_phase_2)
 
 print(results)
