@@ -1057,6 +1057,7 @@ class Score:
     def __str__(self):
         return f"{self.home} - {self.visitor}"
 
+    @property
     def played(self) -> bool:
         return self.home is not None and self.visitor is not None
 
@@ -1142,6 +1143,10 @@ class Match:
         if self.match_id is not None:
             result["matchId"] = from_union([from_int, from_none], self.match_id)
         return result
+
+    @property
+    def played(self) -> bool:
+        return self.score is not None and self.score.played
 
 
 @dataclass
