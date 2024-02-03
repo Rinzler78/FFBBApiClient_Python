@@ -368,7 +368,7 @@ class Membre:
         code_postal = from_union(
             [from_none, lambda x: int(from_str(x))], obj.get("codePostal")
         )
-        telephone_fixe = from_none(obj.get("telephoneFixe"))
+        telephone_fixe = from_union([from_str, from_none], obj.get("telephoneFixe"))
         id = from_union([from_int, from_none], obj.get("id"))
         nom = from_union([from_str, from_none], obj.get("nom"))
         prenom = from_union([from_str, from_none], obj.get("prenom"))

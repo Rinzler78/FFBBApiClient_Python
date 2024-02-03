@@ -16,13 +16,10 @@ def to_json_from_response(response: Response) -> Dict[str, Any]:
     Returns:
         Dict[str, Any]: The JSON dictionary extracted from the response.
     """
-    try:
-        data_str = response.text.strip()
-        if data_str.endswith(","):
-            data_str = data_str[:-1]
-        return json.loads(data_str)
-    except Exception:
-        return None
+    data_str = response.text.strip()
+    if data_str.endswith(","):
+        data_str = data_str[:-1]
+    return json.loads(data_str)
 
 
 def http_get(url: str, headers: Dict[str, str]) -> Response:
