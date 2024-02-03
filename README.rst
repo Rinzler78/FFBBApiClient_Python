@@ -91,5 +91,7 @@ Dev notes
 =========
 
 Command used to create this project:
+
 .. code-block:: bash
+
     putup FFBBApiClient_Python -p ffbb_api_client -l Apache-2.0 -d "Allow to interact with FFBB apis" -u "https://github.com/Rinzler78/FFBBApiClient_Python" -v --github-actions --venv .venv
