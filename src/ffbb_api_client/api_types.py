@@ -1148,6 +1148,10 @@ class Match:
     def played(self) -> bool:
         return self.score is not None and self.score.played
 
+    @property
+    def is_ghost(self):
+        return self.played and self.date.hour == 0 and self.date.minute == 0
+
 
 @dataclass
 class Standing:
