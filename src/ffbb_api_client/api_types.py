@@ -548,11 +548,13 @@ class ClubInfos:
     @staticmethod
     def from_dict(obj: Any) -> "ClubInfos":
         assert isinstance(obj, dict)
-        nom_club_pro = from_none(obj.get("nomClubPro"))
-        adresse_club_pro = from_none(obj.get("adresseClubPro"))
-        commune_club_pro = from_none(obj.get("communeClubPro"))
-        salle_club_pro = from_none(obj.get("salleClubPro"))
-        participation_obe = from_none(obj.get("participationOBE"))
+        nom_club_pro = from_union([from_str, from_none], obj.get("nomClubPro"))
+        adresse_club_pro = from_union([from_str, from_none], obj.get("adresseClubPro"))
+        commune_club_pro = from_union([from_str, from_none], obj.get("communeClubPro"))
+        salle_club_pro = from_union([from_str, from_none], obj.get("salleClubPro"))
+        participation_obe = from_union(
+            [from_str, from_none], obj.get("participationOBE")
+        )
         id = from_union([from_int, from_none], obj.get("id"))
         id_organisme_pere = from_union(
             [from_int, from_none], obj.get("idOrganismePere")
