@@ -214,13 +214,14 @@ class Test_SearchClub(TestFFBBApiClient):
 
     def test_with_specific_club_name(self):
 
-        org_names = ["BASSE VALLEE DE L'ARC BC"]
+        org_names = ["BASSE VALLEE DE L'ARC BC", "MARTIGUES SPORTS"]
 
-        for org_name in org_names:
-            result = self.api_client.search_club(org_name=org_name)
-            self.assertIsNotNone(result)
-            self.assertIsInstance(result, list)
-            self.assertGreater(len(result), 0)
+        result = [
+            self.api_client.search_club(org_name=org_name) for org_name in org_names
+        ]
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, list)
+        self.assertGreater(len(result), 0)
 
 
 class Test_GetAreas(TestFFBBApiClient):
