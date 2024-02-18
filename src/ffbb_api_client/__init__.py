@@ -45,6 +45,22 @@ from .api_types import (
 from .http_requests_utils import http_get_json, http_post_json, url_with_params
 
 
+def catch_result(callback):
+    """
+    Catch the result of a callback function.
+
+    Args:
+        callback: The callback function.
+
+    Returns:
+        The result of the callback function or None if an exception occurs.
+    """
+    try:
+        return callback()
+    except Exception:
+        return None
+
+
 class FFBBApiClient:
     def __init__(
         self,
@@ -102,7 +118,7 @@ class FFBBApiClient:
             "day": day,
         }
         url = f"{self.api_url}results.php"
-        return self.catch_result(
+        return catch_result(
             lambda: agenda_and_results_from_dict(
                 http_post_json(url, self.headers, params)
             )
@@ -120,7 +136,7 @@ class FFBBApiClient:
         """
         params = {"id": club_id}
         url = f"{self.api_url}club.php"
-        return self.catch_result(
+        return catch_result(
             lambda: club_details_from_dict(http_post_json(url, self.headers, params))
         )
 
@@ -142,7 +158,7 @@ class FFBBApiClient:
             "type": competition_type.value if competition_type else None,
         }
         url = f"{self.api_url}areaCompetitions.php"
-        return self.catch_result(
+        return catch_result(
             lambda: competition_from_dict(http_post_json(url, self.headers, params))
         )
 
@@ -164,13 +180,13 @@ class FFBBApiClient:
             "type": competition_type.value if competition_type else None,
         }
         url = f"{self.api_url}leagueCompetitions.php"
-        return self.catch_result(
+        return catch_result(
             lambda: competition_from_dict(http_post_json(url, self.headers, params))
         )
 
     # def get_lives(self) -> dict:
     #     url = f"{self.base_url}lives.php"
-    #     return self.catch_result(lambda: http_post_json(url, self.headers))
+    #     return catch_result(lambda: http_post_json(url, self.headers))
 
     def get_match_detail(
         self,
@@ -204,7 +220,7 @@ class FFBBApiClient:
             "matchId": match_id,
         }
         url = f"{self.api_url}matchDetail.php"
-        return self.catch_result(
+        return catch_result(
             lambda: match_detail_from_dict(http_post_json(url, self.headers, params))
         )
 
@@ -213,7 +229,7 @@ class FFBBApiClient:
     #         "url": url
     #     }
     #     url = f"{self.base_url}actu.php"
-    #     return self.catch_result(lambda: http_post_json(url, self.headers, params))
+    #     return catch_result(lambda: http_post_json(url, self.headers, params))
 
     def get_videos(self, id_cmne: str = None, org_name: str = None) -> Videos:
         """
@@ -228,7 +244,7 @@ class FFBBApiClient:
         """
         params = {"idCmne": id_cmne, "nomOrg": org_name}
         url = f"{self.api_url}videos.php"
-        return self.catch_result(
+        return catch_result(
             lambda: videos_from_dict(http_post_json(url, self.headers, params))
         )
 
@@ -240,9 +256,7 @@ class FFBBApiClient:
             List[News]: The news.
         """
         url = f"{self.api_url}news.php"
-        return self.catch_result(
-            lambda: news_from_dict(http_post_json(url, self.headers))
-        )
+        return catch_result(lambda: news_from_dict(http_post_json(url, self.headers)))
 
     def get_areas(self, competition_type: CompetitionType = None) -> List[Area]:
         """
@@ -256,7 +270,7 @@ class FFBBApiClient:
         """
         params = {"type": competition_type.value if competition_type else None}
         url = f"{self.api_url}areas.php"
-        return self.catch_result(
+        return catch_result(
             lambda: area_from_dict(http_post_json(url, self.headers, params))
         )
 
@@ -272,7 +286,7 @@ class FFBBApiClient:
         """
         params = {"type": competition_type.value if competition_type else None}
         url = f"{self.api_url}leagues.php"
-        return self.catch_result(
+        return catch_result(
             lambda: league_from_dict(http_post_json(url, self.headers, params))
         )
 
@@ -290,7 +304,7 @@ class FFBBApiClient:
         """
         params = {"type": championship_type}
         url = f"{self.api_url}topChampionships.php"
-        return self.catch_result(
+        return catch_result(
             lambda: championship_from_dict(http_post_json(url, self.headers, params))
         )
 
@@ -306,9 +320,7 @@ class FFBBApiClient:
         """
         params = {"name": name}
         url = url_with_params(f"{self.ws_url}communes.php", params)
-        return self.catch_result(
-            lambda: commune_from_dict(http_get_json(url, self.headers))
-        )
+        return catch_result(lambda: commune_from_dict(http_get_json(url, self.headers)))
 
     def search_club(self, id_cmne: int = None, org_name: str = None) -> List[ClubInfos]:
         """
@@ -324,7 +336,7 @@ class FFBBApiClient:
         params = {"idCmne": id_cmne, "nomOrg": org_name}
 
         url = url_with_params(f"{self.ws_url}search_club.php", params)
-        return self.catch_result(
+        return catch_result(
             lambda: club_infos_from_dict(http_get_json(url, self.headers))
         )
 

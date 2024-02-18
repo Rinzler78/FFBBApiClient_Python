@@ -362,9 +362,7 @@ class Membre:
     @staticmethod
     def from_dict(obj: Any) -> "Membre":
         assert isinstance(obj, dict)
-        adresse2 = from_union(
-            [from_none, lambda x: int(from_str(x))], obj.get("adresse2")
-        )
+        adresse2 = from_union([from_str, from_none], obj.get("adresse2"))
         code_postal = from_union(
             [from_none, lambda x: int(from_str(x))], obj.get("codePostal")
         )
@@ -550,8 +548,12 @@ class ClubInfos:
         assert isinstance(obj, dict)
         nom_club_pro = from_union([from_str, from_none], obj.get("nomClubPro"))
         adresse_club_pro = from_union([from_str, from_none], obj.get("adresseClubPro"))
-        commune_club_pro = from_union([from_str, from_none], obj.get("communeClubPro"))
-        salle_club_pro = from_union([from_str, from_none], obj.get("salleClubPro"))
+        commune_club_pro = from_union(
+            [Commune.from_dict, from_none], obj.get("communeClubPro")
+        )
+        salle_club_pro = from_union(
+            [Salle.from_dict, from_none], obj.get("salleClubPro")
+        )
         participation_obe = from_union(
             [from_str, from_none], obj.get("participationOBE")
         )
