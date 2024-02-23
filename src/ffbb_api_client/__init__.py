@@ -2,6 +2,18 @@ import base64
 import sys
 from typing import List
 
+from .agendaAndResults import AgendaAndResults, agenda_and_results_from_dict
+from .area import Area, area_from_dict
+from .championship import Championship, CompetitionType, championship_from_dict
+from .clubDetails import ClubDetails, club_details_from_dict
+from .clubInfos import ClubInfos, club_infos_from_dict
+from .commune import Commune, commune_from_dict
+from .competition import Competition, competition_from_dict
+from .league import League, league_from_dict
+from .matchDetail import MatchDetail, match_detail_from_dict
+from .news import News, news_from_dict
+from .videos import Videos, videos_from_dict
+
 if sys.version_info[:2] >= (3, 8):
     # TODO: Import directly (no need for conditional) when `python_requires = >= 3.8`
     from importlib.metadata import PackageNotFoundError, version  # pragma: no cover
@@ -17,31 +29,6 @@ except PackageNotFoundError:  # pragma: no cover
 finally:
     del version, PackageNotFoundError
 
-from .api_types import (
-    AgendaAndResults,
-    Area,
-    Championship,
-    ClubDetails,
-    ClubInfos,
-    Commune,
-    Competition,
-    CompetitionType,
-    League,
-    MatchDetail,
-    News,
-    Videos,
-    agenda_and_results_from_dict,
-    area_from_dict,
-    championship_from_dict,
-    club_details_from_dict,
-    club_infos_from_dict,
-    commune_from_dict,
-    competition_from_dict,
-    league_from_dict,
-    match_detail_from_dict,
-    news_from_dict,
-    videos_from_dict,
-)
 from .http_requests_utils import http_get_json, http_post_json, url_with_params
 
 
