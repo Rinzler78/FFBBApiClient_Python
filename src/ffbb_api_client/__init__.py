@@ -1,4 +1,5 @@
 import base64
+import json
 import sys
 from typing import List
 
@@ -62,10 +63,16 @@ def catch_result(callback):
     Returns:
         The result of the callback function or None if an exception occurs.
     """
+    # return callback()
     try:
         return callback()
-    except Exception:
-        return None
+    except json.decoder.JSONDecodeError as e:
+        if e.msg == "Expecting value":
+            return None
+        raise e
+
+    except Exception as e:
+        raise e
 
 
 class FFBBApiClient:
