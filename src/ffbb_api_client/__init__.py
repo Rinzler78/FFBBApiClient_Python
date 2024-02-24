@@ -3,6 +3,8 @@ import json
 import sys
 from typing import List
 
+from requests.exceptions import ReadTimeout
+
 from .agenda_and_results import AgendaAndResults, agenda_and_results_from_dict  # noqa
 from .area import Area, area_from_dict  # noqa
 from .basketball_court import BasketballCourt  # noqa
@@ -53,7 +55,7 @@ finally:
     del version, PackageNotFoundError
 
 
-def catch_result(callback):
+def catch_result(callback, is_retrieving: bool = False):
     """
     Catch the result of a callback function.
 
@@ -63,14 +65,17 @@ def catch_result(callback):
     Returns:
         The result of the callback function or None if an exception occurs.
     """
-    # return callback()
+
     try:
         return callback()
     except json.decoder.JSONDecodeError as e:
         if e.msg == "Expecting value":
             return None
         raise e
-
+    except ReadTimeout as e:
+        if not is_retrieving:
+            return catch_result(callback, True)
+        raise e
     except Exception as e:
         raise e
 
@@ -80,7 +85,7 @@ class FFBBApiClient:
         self,
         basic_auth_user: str,
         basic_auth_pass: str,
-        api_url: str = "http://mobiles.ffbb.com/php/v1_0_5/",
+        api_url: str = "https://mobiles.ffbb.com/php/v1_0_5/",
         ws_url: str = "https://mobiles.ffbb.com/webservices/v1/",
     ):
         """
@@ -322,7 +327,7 @@ class FFBBApiClient:
             lambda: championship_from_dict(http_post_json(url, self.headers, params))
         )
 
-    def search_municipality(self, name: str) -> List[Municipality]:
+    def search_municipalities(self, name: str) -> List[Municipality]:
         """
         Search for a municipality by name.
 
@@ -336,7 +341,9 @@ class FFBBApiClient:
         url = url_with_params(f"{self.ws_url}communes.php", params)
         return catch_result(lambda: commune_from_dict(http_get_json(url, self.headers)))
 
-    def search_club(self, id_cmne: int = None, org_name: str = None) -> List[ClubInfos]:
+    def search_clubs(
+        self, id_cmne: int = None, org_name: str = None
+    ) -> List[ClubInfos]:
         """
         Search for a club.
 

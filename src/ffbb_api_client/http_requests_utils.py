@@ -20,6 +20,11 @@ def to_json_from_response(response: Response) -> Dict[str, Any]:
     if data_str.endswith(","):
         data_str = data_str[:-1]
 
+    # Try to fix invalid json containing ][
+
+    if "][" in data_str:
+        data_str = data_str.replace("][", ",")
+
     return json.loads(data_str)
 
 
@@ -35,7 +40,7 @@ def http_get(url: str, headers: Dict[str, str]) -> Response:
         Response: The HTTP response.
     """
     response = requests.get(
-        url, headers=headers, timeout=3
+        url, headers=headers, timeout=20
     )  # Adding timeout argument with a value of 10 seconds.
     return response
 
@@ -54,7 +59,7 @@ def http_post(
     Returns:
         Response: The HTTP response.
     """
-    response = requests.post(url, headers=headers, data=data, timeout=3)
+    response = requests.post(url, headers=headers, data=data, timeout=20)
     return response
 
 

@@ -59,7 +59,7 @@ class TestFFBBApiClient(unittest.TestCase):
 
     def _get_know_municipality(self):
         if not self._known_municipality:
-            self._known_municipality = self.api_client.search_municipality(
+            self._known_municipality = self.api_client.search_municipalities(
                 self._known_municipality_name
             )[0]
 
@@ -67,7 +67,7 @@ class TestFFBBApiClient(unittest.TestCase):
 
     def _get_know_club_infos(self):
         if not self._known_club_infos:
-            self._known_club_infos = self.api_client.search_club(
+            self._known_club_infos = self.api_client.search_clubs(
                 self._get_know_municipality().id
             )[0]
 
@@ -163,12 +163,12 @@ class Test_SearchMunicipalitys(TestFFBBApiClient):
 
     def test_with_unknown_name(self):
         query = "Blop"
-        result = self.api_client.search_municipality(query)
+        result = self.api_client.search_municipalities(query)
         self.assertIsNone(result)
 
     def test_with_empty_name(self):
         query = ""
-        result = self.api_client.search_municipality(query)
+        result = self.api_client.search_municipalities(query)
         self.assertIsNone(result)
 
 
@@ -196,15 +196,15 @@ class Test_SearchClub(TestFFBBApiClient):
         self.assertIsInstance(result, ClubInfos)
 
     def test_with_unknown_id_municipality(self):
-        result = self.api_client.search_club(id_cmne="unknown_id")
+        result = self.api_client.search_clubs(id_cmne="unknown_id")
         self.assertIsNone(result)
 
     def test_with_empty_id_municipality(self):
-        result = self.api_client.search_club(id_cmne="")
+        result = self.api_client.search_clubs(id_cmne="")
         self.assertIsNone(result)
 
     def test_with_known_org_name(self):
-        result = self.api_client.search_club(
+        result = self.api_client.search_clubs(
             org_name=self._get_know_club_infos().organization_name
         )
         self.assertIsNotNone(result)
@@ -212,11 +212,11 @@ class Test_SearchClub(TestFFBBApiClient):
         self.assertGreater(len(result), 0)
 
     def test_with_unknown_org_name(self):
-        result = self.api_client.search_club(org_name="unknown_org_name")
+        result = self.api_client.search_clubs(org_name="unknown_org_name")
         self.assertIsNone(result)
 
     def test_with_empty_org_name(self):
-        result = self.api_client.search_club(org_name="")
+        result = self.api_client.search_clubs(org_name="")
         self.assertIsNone(result)
 
     def test_with_specific_club_name(self):
@@ -224,7 +224,7 @@ class Test_SearchClub(TestFFBBApiClient):
         org_names = ["BASSE VALLEE DE L'ARC BC", "MARTIGUES SPORTS"]
 
         result = [
-            self.api_client.search_club(org_name=org_name) for org_name in org_names
+            self.api_client.search_clubs(org_name=org_name) for org_name in org_names
         ]
         self.assertIsNotNone(result)
         self.assertIsInstance(result, list)
