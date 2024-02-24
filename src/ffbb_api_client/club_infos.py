@@ -15,7 +15,7 @@ from .converters import (
 )
 from .historique import Historique
 from .membre import Membre
-from .offre_pratique import OffresPratique
+from .offres_pratique import OffresPratique
 from .salle import Salle
 from .type_association import TypeAssociation
 

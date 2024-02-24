@@ -2,22 +2,38 @@ import base64
 import sys
 from typing import List
 
-from .agenda_and_results import AgendaAndResults, agenda_and_results_from_dict
-from .area import Area, area_from_dict
-from .championship import Championship, CompetitionType, championship_from_dict
-from .club_details import ClubDetails, club_details_from_dict
-from .club_infos import ClubInfos, club_infos_from_dict
-from .commune import Commune, commune_from_dict
-from .competition import Competition, competition_from_dict
+from .agenda_and_results import AgendaAndResults, agenda_and_results_from_dict  # noqa
+from .area import Area, area_from_dict  # noqa
+from .cartographie import Cartographie  # noqa
+from .championship import Championship, CompetitionType, championship_from_dict  # noqa
+from .club_details import ClubDetails, club_details_from_dict  # noqa
+from .club_infos import ClubInfos, club_infos_from_dict  # noqa
+from .commune import Commune, commune_from_dict  # noqa
+from .competition import Competition, competition_from_dict  # noqa
 from .day import Day  # noqa
+from .default import Default  # noqa
+from .field import Field  # noqa
 from .group import Group  # noqa
-from .http_requests_utils import http_get_json, http_post_json, url_with_params
-from .league import League, league_from_dict
-from .match_detail import MatchDetail, match_detail_from_dict
-from .news import News, news_from_dict
+from .historique import Historique  # noqa
+from .http_requests_utils import http_get_json, http_post_json, url_with_params  # noqa
+from .item import Item  # noqa
+from .league import League, league_from_dict  # noqa
+from .match import Match  # noqa
+from .match_detail import MatchDetail, match_detail_from_dict  # noqa
+from .membre import Membre  # noqa
+from .news import News, news_from_dict  # noqa
+from .offres_pratique import OffresPratique  # noqa
+from .page_info import PageInfo  # noqa
+from .resource_id import ResourceID  # noqa
+from .saison import Saison  # noqa
+from .salle import Salle  # noqa
+from .score import Score  # noqa
+from .snippet import Snippet  # noqa
 from .standing import Standing  # noqa
 from .team import Team  # noqa
-from .videos import Videos, videos_from_dict
+from .thumbnails import Thumbnails  # noqa
+from .type_association import TypeAssociation  # noqa
+from .videos import Videos, videos_from_dict  # noqa
 
 if sys.version_info[:2] >= (3, 8):
     # TODO: Import directly (no need for conditional) when `python_requires = >= 3.8`

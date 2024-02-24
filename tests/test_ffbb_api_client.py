@@ -10,6 +10,7 @@ from ffbb_api_client import Group  # noqa
 from ffbb_api_client import MatchDetail  # noqa
 from ffbb_api_client import News  # noqa
 from ffbb_api_client import Standing  # noqa
+from ffbb_api_client import TypeAssociation  # noqa
 from ffbb_api_client import (
     AgendaAndResults,
     Area,
