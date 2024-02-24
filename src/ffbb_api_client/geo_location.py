@@ -5,7 +5,7 @@ from .converters import from_float, from_none, from_str, from_union, is_type, to
 
 
 @dataclass
-class Cartographie:
+class GeoLocation:
     code_postal: Optional[int] = None
     latitude: Optional[float] = None
     longitude: Optional[float] = None
@@ -14,7 +14,7 @@ class Cartographie:
     ville: Optional[str] = None
 
     @staticmethod
-    def from_dict(obj: Any) -> "Cartographie":
+    def from_dict(obj: Any) -> "GeoLocation":
         assert isinstance(obj, dict)
         code_postal = from_union(
             [from_none, lambda x: int(from_str(x))], obj.get("codePostal")
@@ -24,7 +24,7 @@ class Cartographie:
         title = from_union([from_str, from_none], obj.get("title"))
         adress = from_union([from_str, from_none], obj.get("adress"))
         ville = from_union([from_str, from_none], obj.get("ville"))
-        return Cartographie(code_postal, latitude, longitude, title, adress, ville)
+        return GeoLocation(code_postal, latitude, longitude, title, adress, ville)
 
     def to_dict(self) -> dict:
         result: dict = {}
@@ -51,7 +51,7 @@ class Cartographie:
         return result
 
     def __eq__(self, other):
-        if isinstance(other, Cartographie):
+        if isinstance(other, GeoLocation):
             return (
                 self.code_postal == other.code_postal
                 and self.latitude == other.latitude

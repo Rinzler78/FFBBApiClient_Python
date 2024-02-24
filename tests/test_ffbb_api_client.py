@@ -17,10 +17,10 @@ from ffbb_api_client import (
     Championship,
     ClubDetails,
     ClubInfos,
-    Commune,
     CompetitionType,
     FFBBApiClient,
     League,
+    Municipality,
     Team,
     Videos,
 )
@@ -33,7 +33,7 @@ basic_auth_pass = os.getenv("FFBB_BASIC_AUTH_PASS")
 
 class TestFFBBApiClient(unittest.TestCase):
     _known_commune_name: str = "Senas"
-    _known_commune: Commune = None
+    _known_commune: Municipality = None
     _known_club_infos: ClubInfos = None
     _known_club_details: ClubDetails = None
     _known_areas: List[Area] = None
@@ -59,9 +59,9 @@ class TestFFBBApiClient(unittest.TestCase):
 
     def _get_know_commune(self):
         if not self._known_commune:
-            self._known_commune = self.api_client.get_communes(
-                self._known_commune_name
-            )[0]
+            self._known_commune = self.api_client.search_town(self._known_commune_name)[
+                0
+            ]
 
         return self._known_commune
 
@@ -159,16 +159,16 @@ class Test_GetCommunes(TestFFBBApiClient):
     def test_with_known_name(self):
         result = self._get_know_commune()
         self.assertIsNotNone(result)
-        self.assertIsInstance(result, Commune)
+        self.assertIsInstance(result, Municipality)
 
     def test_with_unknown_name(self):
         query = "Blop"
-        result = self.api_client.get_communes(query)
+        result = self.api_client.search_town(query)
         self.assertIsNone(result)
 
     def test_with_empty_name(self):
         query = ""
-        result = self.api_client.get_communes(query)
+        result = self.api_client.search_town(query)
         self.assertIsNone(result)
 
 
@@ -205,7 +205,7 @@ class Test_SearchClub(TestFFBBApiClient):
 
     def test_with_known_org_name(self):
         result = self.api_client.search_club(
-            org_name=self._get_know_club_infos().nom_org
+            org_name=self._get_know_club_infos().organization_name
         )
         self.assertIsNotNone(result)
         self.assertIsInstance(result, list)
@@ -268,7 +268,7 @@ class Test_GetVideos(TestFFBBApiClient):
 
     def test_with_known_club_id(self):
         result = self.api_client.get_videos(
-            id_cmne=self._get_know_club_infos().commune.id_cmne
+            id_cmne=self._get_know_club_infos().town.municipality_id
         )
         self.assertIsNotNone(result)
         self.assertIsInstance(result, Videos)
@@ -280,7 +280,7 @@ class Test_GetVideos(TestFFBBApiClient):
 
     def test_with_with_known_org_name(self):
         result = self.api_client.get_videos(
-            org_name=self._get_know_club_infos().nom_org
+            org_name=self._get_know_club_infos().organization_name
         )
         self.assertIsNotNone(result)
         self.assertIsInstance(result, Videos)

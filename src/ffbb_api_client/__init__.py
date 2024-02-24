@@ -4,30 +4,30 @@ from typing import List
 
 from .agenda_and_results import AgendaAndResults, agenda_and_results_from_dict  # noqa
 from .area import Area, area_from_dict  # noqa
-from .cartographie import Cartographie  # noqa
+from .basketball_court import BasketballCourt  # noqa
 from .championship import Championship, CompetitionType, championship_from_dict  # noqa
 from .club_details import ClubDetails, club_details_from_dict  # noqa
 from .club_infos import ClubInfos, club_infos_from_dict  # noqa
-from .commune import Commune, commune_from_dict  # noqa
 from .competition import Competition, competition_from_dict  # noqa
 from .day import Day  # noqa
 from .default import Default  # noqa
 from .field import Field  # noqa
+from .geo_location import GeoLocation  # noqa
 from .group import Group  # noqa
-from .historique import Historique  # noqa
+from .history import History  # noqa
 from .http_requests_utils import http_get_json, http_post_json, url_with_params  # noqa
 from .item import Item  # noqa
 from .league import League, league_from_dict  # noqa
 from .match import Match  # noqa
 from .match_detail import MatchDetail, match_detail_from_dict  # noqa
-from .membre import Membre  # noqa
+from .member import Member  # noqa
+from .municipality import Municipality, commune_from_dict  # noqa
 from .news import News, news_from_dict  # noqa
-from .offres_pratique import OffresPratique  # noqa
 from .page_info import PageInfo  # noqa
+from .practice_offers import PracticeOffers  # noqa
 from .resource_id import ResourceID  # noqa
-from .saison import Saison  # noqa
-from .salle import Salle  # noqa
 from .score import Score  # noqa
+from .season import Season  # noqa
 from .snippet import Snippet  # noqa
 from .standing import Standing  # noqa
 from .team import Team  # noqa
@@ -314,7 +314,7 @@ class FFBBApiClient:
             lambda: championship_from_dict(http_post_json(url, self.headers, params))
         )
 
-    def get_communes(self, name: str) -> List[Commune]:
+    def search_town(self, name: str) -> List[Municipality]:
         """
         Get the communes.
 

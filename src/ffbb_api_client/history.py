@@ -3,21 +3,21 @@ from datetime import datetime
 from typing import Any, Optional
 
 from .converters import from_datetime, from_none, from_union, to_class
-from .saison import Saison
+from .season import Season
 from .type_association import TypeAssociation
 
 
 @dataclass
-class Historique:
+class History:
     cessation: None
-    date_affiliation: Optional[datetime] = None
-    date_reaffiliation: Optional[datetime] = None
-    saison: Optional[Saison] = None
-    creation: Optional[datetime] = None
-    type_association: Optional[TypeAssociation] = None
+    affiliation_date: Optional[datetime] = None
+    reaffiliation_date: Optional[datetime] = None
+    season: Optional[Season] = None
+    creation_date: Optional[datetime] = None
+    association_type: Optional[TypeAssociation] = None
 
     @staticmethod
-    def from_dict(obj: Any) -> "Historique":
+    def from_dict(obj: Any) -> "History":
         assert isinstance(obj, dict)
         cessation = from_none(obj.get("cessation"))
         date_affiliation = from_union(
@@ -26,12 +26,12 @@ class Historique:
         date_reaffiliation = from_union(
             [from_datetime, from_none], obj.get("dateReaffiliation")
         )
-        saison = from_union([Saison.from_dict, from_none], obj.get("saison"))
+        saison = from_union([Season.from_dict, from_none], obj.get("saison"))
         creation = from_union([from_datetime, from_none], obj.get("creation"))
         type_association = from_union(
             [TypeAssociation.from_dict, from_none], obj.get("typeAssociation")
         )
-        return Historique(
+        return History(
             cessation,
             date_affiliation,
             date_reaffiliation,
@@ -44,49 +44,49 @@ class Historique:
         result: dict = {}
         if self.cessation is not None:
             result["cessation"] = from_none(self.cessation)
-        if self.date_affiliation is not None:
+        if self.affiliation_date is not None:
             result["dateAffiliation"] = from_union(
-                [lambda x: x.isoformat(), from_none], self.date_affiliation
+                [lambda x: x.isoformat(), from_none], self.affiliation_date
             )
-        if self.date_reaffiliation is not None:
+        if self.reaffiliation_date is not None:
             result["dateReaffiliation"] = from_union(
-                [lambda x: x.isoformat(), from_none], self.date_reaffiliation
+                [lambda x: x.isoformat(), from_none], self.reaffiliation_date
             )
-        if self.saison is not None:
+        if self.season is not None:
             result["saison"] = from_union(
-                [lambda x: to_class(Saison, x), from_none], self.saison
+                [lambda x: to_class(Season, x), from_none], self.season
             )
-        if self.creation is not None:
+        if self.creation_date is not None:
             result["creation"] = from_union(
-                [lambda x: x.isoformat(), from_none], self.creation
+                [lambda x: x.isoformat(), from_none], self.creation_date
             )
-        if self.type_association is not None:
+        if self.association_type is not None:
             result["typeAssociation"] = from_union(
                 [lambda x: to_class(TypeAssociation, x), from_none],
-                self.type_association,
+                self.association_type,
             )
         return result
 
     def __eq__(self, other: Any) -> bool:
-        if not isinstance(other, Historique):
+        if not isinstance(other, History):
             return False
         return (
             self.cessation == other.cessation
-            and self.date_affiliation == other.date_affiliation
-            and self.date_reaffiliation == other.date_reaffiliation
-            and self.saison == other.saison
-            and self.creation == other.creation
-            and self.type_association == other.type_association
+            and self.affiliation_date == other.affiliation_date
+            and self.reaffiliation_date == other.reaffiliation_date
+            and self.season == other.season
+            and self.creation_date == other.creation_date
+            and self.association_type == other.association_type
         )
 
     def __hash__(self) -> int:
         return hash(
             (
                 self.cessation,
-                self.date_affiliation,
-                self.date_reaffiliation,
-                self.saison,
-                self.creation,
-                self.type_association,
+                self.affiliation_date,
+                self.reaffiliation_date,
+                self.season,
+                self.creation_date,
+                self.association_type,
             )
         )

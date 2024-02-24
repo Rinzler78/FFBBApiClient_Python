@@ -14,16 +14,16 @@ from .converters import (
 
 
 @dataclass
-class Saison:
-    actif: Optional[bool] = None
+class Season:
+    active: Optional[bool] = None
     id: Optional[int] = None
     code: Optional[str] = None
-    libelle: Optional[str] = None
-    debut: Optional[datetime] = None
-    fin: Optional[datetime] = None
+    label: Optional[str] = None
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
 
     @staticmethod
-    def from_dict(obj: Any) -> "Saison":
+    def from_dict(obj: Any) -> "Season":
         assert isinstance(obj, dict)
         actif = from_union(
             [from_none, lambda x: from_stringified_bool(from_str(x))], obj.get("actif")
@@ -33,11 +33,11 @@ class Saison:
         libelle = from_union([from_str, from_none], obj.get("libelle"))
         debut = from_union([from_datetime, from_none], obj.get("debut"))
         fin = from_union([from_datetime, from_none], obj.get("fin"))
-        return Saison(actif, id, code, libelle, debut, fin)
+        return Season(actif, id, code, libelle, debut, fin)
 
     def to_dict(self) -> dict:
         result: dict = {}
-        if self.actif is not None:
+        if self.active is not None:
             result["actif"] = from_union(
                 [
                     lambda x: from_none((lambda x: is_type(type(None), x))(x)),
@@ -45,35 +45,44 @@ class Saison:
                         (lambda x: str((lambda x: is_type(bool, x))(x)).lower())(x)
                     ),
                 ],
-                self.actif,
+                self.active,
             )
         if self.id is not None:
             result["id"] = from_union([from_int, from_none], self.id)
         if self.code is not None:
             result["code"] = from_union([from_str, from_none], self.code)
-        if self.libelle is not None:
-            result["libelle"] = from_union([from_str, from_none], self.libelle)
-        if self.debut is not None:
+        if self.label is not None:
+            result["libelle"] = from_union([from_str, from_none], self.label)
+        if self.start_date is not None:
             result["debut"] = from_union(
-                [lambda x: x.isoformat(), from_none], self.debut
+                [lambda x: x.isoformat(), from_none], self.start_date
             )
-        if self.fin is not None:
-            result["fin"] = from_union([lambda x: x.isoformat(), from_none], self.fin)
+        if self.end_date is not None:
+            result["fin"] = from_union(
+                [lambda x: x.isoformat(), from_none], self.end_date
+            )
         return result
 
     def __eq__(self, other: Any) -> bool:
-        if isinstance(other, Saison):
+        if isinstance(other, Season):
             return (
-                self.actif == other.actif
+                self.active == other.active
                 and self.id == other.id
                 and self.code == other.code
-                and self.libelle == other.libelle
-                and self.debut == other.debut
-                and self.fin == other.fin
+                and self.label == other.label
+                and self.start_date == other.start_date
+                and self.end_date == other.end_date
             )
         return False
 
     def __hash__(self) -> int:
         return hash(
-            (self.actif, self.id, self.code, self.libelle, self.debut, self.fin)
+            (
+                self.active,
+                self.id,
+                self.code,
+                self.label,
+                self.start_date,
+                self.end_date,
+            )
         )

@@ -7,9 +7,9 @@ from ffbb_api_client import (
     Championship,
     ClubDetails,
     ClubInfos,
-    Commune,
     FFBBApiClient,
     League,
+    Municipality,
     Team,
 )
 
@@ -23,7 +23,7 @@ api_client: FFBBApiClient = FFBBApiClient(
 )
 
 # Get communes by name
-commune: List[Commune] = api_client.get_communes("Senas")[0]
+commune: List[Municipality] = api_client.search_town("Senas")[0]
 
 # Get clubs from the commune
 club_infos: ClubInfos = api_client.search_club(commune.id)[0]
@@ -154,7 +154,7 @@ results = get_all_results_for_team(u13_team_D4_phase_2)
 print(results)
 
 
-communes: List[Commune] = api_client.get_communes("Senas")
+communes: List[Municipality] = api_client.search_town("Senas")
 
 other_clubs_names = []
 for commune in communes:
@@ -199,7 +199,7 @@ for club_name in other_clubs_names:
 
         if club_infos:
             for club_info in club_infos:
-                print(club_name, part, club_info.nom)
+                print(club_name, part, club_info.name)
 
             other_clubs_infos.append((club_name, part, club_infos))
             break

@@ -2,8 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, List, Optional
 
-from .cartographie import Cartographie
-from .commune import Commune
+from .basketball_court import BasketballCourt
 from .converters import (
     from_datetime,
     from_int,
@@ -13,43 +12,44 @@ from .converters import (
     from_union,
     to_class,
 )
-from .historique import Historique
-from .membre import Membre
-from .offres_pratique import OffresPratique
-from .salle import Salle
+from .geo_location import GeoLocation
+from .history import History
+from .member import Member
+from .municipality import Municipality
+from .practice_offers import PracticeOffers
 from .type_association import TypeAssociation
 
 
 @dataclass
 class ClubInfos:
-    nom_club_pro: None
-    adresse_club_pro: None
-    commune_club_pro: None
-    salle_club_pro: None
-    participation_obe: None
+    professional_club_name: None
+    professional_club_address: None
+    professional_club_town: None
+    professional_club_court: None
+    obe_participation: None
     id: Optional[int] = None
-    id_organisme_pere: Optional[int] = None
+    parent_organization_id: Optional[int] = None
     code: Optional[str] = None
-    nom: Optional[str] = None
+    name: Optional[str] = None
     type: Optional[str] = None
-    adresse: Optional[str] = None
-    telephone: Optional[str] = None
-    mail: Optional[str] = None
-    commune: Optional[Commune] = None
-    type_association: Optional[TypeAssociation] = None
-    salle: Optional[Salle] = None
+    adress: Optional[str] = None
+    phone: Optional[str] = None
+    email: Optional[str] = None
+    town: Optional[Municipality] = None
+    association_type: Optional[TypeAssociation] = None
+    court: Optional[BasketballCourt] = None
     url_site_web: Optional[str] = None
-    membres: Optional[List[Membre]] = None
-    organisme_fils: Optional[List[Any]] = None
-    offres_pratique: Optional[List[OffresPratique]] = None
-    labellisation: Optional[List[Any]] = None
-    cartographie: Optional[Cartographie] = None
-    historique: Optional[List[Historique]] = None
-    id_org: Optional[int] = None
-    id_cmne: Optional[int] = None
-    cd_org: Optional[str] = None
-    nom_org: Optional[str] = None
-    date_affiliation: Optional[datetime] = None
+    membres: Optional[List[Member]] = None
+    child_organizations: Optional[List[Any]] = None
+    practice_offers: Optional[List[PracticeOffers]] = None
+    certifications: Optional[List[Any]] = None
+    geo_location: Optional[GeoLocation] = None
+    history: Optional[List[History]] = None
+    organization_id: Optional[int] = None
+    municipality_id: Optional[int] = None
+    organization_code: Optional[str] = None
+    organization_name: Optional[str] = None
+    affiliation_date: Optional[datetime] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "ClubInfos":
@@ -57,10 +57,10 @@ class ClubInfos:
         nom_club_pro = from_union([from_str, from_none], obj.get("nomClubPro"))
         adresse_club_pro = from_union([from_str, from_none], obj.get("adresseClubPro"))
         commune_club_pro = from_union(
-            [Commune.from_dict, from_none], obj.get("communeClubPro")
+            [Municipality.from_dict, from_none], obj.get("communeClubPro")
         )
         salle_club_pro = from_union(
-            [Salle.from_dict, from_none], obj.get("salleClubPro")
+            [BasketballCourt.from_dict, from_none], obj.get("salleClubPro")
         )
         participation_obe = from_union(
             [from_str, from_none], obj.get("participationOBE")
@@ -75,30 +75,30 @@ class ClubInfos:
         adresse = from_union([from_str, from_none], obj.get("adresse"))
         telephone = from_union([from_str, from_none], obj.get("telephone"))
         mail = from_union([from_none, from_str], obj.get("mail"))
-        commune = from_union([Commune.from_dict, from_none], obj.get("commune"))
+        commune = from_union([Municipality.from_dict, from_none], obj.get("commune"))
         type_association = from_union(
             [TypeAssociation.from_dict, from_none], obj.get("type_association")
         )
-        salle = from_union([Salle.from_dict, from_none], obj.get("salle"))
+        salle = from_union([BasketballCourt.from_dict, from_none], obj.get("salle"))
         url_site_web = from_union([from_none, from_str], obj.get("urlSiteWeb"))
         membres = from_union(
-            [lambda x: from_list(Membre.from_dict, x), from_none], obj.get("membres")
+            [lambda x: from_list(Member.from_dict, x), from_none], obj.get("membres")
         )
         organisme_fils = from_union(
             [lambda x: from_list(lambda x: x, x), from_none], obj.get("organismeFils")
         )
         offres_pratique = from_union(
-            [lambda x: from_list(OffresPratique.from_dict, x), from_none],
+            [lambda x: from_list(PracticeOffers.from_dict, x), from_none],
             obj.get("offre_pratique"),
         )
         labellisation = from_union(
             [lambda x: from_list(lambda x: x, x), from_none], obj.get("labellisation")
         )
         cartographie = from_union(
-            [Cartographie.from_dict, from_none], obj.get("cartographie")
+            [GeoLocation.from_dict, from_none], obj.get("cartographie")
         )
         historique = from_union(
-            [lambda x: from_list(Historique.from_dict, x), from_none],
+            [lambda x: from_list(History.from_dict, x), from_none],
             obj.get("historique"),
         )
         id_org = from_union([from_int, from_none], obj.get("idOrg"))
@@ -141,90 +141,91 @@ class ClubInfos:
 
     def to_dict(self) -> dict:
         result: dict = {}
-        if self.nom_club_pro is not None:
-            result["nomClubPro"] = from_none(self.nom_club_pro)
-        if self.adresse_club_pro is not None:
-            result["adresseClubPro"] = from_none(self.adresse_club_pro)
-        if self.commune_club_pro is not None:
-            result["communeClubPro"] = from_none(self.commune_club_pro)
-        if self.salle_club_pro is not None:
-            result["salleClubPro"] = from_none(self.salle_club_pro)
-        if self.participation_obe is not None:
-            result["participationOBE"] = from_none(self.participation_obe)
+        if self.professional_club_name is not None:
+            result["nomClubPro"] = from_none(self.professional_club_name)
+        if self.professional_club_address is not None:
+            result["adresseClubPro"] = from_none(self.professional_club_address)
+        if self.professional_club_town is not None:
+            result["communeClubPro"] = from_none(self.professional_club_town)
+        if self.professional_club_court is not None:
+            result["salleClubPro"] = from_none(self.professional_club_court)
+        if self.obe_participation is not None:
+            result["participationOBE"] = from_none(self.obe_participation)
         if self.id is not None:
             result["id"] = from_union([from_int, from_none], self.id)
-        if self.id_organisme_pere is not None:
+        if self.parent_organization_id is not None:
             result["idOrganismePere"] = from_union(
-                [from_int, from_none], self.id_organisme_pere
+                [from_int, from_none], self.parent_organization_id
             )
         if self.code is not None:
             result["code"] = from_union([from_str, from_none], self.code)
-        if self.nom is not None:
-            result["nom"] = from_union([from_str, from_none], self.nom)
+        if self.name is not None:
+            result["nom"] = from_union([from_str, from_none], self.name)
         if self.type is not None:
             result["type"] = from_union([from_str, from_none], self.type)
-        if self.adresse is not None:
-            result["adresse"] = from_union([from_str, from_none], self.adresse)
-        if self.telephone is not None:
-            result["telephone"] = from_union([from_str, from_none], self.telephone)
-        if self.mail is not None:
-            result["mail"] = from_union([from_none, from_str], self.mail)
-        if self.commune is not None:
+        if self.adress is not None:
+            result["adresse"] = from_union([from_str, from_none], self.adress)
+        if self.phone is not None:
+            result["telephone"] = from_union([from_str, from_none], self.phone)
+        if self.email is not None:
+            result["mail"] = from_union([from_none, from_str], self.email)
+        if self.town is not None:
             result["commune"] = from_union(
-                [lambda x: to_class(Commune, x), from_none], self.commune
+                [lambda x: to_class(Municipality, x), from_none], self.town
             )
-        if self.type_association is not None:
+        if self.association_type is not None:
             result["type_association"] = from_union(
                 [lambda x: to_class(TypeAssociation, x), from_none],
-                self.type_association,
+                self.association_type,
             )
-        if self.salle is not None:
+        if self.court is not None:
             result["salle"] = from_union(
-                [lambda x: to_class(Salle, x), from_none], self.salle
+                [lambda x: to_class(BasketballCourt, x), from_none], self.court
             )
         if self.url_site_web is not None:
             result["urlSiteWeb"] = from_union([from_none, from_str], self.url_site_web)
         if self.membres is not None:
             result["membres"] = from_union(
-                [lambda x: from_list(lambda x: to_class(Membre, x), x), from_none],
+                [lambda x: from_list(lambda x: to_class(Member, x), x), from_none],
                 self.membres,
             )
-        if self.organisme_fils is not None:
+        if self.child_organizations is not None:
             result["organismeFils"] = from_union(
-                [lambda x: from_list(lambda x: x, x), from_none], self.organisme_fils
+                [lambda x: from_list(lambda x: x, x), from_none],
+                self.child_organizations,
             )
-        if self.offres_pratique is not None:
+        if self.practice_offers is not None:
             result["offre_pratique"] = from_union(
                 [
-                    lambda x: from_list(lambda x: to_class(OffresPratique, x), x),
+                    lambda x: from_list(lambda x: to_class(PracticeOffers, x), x),
                     from_none,
                 ],
-                self.offres_pratique,
+                self.practice_offers,
             )
-        if self.labellisation is not None:
+        if self.certifications is not None:
             result["labellisation"] = from_union(
-                [lambda x: from_list(lambda x: x, x), from_none], self.labellisation
+                [lambda x: from_list(lambda x: x, x), from_none], self.certifications
             )
-        if self.cartographie is not None:
+        if self.geo_location is not None:
             result["cartographie"] = from_union(
-                [lambda x: to_class(Cartographie, x), from_none], self.cartographie
+                [lambda x: to_class(GeoLocation, x), from_none], self.geo_location
             )
-        if self.historique is not None:
+        if self.history is not None:
             result["historique"] = from_union(
-                [lambda x: from_list(lambda x: to_class(Historique, x), x), from_none],
-                self.historique,
+                [lambda x: from_list(lambda x: to_class(History, x), x), from_none],
+                self.history,
             )
-        if self.id_org is not None:
-            result["idOrg"] = from_union([from_int, from_none], self.id_org)
-        if self.id_cmne is not None:
-            result["idCmne"] = from_union([from_int, from_none], self.id_cmne)
-        if self.cd_org is not None:
-            result["cdOrg"] = from_union([from_str, from_none], self.cd_org)
-        if self.nom_org is not None:
-            result["nomOrg"] = from_union([from_str, from_none], self.nom_org)
-        if self.date_affiliation is not None:
+        if self.organization_id is not None:
+            result["idOrg"] = from_union([from_int, from_none], self.organization_id)
+        if self.municipality_id is not None:
+            result["idCmne"] = from_union([from_int, from_none], self.municipality_id)
+        if self.organization_code is not None:
+            result["cdOrg"] = from_union([from_str, from_none], self.organization_code)
+        if self.organization_name is not None:
+            result["nomOrg"] = from_union([from_str, from_none], self.organization_name)
+        if self.affiliation_date is not None:
             result["dateAffiliation"] = from_union(
-                [lambda x: x.isoformat(), from_none], self.date_affiliation
+                [lambda x: x.isoformat(), from_none], self.affiliation_date
             )
         return result
 
