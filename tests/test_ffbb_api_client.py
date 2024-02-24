@@ -4,6 +4,12 @@ from typing import List
 
 from dotenv import load_dotenv
 
+from ffbb_api_client import Competition  # noqa
+from ffbb_api_client import Day  # noqa
+from ffbb_api_client import Group  # noqa
+from ffbb_api_client import MatchDetail  # noqa
+from ffbb_api_client import News  # noqa
+from ffbb_api_client import Standing  # noqa
 from ffbb_api_client import (
     AgendaAndResults,
     Area,

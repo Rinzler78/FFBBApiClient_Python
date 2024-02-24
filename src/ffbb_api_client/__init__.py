@@ -9,13 +9,15 @@ from .club_details import ClubDetails, club_details_from_dict
 from .club_infos import ClubInfos, club_infos_from_dict
 from .commune import Commune, commune_from_dict
 from .competition import Competition, competition_from_dict
+from .day import Day  # noqa
+from .group import Group  # noqa
 from .http_requests_utils import http_get_json, http_post_json, url_with_params
 from .league import League, league_from_dict
 from .match_detail import MatchDetail, match_detail_from_dict
 from .news import News, news_from_dict
+from .standing import Standing  # noqa
+from .team import Team  # noqa
 from .videos import Videos, videos_from_dict
-
-from .team import Team  # isort: skip # noqa
 
 if sys.version_info[:2] >= (3, 8):
     # TODO: Import directly (no need for conditional) when `python_requires = >= 3.8`
