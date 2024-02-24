@@ -32,8 +32,8 @@ basic_auth_pass = os.getenv("FFBB_BASIC_AUTH_PASS")
 
 
 class TestFFBBApiClient(unittest.TestCase):
-    _known_commune_name: str = "Senas"
-    _known_commune: Municipality = None
+    _known_municipality_name: str = "Senas"
+    _known_municipality: Municipality = None
     _known_club_infos: ClubInfos = None
     _known_club_details: ClubDetails = None
     _known_areas: List[Area] = None
@@ -57,18 +57,18 @@ class TestFFBBApiClient(unittest.TestCase):
     def setup_method(self, method):
         self.setUp()
 
-    def _get_know_commune(self):
-        if not self._known_commune:
-            self._known_commune = self.api_client.search_town(self._known_commune_name)[
-                0
-            ]
+    def _get_know_municipality(self):
+        if not self._known_municipality:
+            self._known_municipality = self.api_client.search_municipality(
+                self._known_municipality_name
+            )[0]
 
-        return self._known_commune
+        return self._known_municipality
 
     def _get_know_club_infos(self):
         if not self._known_club_infos:
             self._known_club_infos = self.api_client.search_club(
-                self._get_know_commune().id
+                self._get_know_municipality().id
             )[0]
 
         return self._known_club_infos
@@ -155,20 +155,20 @@ class TestFFBBApiClient(unittest.TestCase):
         return self._known_results
 
 
-class Test_GetCommunes(TestFFBBApiClient):
+class Test_SearchMunicipalitys(TestFFBBApiClient):
     def test_with_known_name(self):
-        result = self._get_know_commune()
+        result = self._get_know_municipality()
         self.assertIsNotNone(result)
         self.assertIsInstance(result, Municipality)
 
     def test_with_unknown_name(self):
         query = "Blop"
-        result = self.api_client.search_town(query)
+        result = self.api_client.search_municipality(query)
         self.assertIsNone(result)
 
     def test_with_empty_name(self):
         query = ""
-        result = self.api_client.search_town(query)
+        result = self.api_client.search_municipality(query)
         self.assertIsNone(result)
 
 
@@ -190,16 +190,16 @@ class Test_GetClubDetails(TestFFBBApiClient):
 
 
 class Test_SearchClub(TestFFBBApiClient):
-    def test_with_known_id_commune(self):
+    def test_with_known_id_municipality(self):
         result = self._get_know_club_infos()
         self.assertIsNotNone(result)
         self.assertIsInstance(result, ClubInfos)
 
-    def test_with_unknown_id_commune(self):
+    def test_with_unknown_id_municipality(self):
         result = self.api_client.search_club(id_cmne="unknown_id")
         self.assertIsNone(result)
 
-    def test_with_empty_id_commune(self):
+    def test_with_empty_id_municipality(self):
         result = self.api_client.search_club(id_cmne="")
         self.assertIsNone(result)
 
@@ -268,7 +268,7 @@ class Test_GetVideos(TestFFBBApiClient):
 
     def test_with_known_club_id(self):
         result = self.api_client.get_videos(
-            id_cmne=self._get_know_club_infos().town.municipality_id
+            id_cmne=self._get_know_club_infos().municipality.municipality_id
         )
         self.assertIsNotNone(result)
         self.assertIsInstance(result, Videos)

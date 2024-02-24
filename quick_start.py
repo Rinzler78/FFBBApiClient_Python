@@ -23,7 +23,7 @@ api_client: FFBBApiClient = FFBBApiClient(
 )
 
 # Get communes by name
-commune: List[Municipality] = api_client.search_town("Senas")[0]
+commune: List[Municipality] = api_client.search_municipality("Senas")[0]
 
 # Get clubs from the commune
 club_infos: ClubInfos = api_client.search_club(commune.id)[0]
@@ -154,7 +154,7 @@ results = get_all_results_for_team(u13_team_D4_phase_2)
 print(results)
 
 
-communes: List[Municipality] = api_client.search_town("Senas")
+communes: List[Municipality] = api_client.search_municipality("Senas")
 
 other_clubs_names = []
 for commune in communes:

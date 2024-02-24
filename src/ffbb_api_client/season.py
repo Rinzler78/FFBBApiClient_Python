@@ -25,15 +25,15 @@ class Season:
     @staticmethod
     def from_dict(obj: Any) -> "Season":
         assert isinstance(obj, dict)
-        actif = from_union(
+        active = from_union(
             [from_none, lambda x: from_stringified_bool(from_str(x))], obj.get("actif")
         )
         id = from_union([from_int, from_none], obj.get("id"))
         code = from_union([from_str, from_none], obj.get("code"))
-        libelle = from_union([from_str, from_none], obj.get("libelle"))
-        debut = from_union([from_datetime, from_none], obj.get("debut"))
-        fin = from_union([from_datetime, from_none], obj.get("fin"))
-        return Season(actif, id, code, libelle, debut, fin)
+        label = from_union([from_str, from_none], obj.get("libelle"))
+        start_date = from_union([from_datetime, from_none], obj.get("debut"))
+        end_date = from_union([from_datetime, from_none], obj.get("fin"))
+        return Season(active, id, code, label, start_date, end_date)
 
     def to_dict(self) -> dict:
         result: dict = {}

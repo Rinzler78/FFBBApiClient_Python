@@ -24,41 +24,39 @@ class Member:
     @staticmethod
     def from_dict(obj: Any) -> "Member":
         assert isinstance(obj, dict)
-        adresse2 = from_union([from_str, from_none], obj.get("adresse2"))
-        code_postal = from_union(
+        address_line2 = from_union([from_str, from_none], obj.get("adresse2"))
+        postal_code = from_union(
             [from_none, lambda x: int(from_str(x))], obj.get("codePostal")
         )
-        telephone_fixe = from_union([from_str, from_none], obj.get("telephoneFixe"))
+        landline_phone = from_union([from_str, from_none], obj.get("telephoneFixe"))
         id = from_union([from_int, from_none], obj.get("id"))
-        nom = from_union([from_str, from_none], obj.get("nom"))
-        prenom = from_union([from_str, from_none], obj.get("prenom"))
+        last_name = from_union([from_str, from_none], obj.get("nom"))
+        first_name = from_union([from_str, from_none], obj.get("prenom"))
         id_licence = from_union([from_int, from_none], obj.get("idLicence"))
-        adresse1 = from_union([from_str, from_none], obj.get("adresse1"))
-        ville = from_union([from_str, from_none], obj.get("ville"))
-        mail = from_union([from_str, from_none], obj.get("mail"))
-        telephone_portable = from_union(
-            [from_str, from_none], obj.get("telephonePortable")
-        )
-        code_fonction = from_union([from_str, from_none], obj.get("codeFonction"))
-        libelle_fonction = from_union([from_str, from_none], obj.get("libelleFonction"))
-        accord_diffusion_site_web = from_union(
+        address_line1 = from_union([from_str, from_none], obj.get("adresse1"))
+        city = from_union([from_str, from_none], obj.get("ville"))
+        email = from_union([from_str, from_none], obj.get("mail"))
+        mobile_phone = from_union([from_str, from_none], obj.get("telephonePortable"))
+        role_code = from_union([from_str, from_none], obj.get("codeFonction"))
+        role_label = from_union([from_str, from_none], obj.get("libelleFonction"))
+        consent_to_website_publishing = from_union(
             [from_bool, from_none], obj.get("accordDiffusionSiteWeb")
         )
         return Member(
             id,
-            nom,
-            prenom,
-            adresse1,
-            adresse2,
-            code_postal,
-            ville,
-            mail,
-            telephone_fixe,
-            telephone_portable,
-            code_fonction,
-            libelle_fonction,
+            last_name,
+            first_name,
+            address_line1,
+            address_line2,
+            postal_code,
+            city,
+            email,
+            landline_phone,
+            mobile_phone,
+            role_code,
+            role_label,
             id_licence,
-            accord_diffusion_site_web,
+            consent_to_website_publishing,
         )
 
     def to_dict(self) -> dict:

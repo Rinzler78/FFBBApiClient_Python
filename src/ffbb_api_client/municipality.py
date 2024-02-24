@@ -25,21 +25,27 @@ class Municipality:
     @staticmethod
     def from_dict(obj: Any) -> "Municipality":
         assert isinstance(obj, dict)
-        code_postal = from_union(
+        postal_code = from_union(
             [from_none, lambda x: int(from_str(x))], obj.get("codePostal")
         )
-        code_insee = from_union(
+        insee_code = from_union(
             [from_none, lambda x: int(from_str(x))], obj.get("codeInsee")
         )
-        cd_post_cmne = from_union(
+        postal_community_code = from_union(
             [from_none, lambda x: int(from_str(x))], obj.get("cdPostCmne")
         )
         id = from_union([from_int, from_none], obj.get("id"))
-        libelle = from_union([from_str, from_none], obj.get("libelle"))
-        id_cmne = from_union([from_int, from_none], obj.get("idCmne"))
-        lb_cmne = from_union([from_str, from_none], obj.get("lbCmne"))
+        label = from_union([from_str, from_none], obj.get("libelle"))
+        municipality_id = from_union([from_int, from_none], obj.get("idCmne"))
+        municipality_label = from_union([from_str, from_none], obj.get("lbCmne"))
         return Municipality(
-            code_postal, code_insee, cd_post_cmne, id, libelle, id_cmne, lb_cmne
+            postal_code,
+            insee_code,
+            postal_community_code,
+            id,
+            label,
+            municipality_id,
+            municipality_label,
         )
 
     def to_dict(self) -> dict:

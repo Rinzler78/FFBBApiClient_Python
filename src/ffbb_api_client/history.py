@@ -20,24 +20,24 @@ class History:
     def from_dict(obj: Any) -> "History":
         assert isinstance(obj, dict)
         cessation = from_none(obj.get("cessation"))
-        date_affiliation = from_union(
+        affiliation_date = from_union(
             [from_datetime, from_none], obj.get("dateAffiliation")
         )
-        date_reaffiliation = from_union(
+        reaffiliation_date = from_union(
             [from_datetime, from_none], obj.get("dateReaffiliation")
         )
-        saison = from_union([Season.from_dict, from_none], obj.get("saison"))
-        creation = from_union([from_datetime, from_none], obj.get("creation"))
-        type_association = from_union(
+        season = from_union([Season.from_dict, from_none], obj.get("saison"))
+        creation_date = from_union([from_datetime, from_none], obj.get("creation"))
+        association_type = from_union(
             [TypeAssociation.from_dict, from_none], obj.get("typeAssociation")
         )
         return History(
             cessation,
-            date_affiliation,
-            date_reaffiliation,
-            saison,
-            creation,
-            type_association,
+            affiliation_date,
+            reaffiliation_date,
+            season,
+            creation_date,
+            association_type,
         )
 
     def to_dict(self) -> dict:

@@ -314,15 +314,15 @@ class FFBBApiClient:
             lambda: championship_from_dict(http_post_json(url, self.headers, params))
         )
 
-    def search_town(self, name: str) -> List[Municipality]:
+    def search_municipality(self, name: str) -> List[Municipality]:
         """
-        Get the communes.
+        Search for a municipality by name.
 
         Args:
-            name (str): The name of the commune.
+            name (str): The name of the municipality to search for.
 
         Returns:
-            List[Commune]: The communes.
+            List[Municipality]: A list of Municipality.
         """
         params = {"name": name}
         url = url_with_params(f"{self.ws_url}communes.php", params)
