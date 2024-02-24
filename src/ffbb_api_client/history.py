@@ -19,7 +19,7 @@ class History:
     @staticmethod
     def from_dict(obj: Any) -> "History":
         assert isinstance(obj, dict)
-        cessation = from_none(obj.get("cessation"))
+        cessation = from_union([from_datetime, from_none], obj.get("cessation"))
         affiliation_date = from_union(
             [from_datetime, from_none], obj.get("dateAffiliation")
         )

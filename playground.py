@@ -1,4 +1,5 @@
 import os
+import string
 from typing import List
 
 from ffbb_api_client import (
@@ -226,15 +227,24 @@ def get_datas(name: str):
     return results
 
 
-datas = get_datas("Senas")
-all_teams = []
+# datas = get_datas("Senas")
+# all_teams = []
 
-for data in datas:
-    all_teams.extend(data[4])
+# for data in datas:
+#     all_teams.extend(data[4])
 
-all_teams = sorted(set(all_teams))
+# all_teams = sorted(set(all_teams))
 
-for team_name in all_teams:
-    get_datas(team_name)
+# for team_name in all_teams:
+#     get_datas(team_name)
+
+
+alphabet = list(string.ascii_lowercase)
+for org_name in alphabet:
+    print(f"Searching club for {org_name}")
+    result = api_client.search_clubs(org_name=org_name)
+
+    if not result:
+        print()
 
 print()

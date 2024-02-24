@@ -85,8 +85,8 @@ class FFBBApiClient:
         self,
         basic_auth_user: str,
         basic_auth_pass: str,
-        api_url: str = "https://mobiles.ffbb.com/php/v1_0_5/",
-        ws_url: str = "https://mobiles.ffbb.com/webservices/v1/",
+        api_url: str = "http://mobiles.ffbb.com/php/v1_0_5/",
+        ws_url: str = "http://mobiles.ffbb.com/webservices/v1/",
     ):
         """
         Initializes the FFBBApiClient.
