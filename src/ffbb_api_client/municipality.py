@@ -15,7 +15,7 @@ from .converters import (
 @dataclass
 class Municipality:
     postal_code: Optional[int] = None
-    insee_code: Optional[int] = None
+    insee_code: Optional[str] = None
     postal_community_code: Optional[int] = None
     id: Optional[int] = None
     label: Optional[str] = None
@@ -29,7 +29,7 @@ class Municipality:
             [from_none, lambda x: int(from_str(x))], obj.get("codePostal")
         )
         insee_code = from_union(
-            [from_none, lambda x: int(from_str(x))], obj.get("codeInsee")
+            [from_none, lambda x: from_str(x)], obj.get("codeInsee")
         )
         postal_community_code = from_union(
             [from_none, lambda x: int(from_str(x))], obj.get("cdPostCmne")

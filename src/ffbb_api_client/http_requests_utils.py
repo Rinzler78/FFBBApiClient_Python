@@ -20,10 +20,11 @@ def to_json_from_response(response: Response) -> Dict[str, Any]:
     if data_str.endswith(","):
         data_str = data_str[:-1]
 
-    # Try to fix invalid json containing ][
+    data_str = data_str.replace("][", ",")
+    data_str = data_str.replace("KO", "")
 
-    if "][" in data_str:
-        data_str = data_str.replace("][", ",")
+    if data_str.startswith('""'):
+        data_str = data_str[2:]
 
     return json.loads(data_str)
 
