@@ -1,14 +1,14 @@
 import os
 from typing import List
 
-from ffbb_api_client import FFBBApiClient
-from ffbb_api_client.api_types import (
+from ffbb_api_client import (
     AgendaAndResults,
     Area,
     Championship,
     ClubDetails,
     ClubInfos,
     Commune,
+    FFBBApiClient,
     League,
     Team,
 )
@@ -67,6 +67,7 @@ def get_all_results_for_team(team: Team) -> AgendaAndResults:
 
     day: int = 0
     results: AgendaAndResults = None
+    previous_day_results: AgendaAndResults = None
 
     while True:
         day += 1
@@ -78,8 +79,17 @@ def get_all_results_for_team(team: Team) -> AgendaAndResults:
             day=day,
         )
 
-        if not day_results or len(day_results.matchs) == 0:
+        if (
+            not day_results
+            or len(day_results.matchs) == 0
+            or (
+                previous_day_results
+                and previous_day_results.matchs == day_results.matchs
+            )
+        ):
             break
+
+        previous_day_results = day_results
 
         if not results:
             results = day_results
@@ -142,3 +152,59 @@ def get_all_results_for_team(team: Team) -> AgendaAndResults:
 results = get_all_results_for_team(u13_team_D4_phase_2)
 
 print(results)
+
+
+communes: List[Commune] = api_client.get_communes("Senas")
+
+other_clubs_names = []
+for commune in communes:
+    clubs_infos: List[ClubInfos] = api_client.search_club(commune.id)
+
+    if not clubs_infos:
+        continue
+
+    for club_infos in clubs_infos:
+        club_details: ClubDetails = api_client.get_club_details(club_infos.id)
+
+        if not club_details or not club_details.teams:
+            continue
+
+        for team in club_details.teams:
+            print(
+                club_infos.nom,
+                team.name,
+                team.category,
+                team.group,
+                team.sub_competition,
+                team.id,
+            )
+            team_results = get_all_results_for_team(team)
+
+            if not team_results:
+                continue
+
+            other_clubs_names.extend(
+                [standing.club for standing in team_results.standings[1:]]
+            )
+
+other_clubs_names = list({name for name in other_clubs_names if name != "Exempt"})
+
+other_clubs_infos = []
+for club_name in other_clubs_names:
+    club_infos: List[ClubInfos] = None
+
+    for part in club_name.split("-"):
+        part = part.strip()
+        club_infos = api_client.search_club(org_name=part)
+
+        if club_infos:
+            for club_info in club_infos:
+                print(club_name, part, club_info.nom)
+
+            other_clubs_infos.append((club_name, part, club_infos))
+            break
+
+    if not club_infos:
+        other_clubs_infos.append((club_name, None, None))
+
+print()

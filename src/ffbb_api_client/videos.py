@@ -3,7 +3,7 @@ from typing import Any, List, Optional
 
 from .converters import from_list, from_none, from_str, from_union, to_class
 from .item import Item
-from .pageInfo import PageInfo
+from .page_info import PageInfo
 
 
 @dataclass

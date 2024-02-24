@@ -15,9 +15,9 @@ from .converters import (
 )
 from .historique import Historique
 from .membre import Membre
-from .offresPratique import OffresPratique
+from .offre_pratique import OffresPratique
 from .salle import Salle
-from .typeAssociation import TypeAssociation
+from .type_association import TypeAssociation
 
 
 @dataclass
@@ -77,7 +77,7 @@ class ClubInfos:
         mail = from_union([from_none, from_str], obj.get("mail"))
         commune = from_union([Commune.from_dict, from_none], obj.get("commune"))
         type_association = from_union(
-            [TypeAssociation.from_dict, from_none], obj.get("typeAssociation")
+            [TypeAssociation.from_dict, from_none], obj.get("type_association")
         )
         salle = from_union([Salle.from_dict, from_none], obj.get("salle"))
         url_site_web = from_union([from_none, from_str], obj.get("urlSiteWeb"))
@@ -89,7 +89,7 @@ class ClubInfos:
         )
         offres_pratique = from_union(
             [lambda x: from_list(OffresPratique.from_dict, x), from_none],
-            obj.get("offresPratique"),
+            obj.get("offre_pratique"),
         )
         labellisation = from_union(
             [lambda x: from_list(lambda x: x, x), from_none], obj.get("labellisation")
@@ -174,7 +174,7 @@ class ClubInfos:
                 [lambda x: to_class(Commune, x), from_none], self.commune
             )
         if self.type_association is not None:
-            result["typeAssociation"] = from_union(
+            result["type_association"] = from_union(
                 [lambda x: to_class(TypeAssociation, x), from_none],
                 self.type_association,
             )
@@ -194,7 +194,7 @@ class ClubInfos:
                 [lambda x: from_list(lambda x: x, x), from_none], self.organisme_fils
             )
         if self.offres_pratique is not None:
-            result["offresPratique"] = from_union(
+            result["offre_pratique"] = from_union(
                 [
                     lambda x: from_list(lambda x: to_class(OffresPratique, x), x),
                     from_none,

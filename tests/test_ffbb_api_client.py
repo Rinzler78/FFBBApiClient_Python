@@ -4,16 +4,19 @@ from typing import List
 
 from dotenv import load_dotenv
 
-from ffbb_api_client import FFBBApiClient
-from ffbb_api_client.agendaAndResults import AgendaAndResults
-from ffbb_api_client.area import Area
-from ffbb_api_client.championship import Championship, CompetitionType
-from ffbb_api_client.clubDetails import ClubDetails
-from ffbb_api_client.clubInfos import ClubInfos
-from ffbb_api_client.commune import Commune
-from ffbb_api_client.league import League
-from ffbb_api_client.team import Team
-from ffbb_api_client.videos import Videos
+from ffbb_api_client import (
+    AgendaAndResults,
+    Area,
+    Championship,
+    ClubDetails,
+    ClubInfos,
+    Commune,
+    CompetitionType,
+    FFBBApiClient,
+    League,
+    Team,
+    Videos,
+)
 
 load_dotenv()
 

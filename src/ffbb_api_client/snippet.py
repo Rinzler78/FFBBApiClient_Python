@@ -10,7 +10,7 @@ from .converters import (
     from_union,
     to_class,
 )
-from .resourceID import ResourceID
+from .resource_id import ResourceID
 from .thumbnails import Thumbnails
 
 

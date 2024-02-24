@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 from .converters import from_datetime, from_none, from_union, to_class
 from .saison import Saison
-from .typeAssociation import TypeAssociation
+from .type_association import TypeAssociation
 
 
 @dataclass

@@ -2,17 +2,20 @@ import base64
 import sys
 from typing import List
 
-from .agendaAndResults import AgendaAndResults, agenda_and_results_from_dict
+from .agenda_and_results import AgendaAndResults, agenda_and_results_from_dict
 from .area import Area, area_from_dict
 from .championship import Championship, CompetitionType, championship_from_dict
-from .clubDetails import ClubDetails, club_details_from_dict
-from .clubInfos import ClubInfos, club_infos_from_dict
+from .club_details import ClubDetails, club_details_from_dict
+from .club_infos import ClubInfos, club_infos_from_dict
 from .commune import Commune, commune_from_dict
 from .competition import Competition, competition_from_dict
+from .http_requests_utils import http_get_json, http_post_json, url_with_params
 from .league import League, league_from_dict
-from .matchDetail import MatchDetail, match_detail_from_dict
+from .match_detail import MatchDetail, match_detail_from_dict
 from .news import News, news_from_dict
 from .videos import Videos, videos_from_dict
+
+from .team import Team  # isort: skip # noqa
 
 if sys.version_info[:2] >= (3, 8):
     # TODO: Import directly (no need for conditional) when `python_requires = >= 3.8`
@@ -28,8 +31,6 @@ except PackageNotFoundError:  # pragma: no cover
     __version__ = "unknown"
 finally:
     del version, PackageNotFoundError
-
-from .http_requests_utils import http_get_json, http_post_json, url_with_params
 
 
 def catch_result(callback):
@@ -326,18 +327,3 @@ class FFBBApiClient:
         return catch_result(
             lambda: club_infos_from_dict(http_get_json(url, self.headers))
         )
-
-    def catch_result(self, callback):
-        """
-        Catch the result of a callback function.
-
-        Args:
-            callback: The callback function.
-
-        Returns:
-            The result of the callback function or None if an exception occurs.
-        """
-        try:
-            return callback()
-        except Exception:
-            return None
