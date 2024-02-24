@@ -5,10 +5,11 @@ from typing import List
 from .agenda_and_results import AgendaAndResults, agenda_and_results_from_dict  # noqa
 from .area import Area, area_from_dict  # noqa
 from .basketball_court import BasketballCourt  # noqa
-from .championship import Championship, CompetitionType, championship_from_dict  # noqa
+from .championship import Championship, championship_from_dict  # noqa
 from .club_details import ClubDetails, club_details_from_dict  # noqa
 from .club_infos import ClubInfos, club_infos_from_dict  # noqa
 from .competition import Competition, competition_from_dict  # noqa
+from .competition_type import CompetitionType  # noqa
 from .day import Day  # noqa
 from .default import Default  # noqa
 from .field import Field  # noqa

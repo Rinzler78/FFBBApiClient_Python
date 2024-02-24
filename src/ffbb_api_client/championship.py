@@ -1,20 +1,14 @@
 from dataclasses import dataclass
-from enum import Enum
 from typing import Any, List, Optional
 
 from .converters import from_list, from_none, from_str, from_union, to_class
-
-
-class CompetitionType(Enum):
-    CHAMPIONSHIP = "championship"
-    CUP = "cup"
 
 
 @dataclass
 class Championship:
     name: Optional[str] = None
     id: Optional[str] = None
-    type: Optional[CompetitionType] = None
+    type: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "Championship":
