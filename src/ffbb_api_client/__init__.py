@@ -3,7 +3,7 @@ import json
 import sys
 from typing import List
 
-from requests.exceptions import ReadTimeout
+from requests.exceptions import ConnectionError, ReadTimeout
 
 from .agenda_and_results import AgendaAndResults, agenda_and_results_from_dict  # noqa
 from .area import Area, area_from_dict  # noqa
@@ -73,6 +73,10 @@ def catch_result(callback, is_retrieving: bool = False):
             return None
         raise e
     except ReadTimeout as e:
+        if not is_retrieving:
+            return catch_result(callback, True)
+        raise e
+    except ConnectionError as e:
         if not is_retrieving:
             return catch_result(callback, True)
         raise e
@@ -153,7 +157,7 @@ class FFBBApiClient:
         Returns:
             ClubDetails: The details of the club.
         """
-        params = {"id": club_id}
+        params = {"id": hex(club_id)[2:] if club_id else None}
         url = f"{self.api_url}club.php"
         return catch_result(
             lambda: club_details_from_dict(http_post_json(url, self.headers, params))

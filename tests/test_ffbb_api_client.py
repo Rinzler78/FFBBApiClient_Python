@@ -179,12 +179,12 @@ class Test_GetClubDetails(TestFFBBApiClient):
         self.assertIsInstance(result, ClubDetails)
 
     def test_with_unknown_id(self):
-        club_id = "unknown_id"
+        club_id = 0
         result = self.api_client.get_club_details(club_id)
         self.assertIsNone(result)
 
     def test_with_empty_id(self):
-        club_id = ""
+        club_id = None
         result = self.api_client.get_club_details(club_id)
         self.assertIsNone(result)
 
