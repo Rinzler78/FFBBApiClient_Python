@@ -8,6 +8,7 @@ from requests.exceptions import ConnectionError, ReadTimeout
 from .agenda_and_results import AgendaAndResults, agenda_and_results_from_dict  # noqa
 from .area import Area, area_from_dict  # noqa
 from .basketball_court import BasketballCourt  # noqa
+from .category import Category  # noqa
 from .championship import Championship, championship_from_dict  # noqa
 from .club_details import ClubDetails, club_details_from_dict  # noqa
 from .club_infos import ClubInfos, club_infos_from_dict  # noqa
@@ -17,6 +18,7 @@ from .day import Day  # noqa
 from .default import Default  # noqa
 from .field import Field  # noqa
 from .geo_location import GeoLocation  # noqa
+from .geographycale_zone import GeographycaleZone  # noqa
 from .group import Group  # noqa
 from .history import History  # noqa
 from .http_requests_utils import http_get_json, http_post_json, url_with_params  # noqa
@@ -32,6 +34,7 @@ from .practice_offers import PracticeOffers  # noqa
 from .resource_id import ResourceID  # noqa
 from .score import Score  # noqa
 from .season import Season  # noqa
+from .sex import Sex  # noqa
 from .snippet import Snippet  # noqa
 from .standing import Standing  # noqa
 from .team import Team  # noqa
@@ -84,13 +87,45 @@ def catch_result(callback, is_retrieving: bool = False):
         raise e
 
 
+def merge_club_details(
+    club_details: ClubDetails, other_club_details: ClubDetails
+) -> ClubDetails:
+    """
+    Merge two club details.
+
+    Args:
+        club_details (ClubDetails): The club details.
+        other_club_details (ClubDetails): The other club details.
+
+    Returns:
+        ClubDetails: The merged club details.
+    """
+    if club_details == other_club_details:
+        return club_details
+    if club_details is None:
+        return other_club_details
+    if other_club_details is None:
+        return club_details
+
+    results = ClubDetails()
+
+    results.fields = set(club_details.fields + other_club_details.fields)
+    results.infos = set(club_details.infos + other_club_details.infos)
+    results.teams = sorted(
+        list(set(club_details.teams + other_club_details.teams)),
+        key=lambda team: team.name,
+    )
+
+    return results
+
+
 class FFBBApiClient:
     def __init__(
         self,
         basic_auth_user: str,
         basic_auth_pass: str,
-        api_url: str = "http://mobiles.ffbb.com/php/v1_0_5/",
-        ws_url: str = "http://mobiles.ffbb.com/webservices/v1/",
+        api_url: str = "https://mobiles.ffbb.com/php/v1_0_5/",
+        ws_url: str = "https://mobiles.ffbb.com/webservices/v1/",
     ):
         """
         Initializes the FFBBApiClient.
@@ -157,7 +192,28 @@ class FFBBApiClient:
         Returns:
             ClubDetails: The details of the club.
         """
-        params = {"id": hex(club_id)[2:] if club_id else None}
+
+        if club_id is None:
+            return None
+
+        result = merge_club_details(
+            self._get_club_details_with_param(club_id),
+            self._get_club_details_with_param(hex(club_id)[2:]),
+        )
+        return result
+
+    def _get_club_details_with_param(self, club_id) -> ClubDetails:
+        """
+        Get the details of a club.
+
+        Args:
+            club_id (int): The ID of the club.
+
+        Returns:
+            ClubDetails: The details of the club.
+        """
+
+        params = {"id": club_id if club_id else None}
         url = f"{self.api_url}club.php"
         return catch_result(
             lambda: club_details_from_dict(http_post_json(url, self.headers, params))

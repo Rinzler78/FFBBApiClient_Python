@@ -9,6 +9,7 @@ from ffbb_api_client import (
     FFBBApiClient,
     Team,
 )
+from tests.test_ffbb_api_client import Test_GetClubDetails
 
 # Retrieve api user / pass
 basic_auth_user = os.getenv("FFBB_BASIC_AUTH_USER")
@@ -18,6 +19,11 @@ basic_auth_pass = os.getenv("FFBB_BASIC_AUTH_PASS")
 api_client: FFBBApiClient = FFBBApiClient(
     basic_auth_user=basic_auth_user, basic_auth_pass=basic_auth_pass
 )
+
+test = Test_GetClubDetails()
+test.setUp()
+test.test_with_empty_id()
+test.test_with_known_id()
 
 
 def merge_results(

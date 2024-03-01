@@ -14,6 +14,7 @@ from ffbb_api_client import TypeAssociation  # noqa
 from ffbb_api_client import (
     AgendaAndResults,
     Area,
+    Category,
     Championship,
     ClubDetails,
     ClubInfos,
@@ -136,7 +137,7 @@ class TestFFBBApiClient(unittest.TestCase):
             self._known_team = next(
                 team
                 for team in self._get_known_teams()
-                if team.category == "U13"
+                if team.category == Category.U13
                 and "Division 4" in team.name
                 and "Phase 2" in team.name
                 and "Poule D" in team.name

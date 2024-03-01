@@ -1,9 +1,15 @@
 import json
+import time
 from typing import Any, Dict
 from urllib.parse import urlencode
 
 import requests
 from requests import Response
+from requests_cache import CachedSession
+
+session = CachedSession(
+    "http_cache", backend="sqlite", expire_after=1800, allowable_methods=("GET", "POST")
+)
 
 
 def to_json_from_response(response: Response) -> Dict[str, Any]:
@@ -29,25 +35,49 @@ def to_json_from_response(response: Response) -> Dict[str, Any]:
     return json.loads(data_str)
 
 
-def http_get(url: str, headers: Dict[str, str]) -> Response:
+def http_get(
+    url: str,
+    headers: Dict[str, str],
+    debug: bool = False,
+    use_cache: bool = True,
+    timeout: int = 20,
+) -> Response:
     """
     Performs an HTTP GET request.
 
     Args:
         url (str): The URL of the request.
         headers (Dict[str, str]): The headers of the request.
+        debug (bool): Whether to enable debug mode or not. Default is False.
+        use_cache (bool): Whether to use cache or not. Default is True.
+        timeout (int): The timeout value in seconds. Default is 20.
 
     Returns:
         Response: The HTTP response.
     """
-    response = requests.get(
-        url, headers=headers, timeout=20
-    )  # Adding timeout argument with a value of 10 seconds.
+    if debug:
+        print(f"Making GET request to {url}")
+        start_time = time.time()
+
+    if use_cache:
+        response = session.get(url, headers=headers, timeout=timeout)
+    else:
+        response = requests.get(url, headers=headers, timeout=timeout)
+
+    if debug:
+        end_time = time.time()
+        print(f"GET request to {url} took {end_time - start_time} seconds.")
+
     return response
 
 
 def http_post(
-    url: str, headers: Dict[str, str], data: Dict[str, Any] = None
+    url: str,
+    headers: Dict[str, str],
+    data: Dict[str, Any] = None,
+    debug: bool = False,
+    use_cache: bool = True,
+    timeout: int = 20,
 ) -> Response:
     """
     Performs an HTTP POST request.
@@ -56,31 +86,60 @@ def http_post(
         url (str): The URL of the request.
         headers (Dict[str, str]): The headers of the request.
         data (Dict[str, Any]): The data of the request.
+        debug (bool): Whether to enable debug mode or not. Default is False.
+        use_cache (bool): Whether to use cache or not. Default is True.
+        timeout (int): The timeout value in seconds. Default is 20.
 
     Returns:
         Response: The HTTP response.
     """
-    response = requests.post(url, headers=headers, data=data, timeout=20)
+    if debug:
+        print(f"Making POST request to {url}")
+        start_time = time.time()
+
+    if use_cache:
+        response = session.post(url, headers=headers, data=data, timeout=timeout)
+    else:
+        response = requests.post(url, headers=headers, data=data, timeout=timeout)
+
+    if debug:
+        end_time = time.time()
+        print(f"POST request to {url} took {end_time - start_time} seconds.")
+
     return response
 
 
-def http_get_json(url: str, headers: Dict[str, str]) -> Dict[str, Any]:
+def http_get_json(
+    url: str,
+    headers: Dict[str, str],
+    debug: bool = False,
+    use_cache: bool = True,
+    timeout: int = 20,
+) -> Dict[str, Any]:
     """
     Performs an HTTP GET request and returns the result in JSON format.
 
     Args:
         url (str): The URL of the request.
         headers (Dict[str, str]): The headers of the request.
+        debug (bool): Whether to enable debug mode or not. Default is False.
+        use_cache (bool): Whether to use cache or not. Default is True.
+        timeout (int): The timeout value in seconds. Default is 20.
 
     Returns:
         Dict[str, Any]: The result of the request in JSON format.
     """
-    response = http_get(url, headers)
+    response = http_get(url, headers, debug=debug, use_cache=use_cache, timeout=timeout)
     return to_json_from_response(response)
 
 
 def http_post_json(
-    url: str, headers: Dict[str, str], data: Dict[str, Any] = None
+    url: str,
+    headers: Dict[str, str],
+    data: Dict[str, Any] = None,
+    debug: bool = False,
+    use_cache: bool = True,
+    timeout: int = 20,
 ) -> Dict[str, Any]:
     """
     Performs an HTTP POST request and returns the result in JSON format.
@@ -89,12 +148,17 @@ def http_post_json(
         url (str): The URL of the request.
         headers (Dict[str, str]): The headers of the request.
         data (Dict[str, Any]): The data of the request.
+        debug (bool): Whether to enable debug mode or not. Default is False.
+        use_cache (bool): Whether to use cache or not. Default is True.
+        timeout (int): The timeout value in seconds. Default is 20.
 
     Returns:
         Dict[str, Any]: The result of the request in JSON format.
     """
     filtered_data = {k: v for k, v in data.items() if v is not None} if data else None
-    response = http_post(url, headers, filtered_data)
+    response = http_post(
+        url, headers, filtered_data, debug=debug, use_cache=use_cache, timeout=timeout
+    )
     return to_json_from_response(response)
 
 
@@ -128,19 +192,3 @@ def url_with_params(url: str, params: Dict[str, Any]) -> str:
         return f"{url}?{encoded_params}"
     else:
         return url
-
-
-def catch_result(callback):
-    """
-    Executes a function and catches any raised exception.
-
-    Args:
-        callback: The function to execute.
-
-    Returns:
-        Any: The result of the function or None in case of exception.
-    """
-    try:
-        return callback()
-    except Exception:
-        return None

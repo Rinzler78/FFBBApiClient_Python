@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from .competition_type import CompetitionType
+from .competition_type import CompetitionType, extract_competition_type
 from .converters import from_none, from_str, from_union
 
 
@@ -16,7 +16,9 @@ class Group:
         assert isinstance(obj, dict)
         id = from_union([from_str, from_none], obj.get("id"))
         name = from_union([from_str, from_none], obj.get("name"))
-        competition_type = from_union([from_str, from_none], obj.get("type"))
+        competition_type = from_union(
+            [extract_competition_type, from_none], obj.get("type")
+        )
         return Group(id, name, competition_type)
 
     def to_dict(self) -> dict:
