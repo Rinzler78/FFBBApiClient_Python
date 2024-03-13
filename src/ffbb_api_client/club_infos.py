@@ -51,6 +51,86 @@ class ClubInfos:
     organization_name: Optional[str] = None
     affiliation_date: Optional[datetime] = None
 
+    def __eq__(self, other):
+        if isinstance(other, ClubInfos):
+            return (
+                self.professional_club_name == other.professional_club_name
+                and self.professional_club_address == other.professional_club_address
+                and self.professional_club_town == other.professional_club_town
+                and self.professional_club_court == other.professional_club_court
+                and self.obe_participation == other.obe_participation
+                and self.id == other.id
+                and self.parent_organization_id == other.parent_organization_id
+                and self.code == other.code
+                and self.name == other.name
+                and self.type == other.type
+                and self.adress == other.adress
+                and self.phone == other.phone
+                and self.email == other.email
+                and self.municipality == other.municipality
+                and self.association_type == other.association_type
+                and self.court == other.court
+                and self.url_site_web == other.url_site_web
+                and self.membres == other.membres
+                # and self.child_organizations == other.child_organizations
+                and self.practice_offers == other.practice_offers
+                # and self.certifications == other.certifications
+                and self.geo_location == other.geo_location
+                and self.history == other.history
+                and self.organization_id == other.organization_id
+                and self.municipality_id == other.municipality_id
+                and self.organization_code == other.organization_code
+                and self.organization_name == other.organization_name
+                and self.affiliation_date == other.affiliation_date
+            )
+        return False
+
+    def __hash__(self):
+        return hash(
+            (
+                self.professional_club_name,
+                self.professional_club_address,
+                self.professional_club_town,
+                self.professional_club_court,
+                self.obe_participation,
+                self.id,
+                self.parent_organization_id,
+                self.code,
+                self.name,
+                self.type,
+                self.adress,
+                self.phone,
+                self.email,
+                self.municipality,
+                self.association_type,
+                self.court,
+                self.url_site_web,
+                # tuple(self.membres) if self.membres is not None else None,
+                # (
+                #     tuple(self.child_organizations)
+                #     if self.child_organizations is not None
+                #     else None
+                # ),
+                (
+                    tuple(self.practice_offers)
+                    if self.practice_offers is not None
+                    else None
+                ),
+                # (
+                #     tuple(self.certifications)
+                #     if self.certifications is not None
+                #     else None
+                # ),
+                self.geo_location,
+                tuple(self.history) if self.history is not None else None,
+                self.organization_id,
+                self.municipality_id,
+                self.organization_code,
+                self.organization_name,
+                self.affiliation_date,
+            )
+        )
+
     @staticmethod
     def from_dict(obj: Any) -> "ClubInfos":
         assert isinstance(obj, dict)
@@ -234,14 +314,6 @@ class ClubInfos:
                 [lambda x: x.isoformat(), from_none], self.affiliation_date
             )
         return result
-
-    def __eq__(self, other):
-        if isinstance(other, ClubInfos):
-            return self.__dict__ == other.__dict__
-        return False
-
-    def __hash__(self):
-        return hash(tuple(sorted(self.__dict__.items())))
 
 
 def club_infos_from_dict(s: Any) -> List[ClubInfos]:

@@ -7,10 +7,6 @@ import requests
 from requests import Response
 from requests_cache import CachedSession
 
-session = CachedSession(
-    "http_cache", backend="sqlite", expire_after=1800, allowable_methods=("GET", "POST")
-)
-
 
 def to_json_from_response(response: Response) -> Dict[str, Any]:
     """
@@ -39,7 +35,7 @@ def http_get(
     url: str,
     headers: Dict[str, str],
     debug: bool = False,
-    use_cache: bool = True,
+    cached_session: CachedSession = None,
     timeout: int = 20,
 ) -> Response:
     """
@@ -59,8 +55,8 @@ def http_get(
         print(f"Making GET request to {url}")
         start_time = time.time()
 
-    if use_cache:
-        response = session.get(url, headers=headers, timeout=timeout)
+    if cached_session:
+        response = cached_session.get(url, headers=headers, timeout=timeout)
     else:
         response = requests.get(url, headers=headers, timeout=timeout)
 
@@ -76,7 +72,7 @@ def http_post(
     headers: Dict[str, str],
     data: Dict[str, Any] = None,
     debug: bool = False,
-    use_cache: bool = True,
+    cached_session: CachedSession = None,
     timeout: int = 20,
 ) -> Response:
     """
@@ -97,8 +93,8 @@ def http_post(
         print(f"Making POST request to {url}")
         start_time = time.time()
 
-    if use_cache:
-        response = session.post(url, headers=headers, data=data, timeout=timeout)
+    if cached_session:
+        response = cached_session.post(url, headers=headers, data=data, timeout=timeout)
     else:
         response = requests.post(url, headers=headers, data=data, timeout=timeout)
 
@@ -113,7 +109,7 @@ def http_get_json(
     url: str,
     headers: Dict[str, str],
     debug: bool = False,
-    use_cache: bool = True,
+    cached_session: CachedSession = None,
     timeout: int = 20,
 ) -> Dict[str, Any]:
     """
@@ -129,7 +125,9 @@ def http_get_json(
     Returns:
         Dict[str, Any]: The result of the request in JSON format.
     """
-    response = http_get(url, headers, debug=debug, use_cache=use_cache, timeout=timeout)
+    response = http_get(
+        url, headers, debug=debug, cached_session=cached_session, timeout=timeout
+    )
     return to_json_from_response(response)
 
 
@@ -138,7 +136,7 @@ def http_post_json(
     headers: Dict[str, str],
     data: Dict[str, Any] = None,
     debug: bool = False,
-    use_cache: bool = True,
+    cached_session: CachedSession = None,
     timeout: int = 20,
 ) -> Dict[str, Any]:
     """
@@ -157,7 +155,12 @@ def http_post_json(
     """
     filtered_data = {k: v for k, v in data.items() if v is not None} if data else None
     response = http_post(
-        url, headers, filtered_data, debug=debug, use_cache=use_cache, timeout=timeout
+        url,
+        headers,
+        filtered_data,
+        debug=debug,
+        cached_session=cached_session,
+        timeout=timeout,
     )
     return to_json_from_response(response)
 

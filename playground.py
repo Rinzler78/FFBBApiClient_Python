@@ -2,11 +2,14 @@ import os
 import string
 from typing import List
 
+from requests_cache import CachedSession
+
 from ffbb_api_client import (
     AgendaAndResults,
     ClubDetails,
     ClubInfos,
     FFBBApiClient,
+    Municipality,
     Team,
 )
 from tests.test_ffbb_api_client import Test_GetClubDetails
@@ -15,10 +18,100 @@ from tests.test_ffbb_api_client import Test_GetClubDetails
 basic_auth_user = os.getenv("FFBB_BASIC_AUTH_USER")
 basic_auth_pass = os.getenv("FFBB_BASIC_AUTH_PASS")
 
+# Expire cache after 10 day
+expire_after = 864000
+
+cached_session = CachedSession(
+    "playground.http_cache",
+    backend="sqlite",
+    expire_after=expire_after,
+    allowable_methods=("GET", "POST"),
+)
+
 # Create an instance of the api client
 api_client: FFBBApiClient = FFBBApiClient(
-    basic_auth_user=basic_auth_user, basic_auth_pass=basic_auth_pass
+    basic_auth_user=basic_auth_user,
+    basic_auth_pass=basic_auth_pass,
+    debug=True,
+    cached_session=cached_session,
 )
+
+search_patterns = list(string.ascii_lowercase)
+
+municipalities = []
+
+for pattern in search_patterns:
+    result: List[Municipality] = None
+    print(f"Searching municicpalities for {pattern}")
+    try:
+        result = api_client.search_municipalities(pattern)
+    except Exception as e:
+        print(f"An error occurred while searching municipalities: {str(e)}")
+
+    if not result:
+        continue
+
+    municipalities.extend(result)
+
+municipalities = list(set(municipalities))
+municipalities.sort(key=lambda x: x.label)
+
+clubs_infos = []
+
+for search_pattern in search_patterns:
+    result: ClubInfos = None
+    print(f"Searching club for {search_pattern}")
+    try:
+        result = api_client.search_clubs(org_name=search_pattern)
+    except Exception as e:
+        print(f"An error occurred while searching clubs: {str(e)}")
+
+    if not result:
+        continue
+
+    clubs_infos.extend(result)
+
+clubs_infos = list(set(clubs_infos))
+clubs_infos.sort(key=lambda x: x.name)
+
+clubs_details = []
+
+for club_info in clubs_infos:
+    result: ClubDetails = None
+    print(f"Searching club details for {club_info.name}")
+    try:
+        result = api_client.get_club_details(club_info.id)
+    except Exception as e:
+        print(f"An error occurred while retrieving club details: {str(e)}")
+
+    if not result:
+        continue
+
+    clubs_details.append(result)
+
+clubs_details = list(set(clubs_details))
+
+teams = list({team for result in clubs_details for team in result.teams})
+for team in teams:
+    team_results: AgendaAndResults = None
+    print(f"Retrieve results for team {team.name}")
+    try:
+        team_results = api_client.get_results(
+            team_id=team.id,
+            sub_competition=team.sub_competition,
+            team_group=team.group,
+        )
+    except Exception as e:
+        print(
+            f"An error occurred while retrieving results for team {team.name}: {str(e)}"
+        )
+        continue
+
+    if not team_results:
+        continue
+
+    print(f"Results for team {team.name} retrieved")
+
 
 test = Test_GetClubDetails()
 test.setUp()
@@ -248,9 +341,9 @@ def get_datas(name: str):
 alphabet = list(string.ascii_lowercase)
 for org_name in alphabet:
     print(f"Searching club for {org_name}")
-    result = api_client.search_clubs(org_name=org_name)
+    municipalities = api_client.search_clubs(org_name=org_name)
 
-    if not result:
+    if not municipalities:
         print()
 
 print()

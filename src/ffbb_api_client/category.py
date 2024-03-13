@@ -13,12 +13,15 @@ class Category(Enum):
     U11 = "U11"
     U9 = "U9"
     U8 = "U8"
+    U7 = "U7"
 
 
 def extract_category(input_str: str) -> Category:
-    input_str = input_str.lower()
-    for category in Category:
-        lower_value = category.value.lower()
-        if lower_value == input_str or lower_value in input_str:
-            return category
+    input_str = input_str.lower().strip()
+
+    if input_str:
+        for category in Category:
+            lower_value = category.value.lower()
+            if lower_value == input_str or lower_value in input_str:
+                return category
     return None
