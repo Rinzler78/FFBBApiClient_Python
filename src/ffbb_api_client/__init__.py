@@ -158,6 +158,7 @@ class FFBBApiClient:
         api_url: str = "https://mobiles.ffbb.com/php/v1_0_5/",
         ws_url: str = "https://mobiles.ffbb.com/webservices/v1/",
         debug: bool = False,
+        cached_session: CachedSession = default_cached_session,
     ):
         """
         Initializes the FFBBApiClient.
@@ -168,6 +169,7 @@ class FFBBApiClient:
             api_url (str, optional): API url.
             ws_url (str, optional): Webservices URL.
             debug (bool, optional): Enable debug mode.
+            cached_session (bool, optional): Enable caching.
         """
         self.api_url = api_url
         self.ws_url = ws_url
@@ -180,6 +182,7 @@ class FFBBApiClient:
             ).decode()
         }
         self.debug = debug
+        self.cached_session = cached_session
 
     def get_results(
         self,
@@ -219,7 +222,7 @@ class FFBBApiClient:
                     self.headers,
                     params,
                     debug=self.debug,
-                    cached_session=cached_session,
+                    cached_session=cached_session or self.cached_session,
                 )
             )
         )
@@ -272,7 +275,7 @@ class FFBBApiClient:
                     self.headers,
                     params,
                     debug=self.debug,
-                    cached_session=cached_session,
+                    cached_session=cached_session or self.cached_session,
                 )
             )
         )
@@ -306,7 +309,7 @@ class FFBBApiClient:
                     self.headers,
                     params,
                     debug=self.debug,
-                    cached_session=cached_session,
+                    cached_session=cached_session or self.cached_session,
                 )
             )
         )
@@ -340,7 +343,7 @@ class FFBBApiClient:
                     self.headers,
                     params,
                     debug=self.debug,
-                    cached_session=cached_session,
+                    cached_session=cached_session or self.cached_session,
                 )
             )
         )
@@ -386,7 +389,7 @@ class FFBBApiClient:
                     self.headers,
                     params,
                     debug=self.debug,
-                    cached_session=cached_session,
+                    cached_session=cached_session or self.cached_session,
                 )
             )
         )
@@ -417,7 +420,7 @@ class FFBBApiClient:
                     self.headers,
                     params,
                     debug=self.debug,
-                    cached_session=cached_session,
+                    cached_session=cached_session or self.cached_session,
                 )
             )
         )
@@ -434,7 +437,11 @@ class FFBBApiClient:
         url = f"{self.api_url}news.php"
         return catch_result(
             lambda: news_from_dict(
-                http_post_json(url, self.headers, cached_session=cached_session)
+                http_post_json(
+                    url,
+                    self.headers,
+                    cached_session=cached_session or self.cached_session,
+                )
             )
         )
 
@@ -462,7 +469,7 @@ class FFBBApiClient:
                     self.headers,
                     params,
                     debug=self.debug,
-                    cached_session=cached_session,
+                    cached_session=cached_session or self.cached_session,
                 )
             )
         )
@@ -491,7 +498,7 @@ class FFBBApiClient:
                     self.headers,
                     params,
                     debug=self.debug,
-                    cached_session=cached_session,
+                    cached_session=cached_session or self.cached_session,
                 )
             )
         )
@@ -520,7 +527,7 @@ class FFBBApiClient:
                     self.headers,
                     params,
                     debug=self.debug,
-                    cached_session=cached_session,
+                    cached_session=cached_session or self.cached_session,
                 )
             )
         )
@@ -546,7 +553,7 @@ class FFBBApiClient:
                     url,
                     self.headers,
                     debug=self.debug,
-                    cached_session=cached_session,
+                    cached_session=cached_session or self.cached_session,
                 )
             )
         )
@@ -577,7 +584,7 @@ class FFBBApiClient:
                     url,
                     self.headers,
                     debug=self.debug,
-                    cached_session=cached_session,
+                    cached_session=cached_session or self.cached_session,
                 )
             )
         )
