@@ -191,7 +191,7 @@ class FFBBApiClient:
         team_group: str = None,
         result_type: str = None,
         day: str = None,
-        cached_session: CachedSession = default_cached_session,
+        cached_session: CachedSession = None,
     ) -> AgendaAndResults:
         """
         Get the agenda and results.
@@ -228,7 +228,7 @@ class FFBBApiClient:
         )
 
     def get_club_details(
-        self, club_id: int, cached_session: CachedSession = default_cached_session
+        self, club_id: int, cached_session: CachedSession = None
     ) -> ClubDetails:
         """
         Get the details of a club.
@@ -253,7 +253,7 @@ class FFBBApiClient:
         return result
 
     def _get_club_details_with_param(
-        self, club_id, cached_session: CachedSession = default_cached_session
+        self, club_id, cached_session: CachedSession = None
     ) -> ClubDetails:
         """
         Get the details of a club.
@@ -284,7 +284,7 @@ class FFBBApiClient:
         self,
         area_id: str,
         competition_type: CompetitionType = None,
-        cached_session: CachedSession = default_cached_session,
+        cached_session: CachedSession = None,
     ) -> List[Competition]:
         """
         Get the competitions in an area.
@@ -302,7 +302,7 @@ class FFBBApiClient:
             "type": competition_type.value if competition_type else None,
         }
         url = f"{self.api_url}areaCompetitions.php"
-        return catch_result(
+        result = catch_result(
             lambda: competition_from_dict(
                 http_post_json(
                     url,
@@ -313,12 +313,16 @@ class FFBBApiClient:
                 )
             )
         )
+        if result:
+            return list(set(result))
+        else:
+            return None
 
     def get_league_competitions(
         self,
         league_id: str,
         competition_type: CompetitionType = None,
-        cached_session: CachedSession = default_cached_session,
+        cached_session: CachedSession = None,
     ) -> List[Competition]:
         """
         Get the competitions in a league.
@@ -336,7 +340,7 @@ class FFBBApiClient:
             "type": competition_type.value if competition_type else None,
         }
         url = f"{self.api_url}leagueCompetitions.php"
-        return catch_result(
+        result = catch_result(
             lambda: competition_from_dict(
                 http_post_json(
                     url,
@@ -347,6 +351,10 @@ class FFBBApiClient:
                 )
             )
         )
+        if result:
+            return list(set(result))
+        else:
+            return None
 
     def get_match_detail(
         self,
@@ -356,7 +364,7 @@ class FFBBApiClient:
         group: str = None,
         result_type: str = None,
         day: str = None,
-        cached_session: CachedSession = default_cached_session,
+        cached_session: CachedSession = None,
     ) -> MatchDetail:
         """
         Get the details of a match.
@@ -398,7 +406,7 @@ class FFBBApiClient:
         self,
         id_cmne: str = None,
         org_name: str = None,
-        cached_session: CachedSession = default_cached_session,
+        cached_session: CachedSession = None,
     ) -> Videos:
         """
         Get the videos.
@@ -425,9 +433,7 @@ class FFBBApiClient:
             )
         )
 
-    def get_news(
-        self, cached_session: CachedSession = default_cached_session
-    ) -> List[News]:
+    def get_news(self, cached_session: CachedSession = None) -> List[News]:
         """
         Get the news.
 
@@ -435,7 +441,7 @@ class FFBBApiClient:
             List[News]: The news.
         """
         url = f"{self.api_url}news.php"
-        return catch_result(
+        result = catch_result(
             lambda: news_from_dict(
                 http_post_json(
                     url,
@@ -444,11 +450,15 @@ class FFBBApiClient:
                 )
             )
         )
+        if result:
+            return list(set(result))
+        else:
+            return None
 
     def get_areas(
         self,
         competition_type: CompetitionType = None,
-        cached_session: CachedSession = default_cached_session,
+        cached_session: CachedSession = None,
     ) -> List[Area]:
         """
         Get the areas.
@@ -462,7 +472,7 @@ class FFBBApiClient:
         """
         params = {"type": competition_type.value if competition_type else None}
         url = f"{self.api_url}areas.php"
-        return catch_result(
+        result = catch_result(
             lambda: area_from_dict(
                 http_post_json(
                     url,
@@ -473,11 +483,15 @@ class FFBBApiClient:
                 )
             )
         )
+        if result:
+            return list(set(result))
+        else:
+            return None
 
     def get_leagues(
         self,
         competition_type: CompetitionType = None,
-        cached_session: CachedSession = default_cached_session,
+        cached_session: CachedSession = None,
     ) -> List[League]:
         """
         Get the leagues.
@@ -491,7 +505,7 @@ class FFBBApiClient:
         """
         params = {"type": competition_type.value if competition_type else None}
         url = f"{self.api_url}leagues.php"
-        return catch_result(
+        result = catch_result(
             lambda: league_from_dict(
                 http_post_json(
                     url,
@@ -502,11 +516,15 @@ class FFBBApiClient:
                 )
             )
         )
+        if result:
+            return list(set(result))
+        else:
+            return None
 
     def get_top_championships(
         self,
         championship_type: str = None,
-        cached_session: CachedSession = default_cached_session,
+        cached_session: CachedSession = None,
     ) -> List[Championship]:
         """
         Get the top championships.
@@ -520,7 +538,7 @@ class FFBBApiClient:
         """
         params = {"type": championship_type}
         url = f"{self.api_url}topChampionships.php"
-        return catch_result(
+        result = catch_result(
             lambda: championship_from_dict(
                 http_post_json(
                     url,
@@ -531,9 +549,13 @@ class FFBBApiClient:
                 )
             )
         )
+        if result:
+            return list(set(result))
+        else:
+            return None
 
     def search_municipalities(
-        self, name: str, cached_session: CachedSession = default_cached_session
+        self, name: str, cached_session: CachedSession = None
     ) -> List[Municipality]:
         """
         Search for a municipality by name.
@@ -547,7 +569,7 @@ class FFBBApiClient:
         """
         params = {"name": name}
         url = url_with_params(f"{self.ws_url}communes.php", params)
-        return catch_result(
+        result = catch_result(
             lambda: commune_from_dict(
                 http_get_json(
                     url,
@@ -557,12 +579,16 @@ class FFBBApiClient:
                 )
             )
         )
+        if result:
+            return list(set(result))
+        else:
+            return None
 
     def search_clubs(
         self,
         id_cmne: int = None,
         org_name: str = None,
-        cached_session: CachedSession = default_cached_session,
+        cached_session: CachedSession = None,
     ) -> List[ClubInfos]:
         """
         Search for a club.
@@ -578,7 +604,7 @@ class FFBBApiClient:
         params = {"idCmne": id_cmne, "nomOrg": org_name}
 
         url = url_with_params(f"{self.ws_url}search_club.php", params)
-        return catch_result(
+        result = catch_result(
             lambda: club_infos_from_dict(
                 http_get_json(
                     url,
@@ -588,3 +614,7 @@ class FFBBApiClient:
                 )
             )
         )
+        if result:
+            return list(set(result))
+        else:
+            return None
