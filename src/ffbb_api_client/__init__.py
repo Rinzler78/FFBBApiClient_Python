@@ -43,9 +43,21 @@ from .thumbnails import Thumbnails  # noqa
 from .type_association import TypeAssociation  # noqa
 from .videos import Videos, videos_from_dict  # noqa
 
+
 # Default cached session sqlite backend with 30 minutes expiration
+def create_cache_key(request, **kwargs):
+    url = request.url
+    method = request.method
+    data_hash = request.body if request.body else "empty"
+    return f"{method} {url} {data_hash}"
+
+
 default_cached_session = CachedSession(
-    "http_cache", backend="sqlite", expire_after=1800, allowable_methods=("GET", "POST")
+    "http_cache",
+    backend="sqlite",
+    expire_after=1800,
+    allowable_methods=("GET", "POST"),
+    key_fn=create_cache_key,
 )
 
 if sys.version_info[:2] >= (3, 8):
@@ -536,7 +548,7 @@ class FFBBApiClient:
         Returns:
             List[Championship]: The top championships.
         """
-        params = {"type": championship_type}
+        params = {"type": championship_type.value if championship_type else None}
         url = f"{self.api_url}topChampionships.php"
         result = catch_result(
             lambda: championship_from_dict(
@@ -586,7 +598,7 @@ class FFBBApiClient:
 
     def search_clubs(
         self,
-        id_cmne: int = None,
+        id_municipality: int = None,
         org_name: str = None,
         cached_session: CachedSession = None,
     ) -> List[ClubInfos]:
@@ -594,14 +606,14 @@ class FFBBApiClient:
         Search for a club.
 
         Args:
-            id_cmne (int, optional): The ID of the commune.
+            id_municipality (int, optional): The ID of the municipality.
             org_name (str, optional): The name of the organization.
             cached_session (CachedSession, optional): Enable caching.
 
         Returns:
             List[ClubInfos]: The club information.
         """
-        params = {"idCmne": id_cmne, "nomOrg": org_name}
+        params = {"idCmne": id_municipality, "nomOrg": org_name}
 
         url = url_with_params(f"{self.ws_url}search_club.php", params)
         result = catch_result(
