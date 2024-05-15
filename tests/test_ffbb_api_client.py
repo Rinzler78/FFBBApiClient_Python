@@ -158,7 +158,7 @@ class TestFFBBApiClient(unittest.TestCase):
         return self._known_results
 
 
-class Test_SearchMunicipalitys(TestFFBBApiClient):
+class Test_SearchMunicipalities(TestFFBBApiClient):
     def test_with_known_name(self):
         result = self._get_know_municipality()
         self.assertIsNotNone(result)
@@ -172,6 +172,30 @@ class Test_SearchMunicipalitys(TestFFBBApiClient):
     def test_with_empty_name(self):
         query = ""
         result = self.api_client.search_municipalities(query)
+        self.assertIsNone(result)
+
+
+class Test_SearchMultipleMunicipalities(TestFFBBApiClient):
+    def test_with_known_name(self):
+        result = self.api_client.search_multiple_municipalities(["Senas", "Paris"])
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, List)
+        self.assertGreater(len(result), 0)
+
+    def test_with_most_used_letters(self):
+        result = self.api_client.search_multiple_municipalities(
+            ["a", "e", "i", "o", "u", "y", "b", "l", "m", "s"]
+        )
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, List)
+        self.assertGreater(len(result), 0)
+
+    def test_with_unknown_name(self):
+        result = self.api_client.search_multiple_municipalities(["Blop", "Blap"])
+        self.assertIsNone(result)
+
+    def test_with_empty_name(self):
+        result = self.api_client.search_multiple_municipalities(["", ""])
         self.assertIsNone(result)
 
 
@@ -192,7 +216,7 @@ class Test_GetClubDetails(TestFFBBApiClient):
         self.assertIsNone(result)
 
 
-class Test_SearchClub(TestFFBBApiClient):
+class Test_SearchClubs(TestFFBBApiClient):
     def test_with_known_id_municipality(self):
         result = self._get_know_club_infos()
         self.assertIsNotNone(result)
@@ -228,6 +252,40 @@ class Test_SearchClub(TestFFBBApiClient):
         self.assertIsNotNone(result)
         self.assertIsInstance(result, list)
         self.assertGreater(len(result), 0)
+
+
+class Test_SearchMultipleClubs(TestFFBBApiClient):
+    def test_with_known_name(self):
+        result = self.api_client.search_multiple_clubs(["Senas", "Paris"])
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, List)
+        self.assertGreater(len(result), 0)
+
+    def test_with_most_used_letters(self):
+        result = self.api_client.search_multiple_clubs(
+            [
+                "basket",
+                "club",
+                "ball",
+                "basketball",
+                "sport",
+                "as",
+                "entente",
+                "ctc",
+                "bc",
+            ]
+        )
+        self.assertIsNotNone(result)
+        self.assertIsInstance(result, List)
+        self.assertGreater(len(result), 0)
+
+    def test_with_unknown_name(self):
+        result = self.api_client.search_multiple_clubs(["Blop", "Blap"])
+        self.assertIsNone(result)
+
+    def test_with_empty_name(self):
+        result = self.api_client.search_multiple_clubs(["", ""])
+        self.assertIsNone(result)
 
 
 class Test_GetAreas(TestFFBBApiClient):
@@ -389,6 +447,23 @@ class Test_GetResults(TestFFBBApiClient):
     def test_with_known_team_id_sub_competition_group(self):
         result = self._get_known_results()
         self.assertIsNotNone(result)
+
+    def test_for_all_team_results(self):
+        know_result = self._get_known_results()
+        day_count = int(know_result.days[-1].name)
+        results = []
+
+        for i in range(1, day_count + 1):
+            result = self.api_client.get_results(
+                team_id=self._get_known_team().id,
+                sub_competition=self._get_known_team().sub_competition,
+                team_group=self._get_known_team().group,
+                day=i,
+            )
+            self.assertIsNotNone(result)
+            results.append(result)
+
+        self.assertEqual(len(results), day_count)
 
 
 class Test_GetMatchDetail(TestFFBBApiClient):

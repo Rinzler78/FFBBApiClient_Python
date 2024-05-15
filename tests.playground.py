@@ -3,8 +3,12 @@ import os
 from src.ffbb_api_client import FFBBApiClient
 from tests.test_ffbb_api_client import (
     Test_GetClubDetails,
+    Test_GetResults,
     Test_GetTopChampionships,
     Test_GetVideos,
+    Test_SearchMultipleClubs,
+    Test_SearchMultipleMunicipalities,
+    Test_SearchMunicipalities,
 )
 
 # Retrieve api user / pass
@@ -36,3 +40,34 @@ test.test_with_known_club_id()
 test.test_with_unknown_club_id()
 test.test_with_with_known_org_name()
 test.test_with_with_unknown_org_name()
+
+test = Test_SearchMunicipalities()
+test.setUp()
+test.test_with_known_name()
+test.test_with_unknown_name()
+test.test_with_empty_name()
+
+test = Test_SearchMultipleMunicipalities()
+test.setUp()
+test.test_with_known_name()
+test.test_with_unknown_name()
+test.test_with_empty_name()
+test.test_with_most_used_letters()
+
+test = Test_SearchMultipleClubs()
+test.setUp()
+test.test_with_known_name()
+test.test_with_unknown_name()
+test.test_with_empty_name()
+test.test_with_most_used_letters()
+
+test = Test_GetResults()
+test.setUp()
+test.test_without_parameters()
+test.test_with_known_team_id()
+test.test_with_known_0_team_id()
+test.test_with_known_sub_competition()
+test.test_with_known_group()
+test.test_with_known_team_id_sub_competition()
+test.test_with_known_team_id_sub_competition_group()
+test.test_for_all_team_results()
