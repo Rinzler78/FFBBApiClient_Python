@@ -1,1 +1,1 @@
-(tox -e clean,build,lint || tox -e clean,build,lint) && (tox || tox)
+tox -e clean && tox -e build && (tox -e lint || tox -e lint) && (tox || tox)
