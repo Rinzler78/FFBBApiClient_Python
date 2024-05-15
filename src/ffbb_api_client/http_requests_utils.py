@@ -19,6 +19,12 @@ def to_json_from_response(response: Response) -> Dict[str, Any]:
         Dict[str, Any]: The JSON dictionary extracted from the response.
     """
     data_str = response.text.strip()
+
+    try:
+        return json.loads(data_str)
+    except json.JSONDecodeError:
+        pass
+
     if data_str.endswith(","):
         data_str = data_str[:-1]
 
@@ -90,7 +96,8 @@ def http_post(
         Response: The HTTP response.
     """
     if debug:
-        print(f"Making POST request to {url}")
+        data_str = ", ".join([f"{k}:{v}" for k, v in data.items()]) if data else ""
+        print(f"Making POST request to {url} {data_str}")
         start_time = time.time()
 
     if cached_session:
@@ -100,7 +107,7 @@ def http_post(
 
     if debug:
         end_time = time.time()
-        print(f"POST request to {url} took {end_time - start_time} seconds.")
+        print(f"POST request to {url} {data_str} took {end_time - start_time} seconds.")
 
     return response
 
