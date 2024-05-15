@@ -162,6 +162,56 @@ def merge_club_details(
     return results
 
 
+def create_set_of_municipalities(
+    municipalities: List[Municipality],
+) -> List[Municipality]:
+    """
+    Create a set of municipalities from a list of Municipality.
+
+    Args:
+        municipalities (List[Municipality]): The list of Municipality.
+
+    Returns:
+        set: The set of municipalities.
+    """
+
+    if len(municipalities) == 1:
+        return municipalities
+
+    dict_municipalities = {}
+    for municipality in municipalities:
+        try:
+            dict_municipalities[municipality.id]
+        except KeyError:
+            dict_municipalities[municipality.id] = municipality
+    return list(dict_municipalities.values())
+
+
+def create_set_of_clubs(clubs: List[ClubInfos]) -> List[ClubInfos]:
+    """
+    Create a set of clubs from a list of ClubInfos.
+
+    Args:
+        clubs (List[ClubInfos]): The list of ClubInfos.
+
+    Returns:
+        set: The set of clubs.
+    """
+
+    if len(clubs) == 1:
+        return clubs
+
+    dict_clubs = {}
+    for club in clubs:
+        try:
+            dict_clubs[club.id]
+
+        except KeyError:
+            dict_clubs[club.id] = club
+
+    return list(dict_clubs.values())
+
+
 class FFBBApiClient:
     def __init__(
         self,
@@ -591,10 +641,38 @@ class FFBBApiClient:
                 )
             )
         )
-        if result:
-            return list(set(result))
-        else:
-            return None
+
+        return create_set_of_municipalities(result) if result else None
+
+    def search_multiple_municipalities(
+        self, patterns: List[str], cached_session: CachedSession = None
+    ) -> List[Municipality]:
+        """
+        Search for multiple municipalities based on their names.
+
+        Args:
+            patterns (List[str]): A list of patterns to search for.
+             cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            List[Municipality]: A list of Municipality.
+        """
+        municipalities = []
+        for pattern in patterns:
+            result: List[Municipality] = None
+            try:
+                result = self.search_municipalities(
+                    pattern, cached_session=cached_session
+                )
+            except Exception as e:
+                print(f"An error occurred while searching municipalities: {str(e)}")
+
+            if not result:
+                continue
+
+            municipalities.extend(result)
+
+        return create_set_of_municipalities(municipalities) if municipalities else None
 
     def search_clubs(
         self,
@@ -626,7 +704,35 @@ class FFBBApiClient:
                 )
             )
         )
-        if result:
-            return list(set(result))
-        else:
-            return None
+
+        return create_set_of_clubs(result) if result else None
+
+    def search_multiple_clubs(
+        self, org_names: List[str], cached_session: CachedSession = None
+    ) -> List[ClubInfos]:
+        """
+        Search for multiple clubs based on their organization names.
+
+        Args:
+            org_names (List[str]): A list of organization names to search for.
+             cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            List[ClubInfos]: A list of ClubInfos objects representing the found clubs.
+        """
+        clubs = []
+        for org_name in org_names:
+            result: ClubInfos = None
+            try:
+                result = self.search_clubs(
+                    org_name=org_name, cached_session=cached_session
+                )
+            except Exception as e:
+                print(f"An error occurred while searching clubs: {str(e)}")
+
+            if not result:
+                continue
+
+            clubs.extend(result)
+
+        return create_set_of_clubs(clubs) if clubs else None
