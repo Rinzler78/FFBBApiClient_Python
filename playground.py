@@ -2,9 +2,7 @@ import os
 import string
 from typing import List
 
-from requests_cache import CachedSession
-
-from ffbb_api_client import (
+from src.ffbb_api_client import (
     AgendaAndResults,
     ClubDetails,
     ClubInfos,
@@ -12,28 +10,16 @@ from ffbb_api_client import (
     Municipality,
     Team,
 )
-from tests.test_ffbb_api_client import Test_GetClubDetails
 
 # Retrieve api user / pass
 basic_auth_user = os.getenv("FFBB_BASIC_AUTH_USER")
 basic_auth_pass = os.getenv("FFBB_BASIC_AUTH_PASS")
-
-# Expire cache after 10 day
-expire_after = 864000
-
-cached_session = CachedSession(
-    "playground.http_cache",
-    backend="sqlite",
-    expire_after=expire_after,
-    allowable_methods=("GET", "POST"),
-)
 
 # Create an instance of the api client
 api_client: FFBBApiClient = FFBBApiClient(
     basic_auth_user=basic_auth_user,
     basic_auth_pass=basic_auth_pass,
     debug=True,
-    cached_session=cached_session,
 )
 
 search_patterns = list(string.ascii_lowercase)
@@ -111,12 +97,6 @@ for team in teams:
         continue
 
     print(f"Results for team {team.name} retrieved")
-
-
-test = Test_GetClubDetails()
-test.setUp()
-test.test_with_empty_id()
-test.test_with_known_id()
 
 
 def merge_results(
