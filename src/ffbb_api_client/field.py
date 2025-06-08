@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Any, Optional
 
-from .converters import from_none, from_str, from_union, is_type
+from .converters import from_none, from_str, from_union, is_type, from_int
 
 
 @dataclass
@@ -15,7 +15,7 @@ class Field:
     def from_dict(obj: Any) -> "Field":
         assert isinstance(obj, dict)
         group_id = from_union(
-            [from_none, lambda x: int(from_str(x))], obj.get("groupId")
+            [from_none, from_int, lambda x: int(from_str(x))], obj.get("groupId")
         )
         name = from_union([from_str, from_none], obj.get("name"))
         title = from_union([from_str, from_none], obj.get("title"))

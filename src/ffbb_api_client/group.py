@@ -28,7 +28,9 @@ class Group:
         if self.name is not None:
             result["name"] = from_union([from_str, from_none], self.name)
         if self.competition_type is not None:
-            result["type"] = from_union([from_str, from_none], self.competition_type)
+            result["type"] = from_union(
+                [from_str, from_none], self.competition_type.value
+            )
         return result
 
     def __eq__(self, other: Any) -> bool:
