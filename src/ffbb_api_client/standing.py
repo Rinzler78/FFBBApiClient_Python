@@ -41,7 +41,7 @@ class Standing:
         conceded = from_union([from_int, from_str, from_none], obj.get("conceded"))
         quotient = from_union([from_float, from_str, from_none], obj.get("quotient"))
         club = from_union([from_str, from_none], obj.get("club"))
-        initi = from_union([from_none, from_str], obj.get("initi"))
+        initi = from_union([from_none, from_int, from_str], obj.get("initi"))
         return Standing(
             pos,
             points,

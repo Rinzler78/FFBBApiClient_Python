@@ -140,9 +140,6 @@ class TestFFBBApiClient(unittest.TestCase):
                 team
                 for team in self._get_known_teams()
                 if team.category == Category.U13
-                and team.division_number == 4
-                and team.phase_number == 2
-                and team.pool_letter == "D"
             )
 
         return self._known_team

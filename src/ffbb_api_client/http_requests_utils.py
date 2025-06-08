@@ -20,11 +20,6 @@ def to_json_from_response(response: Response) -> Dict[str, Any]:
     """
     data_str = response.text.strip()
 
-    try:
-        return json.loads(data_str)
-    except json.JSONDecodeError:
-        pass
-
     if data_str.endswith(","):
         data_str = data_str[:-1]
 
