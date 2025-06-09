@@ -9,4 +9,5 @@ class TestNews(unittest.TestCase):
         self.assertEqual(n.id, 1)
         self.assertEqual(n.title, "Actu")
         self.assertEqual(n, News(id=1, title="Actu"))
+        self.assertEqual(n, News.from_dict(n.to_dict()))
         self.assertIsInstance(hash(n), int)

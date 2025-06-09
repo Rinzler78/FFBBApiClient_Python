@@ -9,4 +9,5 @@ class TestMunicipality(unittest.TestCase):
         self.assertEqual(m.id, 1)
         self.assertEqual(m.label, "Paris")
         self.assertEqual(m, Municipality(id=1, label="Paris"))
+        self.assertEqual(m, Municipality.from_dict(m.to_dict()))
         self.assertIsInstance(hash(m), int)

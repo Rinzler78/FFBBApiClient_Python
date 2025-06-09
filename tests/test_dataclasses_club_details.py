@@ -10,3 +10,4 @@ class TestClubDetails(unittest.TestCase):
         self.assertEqual(d.fields, [])
         self.assertEqual(d.teams, [])
         self.assertEqual(d, ClubDetails(infos=[], fields=[], teams=[]))
+        self.assertEqual(d, ClubDetails.from_dict(d.to_dict()))

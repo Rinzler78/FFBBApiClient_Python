@@ -16,4 +16,6 @@ class TestMatch(unittest.TestCase):
         self.assertEqual(m.visitorteam, "B")
         self.assertEqual(m.score, s)
         self.assertTrue(m.played)
+        d = m.to_dict()
+        self.assertEqual(d["hometeam"], "A")
         self.assertIsInstance(hash(m), int)
