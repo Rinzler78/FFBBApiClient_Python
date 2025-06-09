@@ -48,4 +48,4 @@ class Test_GetResults(TestFFBBApiClient):
             )
             self.assertIsNotNone(result)
             results.append(result)
-        self.assertEqual(len(results), day_count) 
+        self.assertEqual(len(results), day_count)

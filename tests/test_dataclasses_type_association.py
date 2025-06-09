@@ -1,4 +1,5 @@
 import unittest
+
 from ffbb_api_client import TypeAssociation
 
 
@@ -9,4 +10,4 @@ class TestTypeAssociation(unittest.TestCase):
         self.assertEqual(t.libelle, "lbl")
         self.assertEqual(t.code, "c")
         self.assertEqual(t, TypeAssociation.from_dict(t.to_dict()))
-        self.assertIsInstance(hash(t), int) 
+        self.assertIsInstance(hash(t), int)

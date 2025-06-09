@@ -1,4 +1,5 @@
 import unittest
+
 from ffbb_api_client import Day
 
 
@@ -9,4 +10,4 @@ class TestDay(unittest.TestCase):
         self.assertEqual(d.desc, 2)
         self.assertEqual(d, Day(1, 2))
         self.assertEqual(d, Day.from_dict(d.to_dict()))
-        self.assertIsInstance(hash(d), int) 
+        self.assertIsInstance(hash(d), int)

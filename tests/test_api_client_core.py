@@ -1,8 +1,9 @@
 import os
 import unittest
-from ffbb_api_client import FFBBApiClient, CompetitionType
+
 from dotenv import load_dotenv
 
+from ffbb_api_client import CompetitionType, FFBBApiClient
 
 load_dotenv()
 basic_auth_user = os.getenv("FFBB_BASIC_AUTH_USER")
@@ -53,7 +54,5 @@ class TestFFBBApiClientCore(unittest.TestCase):
         self.assertTrue(result is None or isinstance(result, list))
 
     def test_get_leagues_with_competition_type(self):
-        result = self.api_client.get_leagues(
-            competition_type=CompetitionType.CUP
-        )
-        self.assertTrue(result is None or isinstance(result, list)) 
+        result = self.api_client.get_leagues(competition_type=CompetitionType.CUP)
+        self.assertTrue(result is None or isinstance(result, list))

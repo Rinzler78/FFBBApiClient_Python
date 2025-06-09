@@ -1,5 +1,5 @@
-from tests.test_base import TestFFBBApiClient
 from ffbb_api_client import Videos
+from tests.test_base import TestFFBBApiClient
 
 
 class Test_GetVideos(TestFFBBApiClient):
@@ -30,4 +30,4 @@ class Test_GetVideos(TestFFBBApiClient):
     def test_with_with_unknown_org_name(self):
         result = self.api_client.get_videos(org_name="test")
         if result:
-            self.assertIsInstance(result, Videos) 
+            self.assertIsInstance(result, Videos)

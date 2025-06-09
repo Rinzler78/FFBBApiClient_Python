@@ -1,5 +1,6 @@
-from tests.test_base import TestFFBBApiClient
 from typing import List
+
+from tests.test_base import TestFFBBApiClient
 
 
 class Test_SearchMultipleMunicipalities(TestFFBBApiClient):
@@ -23,4 +24,4 @@ class Test_SearchMultipleMunicipalities(TestFFBBApiClient):
 
     def test_with_empty_name(self):
         result = self.api_client.search_multiple_municipalities(["", ""])
-        self.assertIsNone(result) 
+        self.assertIsNone(result)

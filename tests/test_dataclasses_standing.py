@@ -1,4 +1,5 @@
 import unittest
+
 from ffbb_api_client.standing import Standing
 
 
@@ -23,8 +24,17 @@ class TestStanding(unittest.TestCase):
         self.assertIsNone(s.initi)
         # Test avec valeurs explicites
         s2 = Standing(
-            draw=0, penalties=0, forfeited=0, defaults=0, arb=0, ent=0,
-            scored=0, conceded=0, quotient=0, club="club", initi=0
+            draw=0,
+            penalties=0,
+            forfeited=0,
+            defaults=0,
+            arb=0,
+            ent=0,
+            scored=0,
+            conceded=0,
+            quotient=0,
+            club="club",
+            initi=0,
         )
         self.assertEqual(s2.draw, 0)
         self.assertEqual(s2.penalties, 0)
@@ -38,4 +48,4 @@ class TestStanding(unittest.TestCase):
         self.assertEqual(s2.club, "club")
         self.assertEqual(s2.initi, 0)
         self.assertEqual(s, Standing.from_dict(s.to_dict()))
-        self.assertIsInstance(hash(s), int) 
+        self.assertIsInstance(hash(s), int)

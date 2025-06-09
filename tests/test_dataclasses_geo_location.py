@@ -1,4 +1,5 @@
 import unittest
+
 from ffbb_api_client import GeoLocation
 
 
@@ -10,7 +11,7 @@ class TestGeoLocation(unittest.TestCase):
             "longitude": 5.4474,
             "title": "Aix-en-Provence",
             "adress": "Cours Mirabeau",
-            "ville": "Aix-en-Provence"
+            "ville": "Aix-en-Provence",
         }
         geo = GeoLocation.from_dict(data)
         self.assertEqual(geo.postal_code, 13100)
@@ -30,4 +31,4 @@ class TestGeoLocation(unittest.TestCase):
         self.assertIsNone(geo.longitude)
         self.assertIsNone(geo.title)
         self.assertIsNone(geo.adress)
-        self.assertIsNone(geo.city) 
+        self.assertIsNone(geo.city)

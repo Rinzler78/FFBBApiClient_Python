@@ -1,4 +1,5 @@
 import unittest
+
 from ffbb_api_client.score import Score
 
 
@@ -10,4 +11,4 @@ class TestScore(unittest.TestCase):
         self.assertEqual(str(s), "42 - 12")
         self.assertTrue(s.played)
         self.assertEqual(s, Score(42, 12))
-        self.assertIsInstance(hash(s), int) 
+        self.assertIsInstance(hash(s), int)

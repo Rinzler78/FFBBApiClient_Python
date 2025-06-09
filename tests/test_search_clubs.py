@@ -1,5 +1,5 @@
-from tests.test_base import TestFFBBApiClient
 from ffbb_api_client import ClubInfos
+from tests.test_base import TestFFBBApiClient
 
 
 class Test_SearchClubs(TestFFBBApiClient):
@@ -36,4 +36,4 @@ class Test_SearchClubs(TestFFBBApiClient):
         result = self.api_client.search_clubs(org_name="B")
         self.assertIsNotNone(result)
         self.assertIsInstance(result, list)
-        self.assertGreater(len(result), 0) 
+        self.assertGreater(len(result), 0)

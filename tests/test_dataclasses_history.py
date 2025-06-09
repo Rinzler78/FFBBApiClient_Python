@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+
 from ffbb_api_client import History, Season, TypeAssociation
 
 
@@ -15,13 +16,10 @@ class TestHistory(unittest.TestCase):
                 "code": "S21",
                 "libelle": "Saison 2021-2022",
                 "debut": "2021-09-01T00:00:00Z",
-                "fin": "2022-06-30T00:00:00Z"
+                "fin": "2022-06-30T00:00:00Z",
             },
             "creation": "2019-01-01T00:00:00Z",
-            "typeAssociation": {
-                "id": 1,
-                "libelle": "Association principale"
-            }
+            "typeAssociation": {"id": 1, "libelle": "Association principale"},
         }
         history = History.from_dict(data)
         self.assertIsInstance(history.cessation, datetime)
@@ -44,4 +42,4 @@ class TestHistory(unittest.TestCase):
     def test_history_equality(self):
         h = History(cessation=None)
         self.assertIsNone(h.cessation)
-        self.assertEqual(h, History(cessation=None)) 
+        self.assertEqual(h, History(cessation=None))

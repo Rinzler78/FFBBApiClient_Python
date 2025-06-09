@@ -10,4 +10,4 @@ class Test_GetMatchDetail(TestFFBBApiClient):
 
     def test_with_unknown_match_id(self):
         result = self.api_client.get_match_detail(match_id=0)
-        self.assertIsNone(result) 
+        self.assertIsNone(result)

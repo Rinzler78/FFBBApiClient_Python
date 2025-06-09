@@ -1,4 +1,5 @@
 import unittest
+
 from ffbb_api_client.member import Member
 
 
@@ -18,7 +19,7 @@ class TestMember(unittest.TestCase):
             "idLicence": 123456,
             "codeFonction": "COACH",
             "libelleFonction": "Coach principal",
-            "accordDiffusionSiteWeb": True
+            "accordDiffusionSiteWeb": True,
         }
         member = Member.from_dict(data)
         self.assertEqual(member.id, 1)
@@ -59,4 +60,4 @@ class TestMember(unittest.TestCase):
         self.assertEqual(m.id, 1)
         self.assertEqual(m.last_name, "Dupont")
         self.assertEqual(m.first_name, "Jean")
-        self.assertEqual(m, Member(id=1, last_name="Dupont", first_name="Jean")) 
+        self.assertEqual(m, Member(id=1, last_name="Dupont", first_name="Jean"))

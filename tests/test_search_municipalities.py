@@ -1,5 +1,5 @@
-from tests.test_base import TestFFBBApiClient
 from ffbb_api_client import Municipality
+from tests.test_base import TestFFBBApiClient
 
 
 class Test_SearchMunicipalities(TestFFBBApiClient):
@@ -16,4 +16,4 @@ class Test_SearchMunicipalities(TestFFBBApiClient):
     def test_with_empty_name(self):
         query = ""
         result = self.api_client.search_municipalities(query)
-        self.assertIsNone(result) 
+        self.assertIsNone(result)
