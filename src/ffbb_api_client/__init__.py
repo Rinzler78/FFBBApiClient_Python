@@ -1,9 +1,8 @@
 import base64
 import json
+import logging
 import sys
 from typing import List
-
-import logging
 
 from requests.exceptions import ConnectionError, ReadTimeout
 from requests_cache import CachedSession
@@ -737,9 +736,7 @@ class FFBBApiClient:
                 )
             except Exception as e:
                 if self.debug:
-                    logger.error(
-                        "An error occurred while searching clubs: %s", str(e)
-                    )
+                    logger.error("An error occurred while searching clubs: %s", str(e))
 
             if not result:
                 continue

@@ -1,9 +1,9 @@
 import json
+import logging
 import time
 from typing import Any, Dict
 from urllib.parse import urlencode
 
-import logging
 import requests
 from requests import Response
 from requests_cache import CachedSession
@@ -58,7 +58,7 @@ def http_get(
     if debug:
         logger.debug("Making GET request to %s", url)
         start_time = time.time()
-    
+
     if cached_session:
         response = cached_session.get(url, headers=headers, timeout=timeout)
     else:
@@ -66,9 +66,7 @@ def http_get(
 
     if debug:
         end_time = time.time()
-        logger.debug(
-            "GET request to %s took %s seconds.", url, end_time - start_time
-        )
+        logger.debug("GET request to %s took %s seconds.", url, end_time - start_time)
 
     return response
 
@@ -108,7 +106,10 @@ def http_post(
     if debug:
         end_time = time.time()
         logger.debug(
-            "POST request to %s %s took %s seconds.", url, data_str, end_time - start_time
+            "POST request to %s %s took %s seconds.",
+            url,
+            data_str,
+            end_time - start_time,
         )
 
     return response
