@@ -104,7 +104,7 @@ class Standing:
         if self.club is not None:
             result["club"] = from_union([from_str, from_none], self.club)
         if self.initi is not None:
-            result["initi"] = from_union([from_none, from_str], self.initi)
+            result["initi"] = from_union([from_none, from_int, from_str], self.initi)
         return result
 
     def __eq__(self, other: Any) -> bool:

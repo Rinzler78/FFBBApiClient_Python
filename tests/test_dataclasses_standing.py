@@ -1,29 +1,41 @@
 import unittest
-from ffbb_api_client import Standing
+from ffbb_api_client.standing import Standing
 
 
 class TestStanding(unittest.TestCase):
     def test_standing(self):
-        s = Standing.from_dict({
-            "pos": 1, "points": 2, "day": 3, "win": 4, "lost": 5, "draw": 6,
-            "penalties": 0, "forfeited": 0, "defaults": 0, "arb": 0, "ent": 0,
-            "scored": 10, "conceded": 8, "quotient": 1.25, "club": "club", "initi": 0
-        })
+        s = Standing(pos=1, points=10, win=5, lost=2)
         self.assertEqual(s.pos, 1)
-        self.assertEqual(s.points, 2)
-        self.assertEqual(s.day, 3)
-        self.assertEqual(s.win, 4)
-        self.assertEqual(s.lost, 5)
-        self.assertEqual(s.draw, 6)
-        self.assertEqual(s.penalties, 0)
-        self.assertEqual(s.forfeited, 0)
-        self.assertEqual(s.defaults, 0)
-        self.assertEqual(s.arb, 0)
-        self.assertEqual(s.ent, 0)
-        self.assertEqual(s.scored, 10)
-        self.assertEqual(s.conceded, 8)
-        self.assertEqual(s.quotient, 1.25)
-        self.assertEqual(s.club, "club")
-        self.assertEqual(s.initi, 0)
+        self.assertEqual(s.points, 10)
+        self.assertEqual(s.win, 5)
+        self.assertEqual(s.lost, 2)
+        self.assertEqual(s, Standing(pos=1, points=10, win=5, lost=2))
+        self.assertIsNone(s.draw)
+        self.assertIsNone(s.penalties)
+        self.assertIsNone(s.forfeited)
+        self.assertIsNone(s.defaults)
+        self.assertIsNone(s.arb)
+        self.assertIsNone(s.ent)
+        self.assertIsNone(s.scored)
+        self.assertIsNone(s.conceded)
+        self.assertIsNone(s.quotient)
+        self.assertIsNone(s.club)
+        self.assertIsNone(s.initi)
+        # Test avec valeurs explicites
+        s2 = Standing(
+            draw=0, penalties=0, forfeited=0, defaults=0, arb=0, ent=0,
+            scored=0, conceded=0, quotient=0, club="club", initi=0
+        )
+        self.assertEqual(s2.draw, 0)
+        self.assertEqual(s2.penalties, 0)
+        self.assertEqual(s2.forfeited, 0)
+        self.assertEqual(s2.defaults, 0)
+        self.assertEqual(s2.arb, 0)
+        self.assertEqual(s2.ent, 0)
+        self.assertEqual(s2.scored, 0)
+        self.assertEqual(s2.conceded, 0)
+        self.assertEqual(s2.quotient, 0)
+        self.assertEqual(s2.club, "club")
+        self.assertEqual(s2.initi, 0)
         self.assertEqual(s, Standing.from_dict(s.to_dict()))
         self.assertIsInstance(hash(s), int) 
