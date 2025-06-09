@@ -1,7 +1,6 @@
 import base64
 import json
 import logging
-import sys
 from importlib.metadata import PackageNotFoundError, version  # pragma: no cover
 from typing import List
 
