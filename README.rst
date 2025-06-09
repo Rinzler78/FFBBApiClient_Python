@@ -1,29 +1,24 @@
-.. These are examples of badges you might want to add to your README:
-   please update the URLs accordingly
-
-    .. image:: https://api.cirrus-ci.com/github/<USER>/FFBBApiClient-Python.svg?branch=main
-        :alt: Built Status
-        :target: https://cirrus-ci.com/github/<USER>/FFBBApiClient-Python
-    .. image:: https://readthedocs.org/projects/FFBBApiClient-Python/badge/?version=latest
-        :alt: ReadTheDocs
-        :target: https://FFBBApiClient-Python.readthedocs.io/en/stable/
-    .. image:: https://img.shields.io/coveralls/github/<USER>/FFBBApiClient-Python/main.svg
-        :alt: Coveralls
-        :target: https://coveralls.io/r/<USER>/FFBBApiClient-Python
-
-    .. image:: https://img.shields.io/conda/vn/conda-forge/FFBBApiClient-Python.svg
-        :alt: Conda-Forge
-        :target: https://anaconda.org/conda-forge/FFBBApiClient-Python
-    .. image:: https://pepy.tech/badge/FFBBApiClient-Python/month
-        :alt: Monthly Downloads
-        :target: https://pepy.tech/project/FFBBApiClient-Python
-    .. image:: https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Twitter
-        :alt: Twitter
-        :target: https://twitter.com/FFBBApiClient-Python
+.. image:: https://github.com/Rinzler78/FFBBApiClient_Python/actions/workflows/ci.yml/badge.svg?branch=main
+    :alt: CI Status
+    :target: https://github.com/Rinzler78/FFBBApiClient_Python/actions/workflows/ci.yml
+.. image:: https://readthedocs.org/projects/ffbbapiclient-python/badge/?version=latest
+    :alt: Documentation Status
+    :target: https://ffbbapiclient-python.readthedocs.io/en/latest/?badge=latest
+.. image:: https://coveralls.io/repos/github/Rinzler78/FFBBApiClient_Python/badge.svg?branch=main
+    :alt: Coverage Status
+    :target: https://coveralls.io/github/Rinzler78/FFBBApiClient_Python?branch=main
 .. image:: https://img.shields.io/pypi/v/ffbb_api_client.svg
-    :alt: PyPI-Server
+    :alt: PyPI Version
     :target: https://pypi.org/project/ffbb_api_client/
-
+.. image:: https://img.shields.io/github/license/Rinzler78/FFBBApiClient_Python.svg
+    :alt: License
+    :target: https://github.com/Rinzler78/FFBBApiClient_Python/blob/main/LICENSE.txt
+.. image:: https://img.shields.io/pypi/pyversions/ffbb_api_client.svg
+    :alt: Python Versions
+    :target: https://pypi.org/project/ffbb_api_client/
+.. image:: https://pepy.tech/badge/ffbb_api_client/month
+    :alt: Monthly Downloads
+    :target: https://pepy.tech/project/ffbb_api_client
 .. image:: https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold
     :alt: Project generated with PyScaffold
     :target: https://pyscaffold.org/
@@ -40,6 +35,14 @@ ffbb_api_client
 
 ffbb_api_client allow to interact with FFBB api.
 You can retrieve information about clubs, teams, matches, etc...
+
+Features
+--------
+
+- Search municipalities and clubs
+- Retrieve detailed club information
+- Fetch areas, leagues and championships
+- Get match details, results and news
 
 
 Installation
