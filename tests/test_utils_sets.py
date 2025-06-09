@@ -1,17 +1,18 @@
-import unittest
 import json
+import unittest
+
 from requests.exceptions import ConnectionError
 
 from ffbb_api_client import (
-    Municipality,
-    ClubInfos,
     ClubDetails,
+    ClubInfos,
     Field,
+    Municipality,
     Team,
-    create_set_of_municipalities,
-    create_set_of_clubs,
-    merge_club_details,
     catch_result,
+    create_set_of_clubs,
+    create_set_of_municipalities,
+    merge_club_details,
 )
 from ffbb_api_client.http_requests_utils import encode_params, url_with_params
 
@@ -58,4 +59,3 @@ class TestUtilities(unittest.TestCase):
             raise json.decoder.JSONDecodeError("Expecting value", "", 0)
 
         self.assertIsNone(catch_result(bad))
-

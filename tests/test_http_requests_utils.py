@@ -1,9 +1,10 @@
 import unittest
 from unittest.mock import MagicMock, patch
+
 from ffbb_api_client.http_requests_utils import (
-    to_json_from_response,
     http_get_json,
     http_post_json,
+    to_json_from_response,
 )
 
 
@@ -22,7 +23,7 @@ class TestHttpRequestsUtils(unittest.TestCase):
         result = to_json_from_response(mock_response)
         self.assertEqual(result, {"key": "value"})
 
-        mock_response.text = '[1][2]'
+        mock_response.text = "[1][2]"
         result = to_json_from_response(mock_response)
         self.assertEqual(result, [1, 2])
 

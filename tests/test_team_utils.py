@@ -1,9 +1,10 @@
 import unittest
+
 from ffbb_api_client.team import (
-    extract_division_number,
-    extract_pool_letter,
-    extract_phase_number,
     Team,
+    extract_division_number,
+    extract_phase_number,
+    extract_pool_letter,
 )
 
 

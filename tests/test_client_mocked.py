@@ -1,16 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from ffbb_api_client import (
-    FFBBApiClient,
-    Area,
-    League,
-    Championship,
-    Municipality,
-    ClubInfos,
-    ClubDetails,
-    Team,
-)
+from ffbb_api_client import Area, FFBBApiClient, League
 
 
 class TestFFBBApiClientMocked(unittest.TestCase):
@@ -56,4 +47,3 @@ class TestFFBBApiClientMocked(unittest.TestCase):
         details = self.client.get_club_details(10)
         self.assertEqual(len(details.infos), 2)
         self.assertEqual(len(details.teams), 1)
-
