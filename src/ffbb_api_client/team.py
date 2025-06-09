@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -12,7 +13,14 @@ def extract_division_number(input_str: str) -> int:
     input_str = input_str.lower()
     division = 1
     try:
-        division: int = int(input_str.split("division")[1].strip().split(" ")[0])
+        # Try to extract after 'division'
+        if "division" in input_str:
+            division = int(input_str.split("division")[1].strip().split(" ")[0])
+        else:
+            # Try to extract after 'd' followed by a digit (e.g., D2)
+            match = re.search(r"\bd(\d+)\b", input_str)
+            if match:
+                division = int(match.group(1))
     except Exception:
         pass
     return division
@@ -141,3 +149,16 @@ class Team:
                 self.phase_number,
             )
         )
+
+    def __str__(self) -> str:
+        return (
+            f"{self.category.value if self.category else ''} "
+            f"{self.geographycale_zone.value if self.geographycale_zone else ''} "
+            f"{self.sex.value if self.sex else ''} "
+            f"{self.division_number if self.division_number is not None else ''} "
+            f"{self.pool_letter if self.pool_letter else ''} "
+            f"{self.phase_number if self.phase_number is not None else ''}"
+        )
+
+    def __repr__(self) -> str:
+        return self.__str__()

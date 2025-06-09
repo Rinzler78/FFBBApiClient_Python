@@ -3,12 +3,15 @@ from typing import List
 
 from ffbb_api_client import (
     Area,
+    Category,
     Championship,
     ClubDetails,
     ClubInfos,
     FFBBApiClient,
+    GeographycaleZone,
     League,
     Municipality,
+    Sex,
     Team,
 )
 
@@ -59,3 +62,38 @@ top_championships_departments_championship: Championship = next(
     for championship in top_championships
     if championship.name == "CHAMPIONNATS DEPARTEMENTAUX"
 )
+
+senior_men_regional_div2_team: Team = next(
+    (
+        team
+        for team in club_details.teams
+        if team.category.value == Category.SENIOR.value
+        and team.sex.value == Sex.MASCULIN.value
+        and team.geographycale_zone.value == GeographycaleZone.REGIONAL.value
+        and team.division_number == 2
+    ),
+    None,
+)
+
+# Get matches for the team
+agenda_and_results = api_client.get_results(team_id=senior_men_regional_div2_team.id)
+
+print("\nMatches for Sénas Senior Men Regional Division 2:")
+for match in agenda_and_results.matchs or []:
+    if not match.played:
+        continue  # Skip unplayed matches
+    # Determine if Sénas is home or away
+    is_home = "senas" in (match.hometeam or "").lower()
+    # Determine win/loss
+    if is_home:
+        win = match.score.home > match.score.visitor
+    else:
+        win = match.score.visitor > match.score.home
+    emoji = "✅" if win else "❌"
+    # Print match info
+    date_str = match.date.strftime("%d/%m/%Y") if match.date else "-"
+    location = match.hometeam if is_home else match.visitorteam
+    print(
+        f"{emoji} {date_str} | Location: {location} | Home: {match.hometeam} "
+        f"| Away: {match.visitorteam} | Score: {match.score}"
+    )

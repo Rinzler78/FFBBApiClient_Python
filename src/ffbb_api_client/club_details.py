@@ -24,6 +24,19 @@ class ClubDetails:
         teams = from_union(
             [lambda x: from_list(Team.from_dict, x), from_none], obj.get("teams")
         )
+
+        if teams:
+            teams = sorted(
+                teams,
+                key=lambda x: (
+                    x.category.value if x.category else "",
+                    x.geographycale_zone.value if x.geographycale_zone else "",
+                    x.sex.value if x.sex else "",
+                    x.division_number if x.division_number is not None else 0,
+                    x.pool_letter if x.pool_letter else "",
+                ),
+            )
+
         return ClubDetails(infos, fields, teams)
 
     def to_dict(self) -> dict:
