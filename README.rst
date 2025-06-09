@@ -22,28 +22,47 @@
 .. image:: https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold
     :alt: Project generated with PyScaffold
     :target: https://pyscaffold.org/
-
-|
+.. image:: https://img.shields.io/github/issues/Rinzler78/FFBBApiClient_Python
+    :alt: Issues
+    :target: https://github.com/Rinzler78/FFBBApiClient_Python/issues
+.. image:: https://img.shields.io/github/issues-pr/Rinzler78/FFBBApiClient_Python
+    :alt: Pull Requests
+    :target: https://github.com/Rinzler78/FFBBApiClient_Python/pulls
+.. image:: https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat
+    :alt: Contributions welcome
+    :target: https://github.com/Rinzler78/FFBBApiClient_Python/issues
+.. image:: https://img.shields.io/github/last-commit/Rinzler78/FFBBApiClient_Python
+    :alt: Last Commit
+    :target: https://github.com/Rinzler78/FFBBApiClient_Python/commits/main
+.. image:: https://img.shields.io/github/forks/Rinzler78/FFBBApiClient_Python?style=social
+    :alt: Forks
+    :target: https://github.com/Rinzler78/FFBBApiClient_Python/fork
+.. image:: https://img.shields.io/github/stars/Rinzler78/FFBBApiClient_Python?style=social
+    :alt: Stars
+    :target: https://github.com/Rinzler78/FFBBApiClient_Python/stargazers
+.. image:: https://img.shields.io/github/downloads/Rinzler78/FFBBApiClient_Python/total.svg
+    :alt: GitHub All Releases
+    :target: https://github.com/Rinzler78/FFBBApiClient_Python/releases
+.. image:: https://img.shields.io/github/v/tag/Rinzler78/FFBBApiClient_Python
+    :alt: Latest Release
+    :target: https://github.com/Rinzler78/FFBBApiClient_Python/releases
 
 ====================
 ffbb_api_client
 ====================
 
+A Python client to interact with FFBB APIs.
 
-    Allow to interact with FFBB apis
-
-
-ffbb_api_client allow to interact with FFBB api.
-You can retrieve information about clubs, teams, matches, etc...
+`ffbb_api_client` allows you to interact with the FFBB API.
+You can retrieve information about clubs, teams, matches, and more.
 
 Features
 --------
 
-- Search municipalities and clubs
+- Search for municipalities and clubs
 - Retrieve detailed club information
-- Fetch areas, leagues and championships
-- Get match details, results and news
-
+- Fetch areas, leagues, and championships
+- Get match details, results, and news
 
 Installation
 ============
@@ -60,15 +79,15 @@ Quick start
     import os
     from ffbb_api_client import FFBBApiClient
 
-    # Load env from file if needed
+    # Load environment variables from a file if needed
     # from dotenv import load_dotenv
     # load_dotenv()
 
-    # Retrieve api user / pass
+    # Retrieve API user and password
     basic_auth_user = os.getenv("FFBB_BASIC_AUTH_USER")
     basic_auth_pass = os.getenv("FFBB_BASIC_AUTH_PASS")
 
-    # Create an instance of the api client
+    # Create an instance of the API client
     api_client = FFBBApiClient(
         basic_auth_user=basic_auth_user,
         basic_auth_pass=basic_auth_pass
@@ -77,24 +96,24 @@ Quick start
 Examples
 ========
 
-Take a look at quick_start.py to see how to use the library.
+See `quick_start.py` for usage examples.
 
 Note
 ====
 
-This project has been set up using PyScaffold 4.5. For details and usage
-information on PyScaffold see https://pyscaffold.org/.
+This project was set up using PyScaffold 4.5. For details and usage
+information on PyScaffold, see https://pyscaffold.org/.
 
-Licence
+License
 =======
 
-ffbb_api_client is distributed under the Apache 2.0 license.
+`ffbb_api_client` is distributed under the Apache 2.0 license.
 
-Dev notes
-=========
+Development notes
+=================
 
 Command used to create this project:
 
 .. code-block:: bash
 
-    putup FFBBApiClient_Python -p ffbb_api_client -l Apache-2.0 -d "Allow to interact with FFBB apis" -u "https://github.com/Rinzler78/FFBBApiClient_Python" -v --github-actions --venv .venv
+    putup FFBBApiClient_Python -p ffbb_api_client -l Apache-2.0 -d "Allow to interact with FFBB APIs" -u "https://github.com/Rinzler78/FFBBApiClient_Python" -v --github-actions --venv .venv
