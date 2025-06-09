@@ -3,8 +3,12 @@ import json
 import sys
 from typing import List
 
+import logging
+
 from requests.exceptions import ConnectionError, ReadTimeout
 from requests_cache import CachedSession
+
+logger = logging.getLogger(__name__)
 
 from .agenda_and_results import AgendaAndResults, agenda_and_results_from_dict  # noqa
 from .area import Area, area_from_dict  # noqa
@@ -665,7 +669,11 @@ class FFBBApiClient:
                     pattern, cached_session=cached_session
                 )
             except Exception as e:
-                print(f"An error occurred while searching municipalities: {str(e)}")
+                if self.debug:
+                    logger.error(
+                        "An error occurred while searching municipalities: %s",
+                        str(e),
+                    )
 
             if not result:
                 continue
@@ -728,7 +736,10 @@ class FFBBApiClient:
                     org_name=org_name, cached_session=cached_session
                 )
             except Exception as e:
-                print(f"An error occurred while searching clubs: {str(e)}")
+                if self.debug:
+                    logger.error(
+                        "An error occurred while searching clubs: %s", str(e)
+                    )
 
             if not result:
                 continue
