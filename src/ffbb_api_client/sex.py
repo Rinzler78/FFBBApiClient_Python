@@ -1,4 +1,7 @@
+import logging
 from enum import Enum
+
+logger = logging.getLogger(__name__)
 
 
 class Sex(Enum):
@@ -13,5 +16,5 @@ def extract_sex(input_str: str) -> Sex:
         lower_value = sex.value.lower()
         if lower_value == input_str or lower_value in input_str:
             return sex
-    print(f"Unknown sex: {input_str}")
+    logger.warning("Unknown sex: %s", input_str)
     return None
