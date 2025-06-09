@@ -1,5 +1,6 @@
-from tests.test_base import TestFFBBApiClient
 from typing import List
+
+from tests.test_base import TestFFBBApiClient
 
 
 class Test_GetNews(TestFFBBApiClient):
@@ -7,4 +8,4 @@ class Test_GetNews(TestFFBBApiClient):
         result = self.api_client.get_news()
         if result:
             self.assertIsInstance(result, List)
-            self.assertGreater(len(result), 0) 
+            self.assertGreater(len(result), 0)

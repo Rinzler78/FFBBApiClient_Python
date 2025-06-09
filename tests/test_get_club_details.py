@@ -1,5 +1,5 @@
-from tests.test_base import TestFFBBApiClient
 from ffbb_api_client import ClubDetails
+from tests.test_base import TestFFBBApiClient
 
 
 class Test_GetClubDetails(TestFFBBApiClient):
@@ -16,4 +16,4 @@ class Test_GetClubDetails(TestFFBBApiClient):
     def test_with_empty_id(self):
         club_id = None
         result = self.api_client.get_club_details(club_id)
-        self.assertIsNone(result) 
+        self.assertIsNone(result)

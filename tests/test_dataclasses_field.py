@@ -1,4 +1,5 @@
 import unittest
+
 from ffbb_api_client import Field
 
 
@@ -10,4 +11,4 @@ class TestField(unittest.TestCase):
         self.assertEqual(f.title, "t")
         self.assertEqual(f.desc, "d")
         self.assertEqual(f, Field.from_dict(f.to_dict()))
-        self.assertIsInstance(hash(f), int) 
+        self.assertIsInstance(hash(f), int)

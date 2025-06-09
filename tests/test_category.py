@@ -1,4 +1,5 @@
 import unittest
+
 from ffbb_api_client.category import Category, extract_category
 
 
@@ -8,4 +9,4 @@ class TestCategory(unittest.TestCase):
 
     def test_extract_category(self):
         self.assertEqual(extract_category("U13"), Category.U13)
-        self.assertIsNone(extract_category("UNKNOWN")) 
+        self.assertIsNone(extract_category("UNKNOWN"))

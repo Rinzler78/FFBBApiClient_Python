@@ -1,7 +1,8 @@
 import unittest
+from datetime import datetime
+
 from ffbb_api_client.match import Match
 from ffbb_api_client.score import Score
-from datetime import datetime
 
 
 class TestMatch(unittest.TestCase):
@@ -15,4 +16,6 @@ class TestMatch(unittest.TestCase):
         self.assertEqual(m.visitorteam, "B")
         self.assertEqual(m.score, s)
         self.assertTrue(m.played)
-        self.assertIsInstance(hash(m), int) 
+        d = m.to_dict()
+        self.assertEqual(d["hometeam"], "A")
+        self.assertIsInstance(hash(m), int)

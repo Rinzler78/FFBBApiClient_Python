@@ -1,4 +1,5 @@
 import unittest
+
 from ffbb_api_client import Default
 
 
@@ -9,4 +10,4 @@ class TestDefault(unittest.TestCase):
         self.assertEqual(obj.width, 10)
         self.assertEqual(obj.height, 20)
         self.assertEqual(obj, Default.from_dict(obj.to_dict()))
-        self.assertIsInstance(hash(obj), int) 
+        self.assertIsInstance(hash(obj), int)

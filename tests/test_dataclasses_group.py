@@ -1,5 +1,6 @@
 import unittest
-from ffbb_api_client import Group, CompetitionType
+
+from ffbb_api_client import CompetitionType, Group
 
 
 class TestGroup(unittest.TestCase):
@@ -9,4 +10,4 @@ class TestGroup(unittest.TestCase):
         self.assertEqual(g.name, "A")
         self.assertEqual(g.competition_type, CompetitionType.CHAMPIONSHIP)
         self.assertEqual(g, Group.from_dict(g.to_dict()))
-        self.assertIsInstance(hash(g), int) 
+        self.assertIsInstance(hash(g), int)

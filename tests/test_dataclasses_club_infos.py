@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+
 from ffbb_api_client import ClubInfos, Municipality, TypeAssociation
 
 
@@ -12,20 +13,14 @@ class TestClubInfos(unittest.TestCase):
             "adresse": "10 avenue du Stade",
             "telephone": "0123456789",
             "mail": "contact@basketclub.com",
-            "commune": {
-                "id": 1,
-                "name": "Paris"
-            },
-            "type_association": {
-                "id": 1,
-                "libelle": "Association principale"
-            },
+            "commune": {"id": 1, "name": "Paris"},
+            "type_association": {"id": 1, "libelle": "Association principale"},
             "urlSiteWeb": "https://basketclub.com",
             "idOrg": 100,
             "idCmne": 1,
             "cdOrg": "BC42",
             "nomOrg": "Basket Club",
-            "dateAffiliation": "2020-09-01T00:00:00Z"
+            "dateAffiliation": "2020-09-01T00:00:00Z",
         }
         club = ClubInfos.from_dict(data)
         self.assertEqual(club.id, 42)
@@ -59,4 +54,4 @@ class TestClubInfos(unittest.TestCase):
         self.assertIsNone(club.municipality_id)
         self.assertIsNone(club.organization_code)
         self.assertIsNone(club.organization_name)
-        self.assertIsNone(club.affiliation_date) 
+        self.assertIsNone(club.affiliation_date)

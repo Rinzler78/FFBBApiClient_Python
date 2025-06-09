@@ -1,5 +1,6 @@
-from tests.test_base import TestFFBBApiClient
 from typing import List
+
+from tests.test_base import TestFFBBApiClient
 
 
 class Test_SearchMultipleClubs(TestFFBBApiClient):
@@ -33,4 +34,4 @@ class Test_SearchMultipleClubs(TestFFBBApiClient):
 
     def test_with_empty_name(self):
         result = self.api_client.search_multiple_clubs(["", ""])
-        self.assertIsNone(result) 
+        self.assertIsNone(result)

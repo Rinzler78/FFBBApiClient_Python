@@ -1,5 +1,6 @@
 import unittest
 from datetime import datetime
+
 from ffbb_api_client.season import Season
 
 
@@ -11,7 +12,7 @@ class TestSeason(unittest.TestCase):
             "code": "S23",
             "libelle": "Saison 2023-2024",
             "debut": "2023-09-01T00:00:00Z",
-            "fin": "2024-06-30T00:00:00Z"
+            "fin": "2024-06-30T00:00:00Z",
         }
         season = Season.from_dict(data)
         self.assertTrue(season.active)
@@ -39,4 +40,4 @@ class TestSeason(unittest.TestCase):
         self.assertEqual(s.id, 1)
         self.assertEqual(s.code, "2023")
         self.assertEqual(s.label, "Saison 2023")
-        self.assertEqual(s, Season(active=True, id=1, code="2023", label="Saison 2023")) 
+        self.assertEqual(s, Season(active=True, id=1, code="2023", label="Saison 2023"))

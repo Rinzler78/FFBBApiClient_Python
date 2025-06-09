@@ -1,5 +1,6 @@
-from tests.test_base import TestFFBBApiClient
 from typing import List
+
+from tests.test_base import TestFFBBApiClient
 
 
 class Test_GetAreasCompetitions(TestFFBBApiClient):
@@ -11,4 +12,4 @@ class Test_GetAreasCompetitions(TestFFBBApiClient):
 
     def test_with_unknown_id(self):
         result = self.api_client.get_area_competitions(0)
-        self.assertIsNone(result) 
+        self.assertIsNone(result)

@@ -1,16 +1,26 @@
 import os
 import unittest
 from typing import List
+
 from dotenv import load_dotenv
+
 from ffbb_api_client import (
-    Competition, Day, Group, MatchDetail, News, Standing, TypeAssociation,
-    AgendaAndResults, Area, Category, Championship, ClubDetails, ClubInfos,
-    CompetitionType, FFBBApiClient, League, Municipality, Team, Videos
+    AgendaAndResults,
+    Area,
+    Category,
+    Championship,
+    ClubDetails,
+    ClubInfos,
+    FFBBApiClient,
+    League,
+    Municipality,
+    Team,
 )
 
 load_dotenv()
 basic_auth_user = os.getenv("FFBB_BASIC_AUTH_USER")
 basic_auth_pass = os.getenv("FFBB_BASIC_AUTH_PASS")
+
 
 class TestFFBBApiClient(unittest.TestCase):
     _known_municipality_name: str = "Senas"
@@ -117,4 +127,4 @@ class TestFFBBApiClient(unittest.TestCase):
                 sub_competition=self._get_known_team().sub_competition,
                 team_group=self._get_known_team().group,
             )
-        return self._known_results 
+        return self._known_results
