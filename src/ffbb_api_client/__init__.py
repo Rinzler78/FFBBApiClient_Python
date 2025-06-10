@@ -80,6 +80,15 @@ class FFBBApiClient:
             debug (bool, optional): Enable debug mode.
             cached_session (bool, optional): Enable caching.
         """
+        if not basic_auth_user:
+            raise ValueError("basic_auth_user must be provided")
+        if not basic_auth_pass:
+            raise ValueError("basic_auth_pass must be provided")
+        if not api_url:
+            raise ValueError("api_url must be provided")
+        if not ws_url:
+            raise ValueError("ws_url must be provided")
+
         self.api_url = api_url
         self.ws_url = ws_url
         self.basic_auth_user = basic_auth_user
