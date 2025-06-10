@@ -94,13 +94,21 @@ Quick start
     )
 
 
-.. note::
+Environment variables
+=====================
 
-   A ``.env.example`` file is provided to illustrate the required
-   environment variables::
+The client requires credentials provided via the following environment
+variables:
 
-       FFBB_BASIC_AUTH_USER=your_username
-       FFBB_BASIC_AUTH_PASS=your_password
+- ``FFBB_BASIC_AUTH_USER`` – your API username
+- ``FFBB_BASIC_AUTH_PASS`` – the corresponding password
+
+They can be exported in your shell or stored in a ``.env`` file:
+
+.. code-block:: bash
+
+    FFBB_BASIC_AUTH_USER=my_user
+    FFBB_BASIC_AUTH_PASS=my_password
 
 Logging
 =======
@@ -116,7 +124,7 @@ logging output. By default the logger is silent unless configured::
 Examples
 ========
 
-See `quick_start.py` for usage examples.
+See ``quick_start.py`` for a complete usage example.
 
 Error handling
 ==============
