@@ -43,13 +43,13 @@ Creating a Client
 
     import os
     from ffbb_api_client import FFBBApiClient
-    
+
     # From environment variables
     client = FFBBApiClient(
         basic_auth_user=os.getenv("FFBB_BASIC_AUTH_USER"),
         basic_auth_pass=os.getenv("FFBB_BASIC_AUTH_PASS")
     )
-    
+
     # Or directly (not recommended for production)
     client = FFBBApiClient(
         basic_auth_user="your_username",
@@ -63,10 +63,10 @@ Configuring Logging
 
     import logging
     from ffbb_api_client import configure_logging
-    
+
     # Enable INFO level logging
     configure_logging(logging.INFO)
-    
+
     # Enable DEBUG level for detailed output
     configure_logging(logging.DEBUG)
 
@@ -79,15 +79,15 @@ Searching for Clubs
 .. code-block:: python
 
     from ffbb_api_client import FFBBApiClient
-    
+
     client = FFBBApiClient(user="user", password="pass")
-    
+
     # Search by organization name
     clubs = client.search_clubs(org_name="Paris")
-    
+
     # Search by municipality ID
     clubs = client.search_clubs(id_municipality=75001)
-    
+
     # Process results
     for club in clubs:
         print(f"Club: {club.org_name} (ID: {club.id})")
@@ -98,17 +98,17 @@ Getting Club Details
 .. code-block:: python
 
     from ffbb_api_client import FFBBApiClient, ClubDetails
-    
+
     client = FFBBApiClient(user="user", password="pass")
-    
+
     # Get detailed information for a club
     club_details: ClubDetails = client.get_club_details(club_id=12345)
-    
+
     # Access club information
     if club_details.teams:
         for team in club_details.teams:
             print(f"Team: {team.name}")
-    
+
     if club_details.fields:
         for field in club_details.fields:
             print(f"Field: {field.name}")
@@ -119,12 +119,12 @@ Fetching Match Information
 .. code-block:: python
 
     from ffbb_api_client import FFBBApiClient, MatchDetail
-    
+
     client = FFBBApiClient(user="user", password="pass")
-    
+
     # Get detailed match information
     match: MatchDetail = client.get_match_detail(match_id=12345)
-    
+
     # Access match details
     print(f"Match: {match.home_team} vs {match.away_team}")
     print(f"Date: {match.date}")
@@ -136,14 +136,14 @@ Working with Areas and Competitions
 .. code-block:: python
 
     from ffbb_api_client import FFBBApiClient
-    
+
     client = FFBBApiClient(user="user", password="pass")
-    
+
     # Get all areas
     areas = client.get_areas()
     for area in areas:
         print(f"Area: {area.name} (ID: {area.id})")
-    
+
     # Get competitions for a specific area
     competitions = client.get_area_competitions(area_id=1)
     for competition in competitions:
@@ -158,9 +158,9 @@ Basic Error Handling
 .. code-block:: python
 
     from ffbb_api_client import FFBBApiClient, CatchResultError, catch_result
-    
+
     client = FFBBApiClient(user="user", password="pass")
-    
+
     try:
         areas = client.get_areas()
         print(f"Found {len(areas)} areas")
@@ -175,9 +175,9 @@ Using catch_result Helper
 .. code-block:: python
 
     from ffbb_api_client import FFBBApiClient, catch_result
-    
+
     client = FFBBApiClient(user="user", password="pass")
-    
+
     # Graceful error handling with automatic retries
     result = catch_result(lambda: client.get_areas())
     if result is not None:
@@ -194,10 +194,10 @@ Custom HTTP Session
 .. code-block:: python
 
     from ffbb_api_client import FFBBApiClient, default_cached_session
-    
+
     # Create a custom cached session
     custom_session = default_cached_session(path="/tmp/my_cache")
-    
+
     # Use with the client
     client = FFBBApiClient(
         basic_auth_user="user",
@@ -211,16 +211,16 @@ Working with Multiple Clients
 .. code-block:: python
 
     from ffbb_api_client import FFBBApiClient
-    
+
     # Different environments or configurations
     prod_client = FFBBApiClient(
         basic_auth_user="prod_user",
         basic_auth_pass="prod_pass",
         api_url="https://api.prod.ffbb.com/"
     )
-    
+
     test_client = FFBBApiClient(
-        basic_auth_user="test_user", 
+        basic_auth_user="test_user",
         basic_auth_pass="test_pass",
         api_url="https://api.test.ffbb.com/",
         debug=True
@@ -232,24 +232,24 @@ Data Processing Helpers
 .. code-block:: python
 
     from ffbb_api_client import (
-        FFBBApiClient, 
+        FFBBApiClient,
         merge_club_details,
         create_set_of_clubs,
         create_set_of_municipalities
     )
-    
+
     client = FFBBApiClient(user="user", password="pass")
-    
+
     # Get multiple club details and merge them
     details1 = client.get_club_details(club_id=123)
     details2 = client.get_club_details(club_id=456)
     merged = merge_club_details(details1, details2)
-    
+
     # Remove duplicates from lists
     all_clubs = [club1, club2, club1]  # Contains duplicates
     unique_clubs = create_set_of_clubs(all_clubs)
-    
-    municipalities = [city1, city2, city1]  # Contains duplicates  
+
+    municipalities = [city1, city2, city1]  # Contains duplicates
     unique_cities = create_set_of_municipalities(municipalities)
 
 Best Practices

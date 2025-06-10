@@ -94,13 +94,13 @@ All public APIs are available through direct imports from the main package:
     from ffbb_api_client import (
         # Main client
         FFBBApiClient,
-        
+
         # Model classes
         ClubDetails, Team, Competition, Match,
-        
+
         # Utility functions
         configure_logging, catch_result,
-        
+
         # Exception handling
         CatchResultError
     )
@@ -122,16 +122,16 @@ Basic Usage
 
     from ffbb_api_client import FFBBApiClient, configure_logging
     import logging
-    
+
     # Configure logging
     configure_logging(logging.INFO)
-    
+
     # Create client
     client = FFBBApiClient(
         basic_auth_user="your_user",
         basic_auth_pass="your_pass"
     )
-    
+
     # Use the API
     areas = client.get_areas()
 
@@ -141,12 +141,12 @@ Working with Models
 .. code-block:: python
 
     from ffbb_api_client import FFBBApiClient, ClubDetails, Team
-    
+
     client = FFBBApiClient(user="user", password="pass")
-    
+
     # Get club details (returns ClubDetails object)
     club_details = client.get_club_details(club_id=12345)
-    
+
     # Access typed data
     teams: List[Team] = club_details.teams
     for team in teams:
@@ -158,9 +158,9 @@ Error Handling
 .. code-block:: python
 
     from ffbb_api_client import FFBBApiClient, CatchResultError, catch_result
-    
+
     client = FFBBApiClient(user="user", password="pass")
-    
+
     try:
         # Use catch_result for graceful error handling
         result = catch_result(lambda: client.get_areas())
@@ -177,7 +177,7 @@ The package architecture follows these principles:
 **Separation of Concerns**
     Each module has a specific responsibility:
     - Models handle data representation
-    - Helpers provide business logic utilities  
+    - Helpers provide business logic utilities
     - Utils provide low-level functionality
     - Main client orchestrates API interactions
 
@@ -208,11 +208,11 @@ For users upgrading from previous versions:
     While not required, you may want to update imports for clarity:
 
     .. code-block:: python
-    
+
         # Old style (still works)
         from ffbb_api_client.logger import configure_logging
-        
-        # New style (recommended)  
+
+        # New style (recommended)
         from ffbb_api_client import configure_logging
 
 **New Features**

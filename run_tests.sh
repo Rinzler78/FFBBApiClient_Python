@@ -49,6 +49,7 @@ if [[ -z "$FFBB_BASIC_AUTH_USER" ]] || [[ -z "$FFBB_BASIC_AUTH_PASS" ]]; then
     echo "  export FFBB_BASIC_AUTH_USER=your_username"
     echo "  export FFBB_BASIC_AUTH_PASS=your_password"
     echo ""
+    exit 1
 fi
 
 # Step 1: Check if pre-commit is available and run static analysis
