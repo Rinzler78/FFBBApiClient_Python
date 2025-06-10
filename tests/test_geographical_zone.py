@@ -1,6 +1,6 @@
 import unittest
 
-from ffbb_api_client.geographycale_zone import (
+from ffbb_api_client.geographical_zone import (
     GeographycaleZone,
     extract_geographycale_zone,
 )

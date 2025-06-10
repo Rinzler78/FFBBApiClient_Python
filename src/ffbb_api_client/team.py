@@ -5,7 +5,7 @@ from typing import Any, Optional
 from .category import Category, extract_category
 from .competition_type import CompetitionType, extract_competition_type
 from .converters import from_none, from_str, from_union
-from .geographycale_zone import GeographycaleZone, extract_geographycale_zone
+from .geographical_zone import GeographycaleZone, extract_geographycale_zone
 from .sex import Sex, extract_sex
 
 
