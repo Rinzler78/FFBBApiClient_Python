@@ -6,12 +6,19 @@ from ..utils.converters import from_int, from_none, from_str, from_union
 
 @dataclass
 class Default:
+    """
+    Data class representing a default thumbnail or image with URL, width, and height.
+    """
+
     url: Optional[str] = None
     width: Optional[int] = None
     height: Optional[int] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "Default":
+        """
+        Create a Default instance from a dictionary.
+        """
         assert isinstance(obj, dict)
         url = from_union([from_str, from_none], obj.get("url"))
         width = from_union([from_int, from_none], obj.get("width"))
@@ -19,6 +26,9 @@ class Default:
         return Default(url, width, height)
 
     def to_dict(self) -> dict:
+        """
+        Convert the Default instance to a dictionary.
+        """
         result: dict = {}
         if self.url is not None:
             result["url"] = from_union([from_str, from_none], self.url)
@@ -29,6 +39,9 @@ class Default:
         return result
 
     def __eq__(self, other: Any) -> bool:
+        """
+        Check equality with another Default instance.
+        """
         if not isinstance(other, Default):
             return False
         return (
@@ -38,4 +51,7 @@ class Default:
         )
 
     def __hash__(self) -> int:
+        """
+        Compute the hash of the Default instance.
+        """
         return hash((self.url, self.width, self.height))

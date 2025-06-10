@@ -22,6 +22,12 @@ from .type_association import TypeAssociation
 
 @dataclass
 class ClubInfos:
+    """
+    Data class representing detailed information about a basketball club,
+    including its address, contact, municipality, association type, court,
+    offers, and history.
+    """
+
     professional_club_name: None
     professional_club_address: None
     professional_club_town: None
@@ -52,6 +58,9 @@ class ClubInfos:
     affiliation_date: Optional[datetime] = None
 
     def __eq__(self, other):
+        """
+        Check equality with another ClubInfos instance.
+        """
         if isinstance(other, ClubInfos):
             return (
                 self.professional_club_name == other.professional_club_name
@@ -86,6 +95,9 @@ class ClubInfos:
         return False
 
     def __hash__(self):
+        """
+        Compute the hash of the ClubInfos instance.
+        """
         return hash(
             (
                 self.professional_club_name,
@@ -133,6 +145,9 @@ class ClubInfos:
 
     @staticmethod
     def from_dict(obj: Any) -> "ClubInfos":
+        """
+        Create a ClubInfos instance from a dictionary.
+        """
         assert isinstance(obj, dict)
         professional_club_name = from_union(
             [from_str, from_none], obj.get("nomClubPro")
@@ -226,6 +241,9 @@ class ClubInfos:
         )
 
     def to_dict(self) -> dict:
+        """
+        Convert the ClubInfos instance to a dictionary.
+        """
         result: dict = {}
         if self.professional_club_name is not None:
             result["nomClubPro"] = from_none(self.professional_club_name)

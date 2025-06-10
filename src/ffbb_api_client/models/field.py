@@ -6,6 +6,10 @@ from ..utils.converters import from_int, from_none, from_str, from_union, is_typ
 
 @dataclass
 class Field:
+    """
+    Data class representing a field or property of a club or entity.
+    """
+
     group_id: Optional[int] = None
     name: Optional[str] = None
     title: Optional[str] = None
@@ -13,6 +17,9 @@ class Field:
 
     @staticmethod
     def from_dict(obj: Any) -> "Field":
+        """
+        Create a Field instance from a dictionary.
+        """
         assert isinstance(obj, dict)
         group_id = from_union(
             [from_none, from_int, lambda x: int(from_str(x))], obj.get("groupId")
@@ -23,6 +30,9 @@ class Field:
         return Field(group_id, name, title, desc)
 
     def to_dict(self) -> dict:
+        """
+        Convert the Field instance to a dictionary.
+        """
         result: dict = {}
         if self.group_id is not None:
             result["groupId"] = from_union(
@@ -43,6 +53,9 @@ class Field:
         return result
 
     def __eq__(self, other: Any) -> bool:
+        """
+        Check equality with another Field instance.
+        """
         if not isinstance(other, Field):
             return False
         return (
@@ -53,4 +66,7 @@ class Field:
         )
 
     def __hash__(self) -> int:
+        """
+        Compute the hash of the Field instance.
+        """
         return hash((self.group_id, self.name, self.title, self.desc))

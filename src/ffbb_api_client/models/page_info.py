@@ -6,17 +6,27 @@ from ..utils.converters import from_int, from_none, from_union
 
 @dataclass
 class PageInfo:
+    """
+    Data class representing pagination information for API responses.
+    """
+
     total_results: Optional[int] = None
     results_per_page: Optional[int] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "PageInfo":
+        """
+        Create a PageInfo instance from a dictionary.
+        """
         assert isinstance(obj, dict)
         total_results = from_union([from_int, from_none], obj.get("totalResults"))
         results_per_page = from_union([from_int, from_none], obj.get("resultsPerPage"))
         return PageInfo(total_results, results_per_page)
 
     def to_dict(self) -> dict:
+        """
+        Convert the PageInfo instance to a dictionary.
+        """
         result: dict = {}
         if self.total_results is not None:
             result["totalResults"] = from_union(
@@ -29,6 +39,9 @@ class PageInfo:
         return result
 
     def __eq__(self, other: Any) -> bool:
+        """
+        Check equality with another PageInfo instance.
+        """
         if not isinstance(other, PageInfo):
             return False
         return (
@@ -37,4 +50,7 @@ class PageInfo:
         )
 
     def __hash__(self) -> int:
+        """
+        Compute the hash of the PageInfo instance.
+        """
         return hash((self.total_results, self.results_per_page))
