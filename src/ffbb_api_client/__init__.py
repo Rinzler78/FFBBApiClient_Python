@@ -23,7 +23,7 @@ from .day import Day  # noqa
 from .default import Default  # noqa
 from .field import Field  # noqa
 from .geo_location import GeoLocation  # noqa
-from .geographycale_zone import GeographycaleZone  # noqa
+from .geographical_zone import GeographycaleZone  # noqa
 from .group import Group  # noqa
 from .history import History  # noqa
 from .http_requests_utils import http_get_json, http_post_json, url_with_params  # noqa
