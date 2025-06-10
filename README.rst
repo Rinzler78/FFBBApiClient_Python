@@ -109,6 +109,13 @@ Examples
 
 See `quick_start.py` for usage examples.
 
+Error handling
+==============
+
+Unexpected errors raised by callbacks executed through ``catch_result`` are
+wrapped in :class:`ffbb_api_client.CatchResultError`.  This makes it possible to
+distinguish network or decoding issues from other failures.
+
 Note
 ====
 

@@ -10,7 +10,7 @@ from .basketball_court import BasketballCourt  # noqa
 
 # Import du cache helper
 from .cached_session_helper import default_cached_session
-from .catch_result_helper import catch_result
+from .catch_result_helper import catch_result, CatchResultError
 from .category import Category  # noqa
 from .championship import Championship, championship_from_dict  # noqa
 from .club_details import ClubDetails, club_details_from_dict  # noqa
