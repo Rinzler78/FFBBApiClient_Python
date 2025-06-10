@@ -8,7 +8,7 @@ class TestFFBBApiClientMocked(unittest.TestCase):
     def setUp(self):
         self.client = FFBBApiClient("u", "p", debug=False)
 
-    @patch("ffbb_api_client.http_post_json")
+    @patch("ffbb_api_client.ffbb_api_client.http_post_json")
     def test_get_areas_and_leagues(self, mock_post):
         mock_post.return_value = [{"id": "1", "name": "A"}, {"id": "1", "name": "A"}]
         areas = self.client.get_areas()
@@ -19,7 +19,7 @@ class TestFFBBApiClientMocked(unittest.TestCase):
         leagues = self.client.get_leagues()
         self.assertEqual(leagues[0], League(id="S", name="L"))
 
-    @patch("ffbb_api_client.http_get_json")
+    @patch("ffbb_api_client.ffbb_api_client.http_get_json")
     def test_search_functions(self, mock_get):
         mock_get.return_value = [{"id": 1, "libelle": "City", "idCmne": 1}]
         mun = self.client.search_municipalities("c")
@@ -38,7 +38,7 @@ class TestFFBBApiClientMocked(unittest.TestCase):
         clubs_multi = self.client.search_multiple_clubs(["Club"])
         self.assertEqual(len(clubs_multi), 1)
 
-    @patch("ffbb_api_client.http_post_json")
+    @patch("ffbb_api_client.ffbb_api_client.http_post_json")
     def test_get_club_details(self, mock_post):
         mock_post.side_effect = [
             {"infos": [{"name": "i1"}], "fields": None, "teams": [{"name": "t1"}]},

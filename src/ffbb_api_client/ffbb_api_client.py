@@ -1,0 +1,560 @@
+import base64
+from typing import List
+
+from requests_cache import CachedSession
+
+from .agenda_and_results import AgendaAndResults, agenda_and_results_from_dict
+from .area import Area, area_from_dict
+from .cached_session_helper import default_cached_session
+from .catch_result_helper import catch_result
+from .championship import Championship, championship_from_dict
+from .club_details import ClubDetails, club_details_from_dict
+from .club_details_helper import merge_club_details
+from .club_infos import ClubInfos, club_infos_from_dict
+from .clubs_infos_helper import create_set_of_clubs
+from .competition import Competition, competition_from_dict
+from .competition_type import CompetitionType
+from .http_requests_utils import http_get_json, http_post_json, url_with_params
+from .league import League, league_from_dict
+from .logger import logger
+from .match_detail import MatchDetail, match_detail_from_dict
+from .municipalities_helper import create_set_of_municipalities
+from .municipality import Municipality, commune_from_dict
+from .news import News, news_from_dict
+from .videos import Videos, videos_from_dict
+
+
+class FFBBApiClient:
+    def __init__(
+        self,
+        basic_auth_user: str,
+        basic_auth_pass: str,
+        api_url: str = "https://mobiles.ffbb.com/php/v1_0_5/",
+        ws_url: str = "https://mobiles.ffbb.com/webservices/v1/",
+        debug: bool = False,
+        cached_session: CachedSession = default_cached_session(),
+    ):
+        """
+        Initializes the FFBBApiClient.
+
+        Args:
+            basic_auth_user (str): The basic authentication username.
+            basic_auth_pass (str): The basic authentication password.
+            api_url (str, optional): API url.
+            ws_url (str, optional): Webservices URL.
+            debug (bool, optional): Enable debug mode.
+            cached_session (bool, optional): Enable caching.
+        """
+        if not basic_auth_user:
+            raise ValueError("basic_auth_user must be provided")
+        if not basic_auth_pass:
+            raise ValueError("basic_auth_pass must be provided")
+        if not api_url:
+            raise ValueError("api_url must be provided")
+        if not ws_url:
+            raise ValueError("ws_url must be provided")
+
+        self.api_url = api_url
+        self.ws_url = ws_url
+        self.basic_auth_user = basic_auth_user
+        self.basic_auth_pass = basic_auth_pass
+        self.headers = {
+            "Authorization": "Basic "
+            + base64.b64encode(
+                f"{self.basic_auth_user}:{self.basic_auth_pass}".encode()
+            ).decode()
+        }
+        self.debug = debug
+        self.cached_session = cached_session
+
+    def get_results(
+        self,
+        team_id: int = None,
+        sub_competition: str = None,
+        team_group: str = None,
+        result_type: str = None,
+        day: str = None,
+        cached_session: CachedSession = None,
+    ) -> AgendaAndResults:
+        """
+        Get the agenda and results.
+
+        Args:
+            team_id (int, optional): The ID of the team.
+            sub_competition (str, optional): The sub-competition.
+            team_group (str, optional): The group of the team.
+            result_type (str, optional): The type of the result.
+            day (str, optional): The day of the result.
+            cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            AgendaAndResults: The agenda and results.
+        """
+        params = {
+            "id": team_id,
+            "subCompetition": sub_competition,
+            "group": team_group,
+            "type": result_type,
+            "day": day,
+        }
+        url = f"{self.api_url}results.php"
+        return catch_result(
+            lambda: agenda_and_results_from_dict(
+                http_post_json(
+                    url,
+                    self.headers,
+                    params,
+                    debug=self.debug,
+                    cached_session=cached_session or self.cached_session,
+                )
+            )
+        )
+
+    def get_club_details(
+        self, club_id: int, cached_session: CachedSession = None
+    ) -> ClubDetails:
+        """
+        Get the details of a club.
+
+        Args:
+            club_id (int): The ID of the club.
+            cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            ClubDetails: The details of the club.
+        """
+
+        if club_id is None:
+            return None
+
+        result = merge_club_details(
+            self._get_club_details_with_param(club_id, cached_session=cached_session),
+            self._get_club_details_with_param(
+                hex(club_id)[2:], cached_session=cached_session
+            ),
+        )
+        return result
+
+    def _get_club_details_with_param(
+        self, club_id, cached_session: CachedSession = None
+    ) -> ClubDetails:
+        """
+        Get the details of a club.
+
+        Args:
+            club_id (int): The ID of the club.
+            cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            ClubDetails: The details of the club.
+        """
+
+        params = {"id": club_id if club_id else None}
+        url = f"{self.api_url}club.php"
+        return catch_result(
+            lambda: club_details_from_dict(
+                http_post_json(
+                    url,
+                    self.headers,
+                    params,
+                    debug=self.debug,
+                    cached_session=cached_session or self.cached_session,
+                )
+            )
+        )
+
+    def get_area_competitions(
+        self,
+        area_id: str,
+        competition_type: CompetitionType = None,
+        cached_session: CachedSession = None,
+    ) -> List[Competition]:
+        """
+        Get the competitions in an area.
+
+        Args:
+            area_id (str): The ID of the area.
+            competition_type (CompetitionType, optional): The type of the competition.
+            cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            List[Competition]: The competitions in the area.
+        """
+        params = {
+            "id": area_id,
+            "type": competition_type.value if competition_type else None,
+        }
+        url = f"{self.api_url}areaCompetitions.php"
+        result = catch_result(
+            lambda: competition_from_dict(
+                http_post_json(
+                    url,
+                    self.headers,
+                    params,
+                    debug=self.debug,
+                    cached_session=cached_session or self.cached_session,
+                )
+            )
+        )
+        if result:
+            return list(set(result))
+        else:
+            return None
+
+    def get_league_competitions(
+        self,
+        league_id: str,
+        competition_type: CompetitionType = None,
+        cached_session: CachedSession = None,
+    ) -> List[Competition]:
+        """
+        Get the competitions in a league.
+
+        Args:
+            league_id (str): The ID of the league.
+            competition_type (CompetitionType, optional): The type of the competition.
+            cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            List[Competition]: The competitions in the league.
+        """
+        params = {
+            "id": league_id,
+            "type": competition_type.value if competition_type else None,
+        }
+        url = f"{self.api_url}leagueCompetitions.php"
+        result = catch_result(
+            lambda: competition_from_dict(
+                http_post_json(
+                    url,
+                    self.headers,
+                    params,
+                    debug=self.debug,
+                    cached_session=cached_session or self.cached_session,
+                )
+            )
+        )
+        if result:
+            return list(set(result))
+        else:
+            return None
+
+    def get_match_detail(
+        self,
+        match_id: int,
+        id: str = None,
+        sub_competition: str = None,
+        group: str = None,
+        result_type: str = None,
+        day: str = None,
+        cached_session: CachedSession = None,
+    ) -> MatchDetail:
+        """
+        Get the details of a match.
+
+        Args:
+            match_id (int): The ID of the match.
+            id (str, optional): The ID of the match.
+            sub_competition (str, optional): The sub-competition of the match.
+            group (str, optional): The group of the match.
+            result_type (str, optional): The type of the result.
+            day (str, optional): The day of the result.
+            cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            MatchDetail: The details of the match.
+        """
+        params = {
+            "id": id,
+            "subCompetition": sub_competition,
+            "group": group,
+            "type": result_type,
+            "day": day,
+            "matchId": match_id,
+        }
+        url = f"{self.api_url}matchDetail.php"
+        return catch_result(
+            lambda: match_detail_from_dict(
+                http_post_json(
+                    url,
+                    self.headers,
+                    params,
+                    debug=self.debug,
+                    cached_session=cached_session or self.cached_session,
+                )
+            )
+        )
+
+    def get_videos(
+        self,
+        cached_session: CachedSession = None,
+    ) -> Videos:
+        """
+        Get the videos.
+
+        Args:
+            cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            Videos: The videos.
+        """
+        params = {}
+        url = f"{self.api_url}videos.php"
+        return catch_result(
+            lambda: videos_from_dict(
+                http_post_json(
+                    url,
+                    self.headers,
+                    params,
+                    debug=self.debug,
+                    cached_session=cached_session or self.cached_session,
+                )
+            )
+        )
+
+    def get_news(self, cached_session: CachedSession = None) -> List[News]:
+        """
+        Get the news.
+
+        Returns:
+            List[News]: The news.
+        """
+        url = f"{self.api_url}news.php"
+        result = catch_result(
+            lambda: news_from_dict(
+                http_post_json(
+                    url,
+                    self.headers,
+                    cached_session=cached_session or self.cached_session,
+                )
+            )
+        )
+        if result:
+            return list(set(result))
+        else:
+            return None
+
+    def get_areas(
+        self,
+        competition_type: CompetitionType = None,
+        cached_session: CachedSession = None,
+    ) -> List[Area]:
+        """
+        Get the areas.
+
+        Args:
+            competition_type (CompetitionType, optional): The type of the competition.
+            cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            List[Area]: The areas.
+        """
+        params = {"type": competition_type.value if competition_type else None}
+        url = f"{self.api_url}areas.php"
+        result = catch_result(
+            lambda: area_from_dict(
+                http_post_json(
+                    url,
+                    self.headers,
+                    params,
+                    debug=self.debug,
+                    cached_session=cached_session or self.cached_session,
+                )
+            )
+        )
+        if result:
+            return list(set(result))
+        else:
+            return None
+
+    def get_leagues(
+        self,
+        competition_type: CompetitionType = None,
+        cached_session: CachedSession = None,
+    ) -> List[League]:
+        """
+        Get the leagues.
+
+        Args:
+            competition_type (CompetitionType, optional): The type of the competition.
+            cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            List[League]: The leagues.
+        """
+        params = {"type": competition_type.value if competition_type else None}
+        url = f"{self.api_url}leagues.php"
+        result = catch_result(
+            lambda: league_from_dict(
+                http_post_json(
+                    url,
+                    self.headers,
+                    params,
+                    debug=self.debug,
+                    cached_session=cached_session or self.cached_session,
+                )
+            )
+        )
+        if result:
+            return list(set(result))
+        else:
+            return None
+
+    def get_top_championships(
+        self,
+        championship_type: str = None,
+        cached_session: CachedSession = None,
+    ) -> List[Championship]:
+        """
+        Get the top championships.
+
+        Args:
+            championship_type (str, optional): The type of the championship.
+            cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            List[Championship]: The top championships.
+        """
+        params = {"type": championship_type.value if championship_type else None}
+        url = f"{self.api_url}topChampionships.php"
+        result = catch_result(
+            lambda: championship_from_dict(
+                http_post_json(
+                    url,
+                    self.headers,
+                    params,
+                    debug=self.debug,
+                    cached_session=cached_session or self.cached_session,
+                )
+            )
+        )
+        if result:
+            return list(set(result))
+        else:
+            return None
+
+    def search_municipalities(
+        self, name: str, cached_session: CachedSession = None
+    ) -> List[Municipality]:
+        """
+        Search for a municipality by name.
+
+        Args:
+            name (str): The name of the municipality to search for.
+            cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            List[Municipality]: A list of Municipality.
+        """
+        params = {"name": name}
+        url = url_with_params(f"{self.ws_url}communes.php", params)
+        result = catch_result(
+            lambda: commune_from_dict(
+                http_get_json(
+                    url,
+                    self.headers,
+                    debug=self.debug,
+                    cached_session=cached_session or self.cached_session,
+                )
+            )
+        )
+
+        return create_set_of_municipalities(result) if result else None
+
+    def search_multiple_municipalities(
+        self, patterns: List[str], cached_session: CachedSession = None
+    ) -> List[Municipality]:
+        """
+        Search for multiple municipalities based on their names.
+
+        Args:
+            patterns (List[str]): A list of patterns to search for.
+             cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            List[Municipality]: A list of Municipality.
+        """
+        municipalities = []
+        for pattern in patterns:
+            result: List[Municipality] = None
+            try:
+                result = self.search_municipalities(
+                    pattern, cached_session=cached_session
+                )
+            except Exception as e:
+                if self.debug:
+                    logger.error(
+                        "An error occurred while searching municipalities: %s",
+                        str(e),
+                    )
+
+            if not result:
+                continue
+
+            municipalities.extend(result)
+
+        return create_set_of_municipalities(municipalities) if municipalities else None
+
+    def search_clubs(
+        self,
+        id_municipality: int = None,
+        org_name: str = None,
+        cached_session: CachedSession = None,
+    ) -> List[ClubInfos]:
+        """
+        Search for a club.
+
+        Args:
+            id_municipality (int, optional): The ID of the municipality.
+            org_name (str, optional): The name of the organization.
+            cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            List[ClubInfos]: The club information.
+        """
+        params = {"idCmne": id_municipality, "nomOrg": org_name}
+
+        url = url_with_params(f"{self.ws_url}search_club.php", params)
+        result = catch_result(
+            lambda: club_infos_from_dict(
+                http_get_json(
+                    url,
+                    self.headers,
+                    debug=self.debug,
+                    cached_session=cached_session or self.cached_session,
+                )
+            )
+        )
+
+        return create_set_of_clubs(result) if result else None
+
+    def search_multiple_clubs(
+        self, org_names: List[str], cached_session: CachedSession = None
+    ) -> List[ClubInfos]:
+        """
+        Search for multiple clubs based on their organization names.
+
+        Args:
+            org_names (List[str]): A list of organization names to search for.
+             cached_session (CachedSession, optional): Enable caching.
+
+        Returns:
+            List[ClubInfos]: A list of ClubInfos objects representing the found clubs.
+        """
+        clubs = []
+        for org_name in org_names:
+            result: ClubInfos = None
+            try:
+                result = self.search_clubs(
+                    org_name=org_name, cached_session=cached_session
+                )
+            except Exception as e:
+                if self.debug:
+                    logger.error("An error occurred while searching clubs: %s", str(e))
+
+            if not result:
+                continue
+
+            clubs.extend(result)
+
+        return create_set_of_clubs(clubs) if clubs else None
