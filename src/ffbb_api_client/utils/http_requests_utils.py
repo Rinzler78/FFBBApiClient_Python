@@ -48,7 +48,6 @@ def http_get(
         url (str): The URL of the request.
         headers (Dict[str, str]): The headers of the request.
         debug (bool): Whether to enable debug mode or not. Default is False.
-        use_cache (bool): Whether to use cache or not. Default is True.
         timeout (int): The timeout value in seconds. Default is 20.
 
     Returns:
@@ -86,7 +85,6 @@ def http_post(
         headers (Dict[str, str]): The headers of the request.
         data (Dict[str, Any]): The data of the request.
         debug (bool): Whether to enable debug mode or not. Default is False.
-        use_cache (bool): Whether to use cache or not. Default is True.
         timeout (int): The timeout value in seconds. Default is 20.
 
     Returns:
@@ -128,7 +126,6 @@ def http_get_json(
         url (str): The URL of the request.
         headers (Dict[str, str]): The headers of the request.
         debug (bool): Whether to enable debug mode or not. Default is False.
-        use_cache (bool): Whether to use cache or not. Default is True.
         timeout (int): The timeout value in seconds. Default is 20.
 
     Returns:
@@ -156,7 +153,6 @@ def http_post_json(
         headers (Dict[str, str]): The headers of the request.
         data (Dict[str, Any]): The data of the request.
         debug (bool): Whether to enable debug mode or not. Default is False.
-        use_cache (bool): Whether to use cache or not. Default is True.
         timeout (int): The timeout value in seconds. Default is 20.
 
     Returns:
