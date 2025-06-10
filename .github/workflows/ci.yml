@@ -105,6 +105,15 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           parallel-finished: true
 
+  docs:
+    needs: finalize
+    runs-on: ubuntu-latest
+    steps:
+      - uses: readthedocs/actions@v1
+        with:
+          project: ffbbapiclient-python
+          token: ${{ secrets.READTHEDOCS_TOKEN }}
+
   publish:
     needs: finalize
     if: ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags/') }}
