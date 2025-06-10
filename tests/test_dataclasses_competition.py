@@ -1,6 +1,6 @@
 import unittest
 
-from ffbb_api_client.competition import Competition
+from ffbb_api_client import Competition
 
 
 class TestCompetition(unittest.TestCase):

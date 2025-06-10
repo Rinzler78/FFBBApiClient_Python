@@ -2,25 +2,43 @@
 ffbb_api_client
 ====================
 
-This is the documentation of **ffbb_api_client**.
+**ffbb_api_client** is a Python client library for interacting with the FFBB (French Basketball Federation) APIs.
 
-.. note::
+Features
+========
 
-    This is the main page of your project's `Sphinx`_ documentation.
-    It is formatted in `reStructuredText`_. Add additional pages
-    by creating rst-files in ``docs`` and adding them to the `toctree`_ below.
-    Use then `references`_ in order to link them from this page, e.g.
-    :ref:`authors` and :ref:`changes`.
+- **Complete API Coverage**: Access to clubs, teams, matches, competitions, and more
+- **Type Safety**: Comprehensive type annotations for better development experience
+- **Organized Structure**: Clean separation between models, helpers, and utilities
+- **Error Handling**: Robust error handling with custom exception types
+- **Caching Support**: Built-in HTTP caching for improved performance
+- **Flexible Logging**: Configurable logging for debugging and monitoring
 
-    It is also possible to refer to the documentation of other Python packages
-    with the `Python domain syntax`_. By default you can reference the
-    documentation of `Sphinx`_, `Python`_, `NumPy`_, `SciPy`_, `matplotlib`_,
-    `Pandas`_, `Scikit-Learn`_. You can add more by extending the
-    ``intersphinx_mapping`` in your Sphinx's ``conf.py``.
+Quick Start
+===========
 
-    The pretty useful extension `autodoc`_ is activated by default and lets
-    you include documentation from docstrings. Docstrings can be written in
-    `Google style`_ (recommended!), `NumPy style`_ and `classical style`_.
+.. code-block:: python
+
+    from ffbb_api_client import FFBBApiClient, configure_logging
+    import logging
+
+    # Configure logging (optional)
+    configure_logging(logging.INFO)
+
+    # Create client
+    client = FFBBApiClient(
+        basic_auth_user="your_username",
+        basic_auth_pass="your_password"
+    )
+
+    # Get areas
+    areas = client.get_areas()
+
+    # Search for clubs
+    clubs = client.search_clubs(org_name="Paris")
+
+    # Get match details
+    match = client.get_match_detail(match_id=12345)
 
 
 Contents
@@ -30,6 +48,8 @@ Contents
    :maxdepth: 2
 
    Overview <readme>
+   User Guide <user_guide>
+   Package Architecture <architecture>
    License <license>
    Authors <authors>
    Changelog <changelog>

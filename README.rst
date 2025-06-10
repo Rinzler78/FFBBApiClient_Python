@@ -113,11 +113,11 @@ They can be exported in your shell or stored in a ``.env`` file:
 Logging
 =======
 
-Use :func:`ffbb_api_client.logger.configure_logging` to quickly enable
+Use :func:`ffbb_api_client.configure_logging` to quickly enable
 logging output. By default the logger is silent unless configured::
 
     import logging
-    from ffbb_api_client.logger import configure_logging
+    from ffbb_api_client import configure_logging
 
     configure_logging(logging.DEBUG)
 
@@ -132,6 +132,25 @@ Error handling
 Unexpected errors raised by callbacks executed through ``catch_result`` are
 wrapped in :class:`ffbb_api_client.CatchResultError`.  This makes it possible to
 distinguish network or decoding issues from other failures.
+
+Package Structure
+=================
+
+The package is organized into logical modules:
+
+- **Main client**: :class:`ffbb_api_client.FFBBApiClient` - The main API client
+- **Models**: Data classes for API responses (clubs, teams, matches, etc.)
+- **Helpers**: Utility functions for data processing and caching
+- **Utils**: Core utilities (HTTP requests, logging, data converters)
+
+All public APIs are available through direct imports::
+
+    from ffbb_api_client import (
+        FFBBApiClient,           # Main client
+        ClubDetails, Team,       # Model classes
+        configure_logging,       # Utilities
+        CatchResultError         # Exception handling
+    )
 
 Note
 ====

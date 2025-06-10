@@ -1,6 +1,6 @@
 import unittest
 
-from ffbb_api_client.standing import Standing
+from ffbb_api_client import Standing
 
 
 class TestStanding(unittest.TestCase):

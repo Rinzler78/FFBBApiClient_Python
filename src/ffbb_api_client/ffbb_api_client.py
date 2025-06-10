@@ -3,25 +3,25 @@ from typing import List
 
 from requests_cache import CachedSession
 
-from .agenda_and_results import AgendaAndResults, agenda_and_results_from_dict
-from .area import Area, area_from_dict
-from .cached_session_helper import default_cached_session
-from .catch_result_helper import catch_result
-from .championship import Championship, championship_from_dict
-from .club_details import ClubDetails, club_details_from_dict
-from .club_details_helper import merge_club_details
-from .club_infos import ClubInfos, club_infos_from_dict
-from .clubs_infos_helper import create_set_of_clubs
-from .competition import Competition, competition_from_dict
-from .competition_type import CompetitionType
-from .http_requests_utils import http_get_json, http_post_json, url_with_params
-from .league import League, league_from_dict
-from .logger import logger
-from .match_detail import MatchDetail, match_detail_from_dict
-from .municipalities_helper import create_set_of_municipalities
-from .municipality import Municipality, commune_from_dict
-from .news import News, news_from_dict
-from .videos import Videos, videos_from_dict
+from .helpers.cached_session_helper import default_cached_session
+from .helpers.catch_result_helper import catch_result
+from .helpers.club_details_helper import merge_club_details
+from .helpers.clubs_infos_helper import create_set_of_clubs
+from .helpers.municipalities_helper import create_set_of_municipalities
+from .models.agenda_and_results import AgendaAndResults, agenda_and_results_from_dict
+from .models.area import Area, area_from_dict
+from .models.championship import Championship, championship_from_dict
+from .models.club_details import ClubDetails, club_details_from_dict
+from .models.club_infos import ClubInfos, club_infos_from_dict
+from .models.competition import Competition, competition_from_dict
+from .models.competition_type import CompetitionType
+from .models.league import League, league_from_dict
+from .models.match_detail import MatchDetail, match_detail_from_dict
+from .models.municipality import Municipality, commune_from_dict
+from .models.news import News, news_from_dict
+from .models.videos import Videos, videos_from_dict
+from .utils.http_requests_utils import http_get_json, http_post_json, url_with_params
+from .utils.logger import logger
 
 
 class FFBBApiClient:

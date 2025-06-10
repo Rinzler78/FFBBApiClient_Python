@@ -1,6 +1,6 @@
 import unittest
 
-from ffbb_api_client.member import Member
+from ffbb_api_client import Member
 
 
 class TestMember(unittest.TestCase):

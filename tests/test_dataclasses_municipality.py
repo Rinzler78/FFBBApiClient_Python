@@ -1,6 +1,6 @@
 import unittest
 
-from ffbb_api_client.municipality import Municipality
+from ffbb_api_client import Municipality
 
 
 class TestMunicipality(unittest.TestCase):

@@ -6,7 +6,20 @@
       "Bash(python -m pytest tests/test_api_client_core.py::TestFFBBApiClientCore::test_get_videos -v)",
       "Bash(tox)",
       "Bash(python -m pytest tests/test_api_client_core.py -v)",
-      "Bash(python -m pytest tests/test_client_mocked.py -v)"
+      "Bash(python -m pytest tests/test_client_mocked.py -v)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(chmod:*)",
+      "Bash(mv:*)",
+      "Bash(pre-commit run:*)",
+      "Bash(mkdir:*)",
+      "Bash(for file in *.py)",
+      "Bash(do sed -i '' 's/from \\.converters import/from ..converters import/g' \"$file\")",
+      "Bash(done)",
+      "Bash(python:*)",
+      "Bash(sed:*)",
+      "Bash(bash:*)",
+      "Bash(make:*)"
     ],
     "deny": []
   }

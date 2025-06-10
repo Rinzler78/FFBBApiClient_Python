@@ -1,6 +1,7 @@
 import unittest
 
-from ffbb_api_client.category import Category, extract_category
+from ffbb_api_client import Category
+from ffbb_api_client.models.category import extract_category
 
 
 class TestCategory(unittest.TestCase):

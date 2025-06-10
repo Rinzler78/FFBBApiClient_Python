@@ -1,4 +1,5 @@
 import unittest
+
 from ffbb_api_client import FFBBApiClient
 
 
@@ -18,4 +19,3 @@ class TestFFBBApiClientInit(unittest.TestCase):
     def test_empty_ws_url(self):
         with self.assertRaises(ValueError):
             FFBBApiClient(basic_auth_user="u", basic_auth_pass="p", ws_url="")
-

@@ -1,6 +1,6 @@
 import unittest
 
-from ffbb_api_client.club_details import ClubDetails
+from ffbb_api_client import ClubDetails
 
 
 class TestClubDetails(unittest.TestCase):

@@ -1,6 +1,6 @@
 import unittest
 
-from ffbb_api_client.score import Score
+from ffbb_api_client import Score
 
 
 class TestScore(unittest.TestCase):

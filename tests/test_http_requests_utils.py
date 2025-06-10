@@ -1,11 +1,7 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-from ffbb_api_client.http_requests_utils import (
-    http_get_json,
-    http_post_json,
-    to_json_from_response,
-)
+from ffbb_api_client import http_get_json, http_post_json, to_json_from_response
 
 
 class TestHttpRequestsUtils(unittest.TestCase):
@@ -27,7 +23,7 @@ class TestHttpRequestsUtils(unittest.TestCase):
         result = to_json_from_response(mock_response)
         self.assertEqual(result, [1, 2])
 
-    @patch("ffbb_api_client.http_requests_utils.requests.get")
+    @patch("ffbb_api_client.utils.http_requests_utils.requests.get")
     def test_http_get_json(self, mock_get):
         response = MagicMock()
         response.text = '{"x": 1}'
@@ -35,7 +31,7 @@ class TestHttpRequestsUtils(unittest.TestCase):
         result = http_get_json("http://example", {})
         self.assertEqual(result, {"x": 1})
 
-    @patch("ffbb_api_client.http_requests_utils.requests.post")
+    @patch("ffbb_api_client.utils.http_requests_utils.requests.post")
     def test_http_post_json(self, mock_post):
         response = MagicMock()
         response.text = '{"y": 2}'

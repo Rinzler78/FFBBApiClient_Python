@@ -8,7 +8,7 @@ from ffbb_api_client import (
     ClubDetails,
     ClubInfos,
     FFBBApiClient,
-    GeographycaleZone,
+    GeographicalZone,
     League,
     Municipality,
     Sex,
@@ -69,7 +69,7 @@ senior_men_regional_div2_team: Team = next(
         for team in club_details.teams
         if team.category.value == Category.SENIOR.value
         and team.sex.value == Sex.MASCULIN.value
-        and team.geographycale_zone.value == GeographycaleZone.REGIONAL.value
+        and team.geographical_zone.value == GeographicalZone.REGIONAL.value
         and team.division_number == 2
     ),
     None,

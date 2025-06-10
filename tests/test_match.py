@@ -1,8 +1,7 @@
 import unittest
 from datetime import datetime
 
-from ffbb_api_client.match import Match
-from ffbb_api_client.score import Score
+from ffbb_api_client import Match, Score
 
 
 class TestMatch(unittest.TestCase):

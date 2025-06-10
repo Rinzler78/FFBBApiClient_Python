@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 
-from ffbb_api_client.season import Season
+from ffbb_api_client import Season
 
 
 class TestSeason(unittest.TestCase):

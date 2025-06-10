@@ -33,7 +33,7 @@ class TestFFBBApiClientCore(unittest.TestCase):
 
     def test_get_videos(self):
         result = self.api_client.get_videos()
-        self.assertTrue(result is None or hasattr(result, '__class__'))
+        self.assertTrue(result is None or hasattr(result, "__class__"))
 
     def test_get_news(self):
         result = self.api_client.get_news()

@@ -1,6 +1,6 @@
 import unittest
 
-from ffbb_api_client.news import News
+from ffbb_api_client import News
 
 
 class TestNews(unittest.TestCase):
