@@ -93,10 +93,26 @@ Quick start
         basic_auth_pass=basic_auth_pass
     )
 
+Environment variables
+=====================
+
+The client requires credentials provided via the following environment
+variables:
+
+- ``FFBB_BASIC_AUTH_USER`` – your API username
+- ``FFBB_BASIC_AUTH_PASS`` – the corresponding password
+
+They can be exported in your shell or stored in a ``.env`` file:
+
+.. code-block:: bash
+
+    FFBB_BASIC_AUTH_USER=my_user
+    FFBB_BASIC_AUTH_PASS=my_password
+
 Examples
 ========
 
-See `quick_start.py` for usage examples.
+See ``quick_start.py`` for a complete usage example.
 
 Note
 ====
