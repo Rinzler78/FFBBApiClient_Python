@@ -1,3 +1,5 @@
+"""Model for Videos returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, List, Optional
 
@@ -8,12 +10,22 @@ from .page_info import PageInfo
 
 @dataclass
 class Videos:
+    """
+    Data class for Videos information.
+
+    Attributes:
+        next_page_token: Value from the API.
+        items: Value from the API.
+        page_info: Value from the API.
+    """
+
     next_page_token: Optional[str] = None
     items: Optional[List[Item]] = None
     page_info: Optional[PageInfo] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "Videos":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         next_page_token = from_union([from_str, from_none], obj.get("nextPageToken"))
         items = from_union(
@@ -23,6 +35,7 @@ class Videos:
         return Videos(next_page_token, items, page_info)
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.next_page_token is not None:
             result["nextPageToken"] = from_union(

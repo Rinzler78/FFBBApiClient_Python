@@ -1,3 +1,5 @@
+"""Model for News returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, List, Optional
 
@@ -13,6 +15,20 @@ from ..utils.converters import (
 
 @dataclass
 class News:
+    """
+    Data class for News information.
+
+    Attributes:
+        id: Value from the API.
+        date: Value from the API.
+        url: Value from the API.
+        author: Value from the API.
+        category: Value from the API.
+        title: Value from the API.
+        image: Value from the API.
+        excerpt: Value from the API.
+    """
+
     id: Optional[int] = None
     date: Optional[str] = None
     url: Optional[str] = None
@@ -24,6 +40,7 @@ class News:
 
     @staticmethod
     def from_dict(obj: Any) -> "News":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         id = from_union([from_none, lambda x: int(from_str(x))], obj.get("id"))
         date = from_union([from_str, from_none], obj.get("date"))
@@ -36,6 +53,7 @@ class News:
         return News(id, date, url, author, category, title, image, excerpt)
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.id is not None:
             result["id"] = from_union(

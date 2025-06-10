@@ -1,3 +1,5 @@
+"""Model for Team returned by the FFBB API."""
+
 import re
 from dataclasses import dataclass
 from typing import Any, Optional
@@ -53,6 +55,24 @@ def extract_phase_number(input_str: str) -> int:
 
 @dataclass
 class Team:
+    """
+    Data class for Team information.
+
+    Attributes:
+        id: Value from the API.
+        sub_competition: Value from the API.
+        name: Value from the API.
+        group: Value from the API.
+        category: Value from the API.
+        group_field: Value from the API.
+        competition_type: Value from the API.
+        sex: Value from the API.
+        geographical_zone: Value from the API.
+        division_number: Value from the API.
+        pool_letter: Value from the API.
+        phase_number: Value from the API.
+    """
+
     id: Optional[str] = None
     sub_competition: Optional[str] = None
     name: Optional[str] = None
@@ -68,6 +88,7 @@ class Team:
 
     @staticmethod
     def from_dict(obj: Any) -> "Team":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         id = from_union([from_str, from_none], obj.get("id"))
         sub_competition = from_union([from_str, from_none], obj.get("subCompetition"))
@@ -97,6 +118,7 @@ class Team:
         )
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.id is not None:
             result["id"] = from_union([from_str, from_none], self.id)

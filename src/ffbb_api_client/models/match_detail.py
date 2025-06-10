@@ -1,3 +1,5 @@
+"""Model for MatchDetail returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, List, Optional
 
@@ -6,12 +8,22 @@ from ..utils.converters import from_list, from_none, from_str, from_union, to_cl
 
 @dataclass
 class MatchDetail:
+    """
+    Data class for MatchDetail information.
+
+    Attributes:
+        category: Value from the API.
+        title: Value from the API.
+        desc: Value from the API.
+    """
+
     category: Optional[str] = None
     title: Optional[str] = None
     desc: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "MatchDetail":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         category = from_union([from_str, from_none], obj.get("category"))
         title = from_union([from_str, from_none], obj.get("title"))
@@ -19,6 +31,7 @@ class MatchDetail:
         return MatchDetail(category, title, desc)
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.category is not None:
             result["category"] = from_union([from_str, from_none], self.category)

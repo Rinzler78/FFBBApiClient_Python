@@ -1,3 +1,5 @@
+"""Model for Member returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -13,6 +15,26 @@ from ..utils.converters import (
 
 @dataclass
 class Member:
+    """
+    Data class for Member information.
+
+    Attributes:
+        id: Value from the API.
+        last_name: Value from the API.
+        first_name: Value from the API.
+        address_line1: Value from the API.
+        address_line2: Value from the API.
+        postal_code: Value from the API.
+        city: Value from the API.
+        email: Value from the API.
+        landline_phone: Value from the API.
+        mobile_phone: Value from the API.
+        role_code: Value from the API.
+        role_label: Value from the API.
+        license_id: Value from the API.
+        consent_to_website_publishing: Value from the API.
+    """
+
     id: Optional[int] = None
     last_name: Optional[str] = None
     first_name: Optional[str] = None
@@ -30,6 +52,7 @@ class Member:
 
     @staticmethod
     def from_dict(obj: Any) -> "Member":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         address_line2 = from_union([from_str, from_none], obj.get("adresse2"))
         postal_code = from_union(
@@ -67,6 +90,7 @@ class Member:
         )
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.address_line2 is not None:
             result["adresse2"] = from_union(

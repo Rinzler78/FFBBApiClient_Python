@@ -1,3 +1,5 @@
+"""Model for Municipality returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, List, Optional
 
@@ -14,6 +16,19 @@ from ..utils.converters import (
 
 @dataclass
 class Municipality:
+    """
+    Data class for Municipality information.
+
+    Attributes:
+        postal_code: Value from the API.
+        insee_code: Value from the API.
+        postal_community_code: Value from the API.
+        id: Value from the API.
+        label: Value from the API.
+        municipality_id: Value from the API.
+        municipality_label: Value from the API.
+    """
+
     postal_code: Optional[int] = None
     insee_code: Optional[str] = None
     postal_community_code: Optional[int] = None
@@ -24,6 +39,7 @@ class Municipality:
 
     @staticmethod
     def from_dict(obj: Any) -> "Municipality":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         postal_code = from_union(
             [from_none, lambda x: int(from_str(x))], obj.get("codePostal")
@@ -49,6 +65,7 @@ class Municipality:
         )
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.postal_code is not None:
             result["codePostal"] = from_union(

@@ -1,3 +1,5 @@
+"""Model for Group returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -7,12 +9,22 @@ from .competition_type import CompetitionType, extract_competition_type
 
 @dataclass
 class Group:
+    """
+    Data class for Group information.
+
+    Attributes:
+        id: Value from the API.
+        name: Value from the API.
+        competition_type: Value from the API.
+    """
+
     id: Optional[str] = None
     name: Optional[str] = None
     competition_type: Optional[CompetitionType] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "Group":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         id = from_union([from_str, from_none], obj.get("id"))
         name = from_union([from_str, from_none], obj.get("name"))
@@ -22,6 +34,7 @@ class Group:
         return Group(id, name, competition_type)
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.id is not None:
             result["id"] = from_union([from_str, from_none], self.id)

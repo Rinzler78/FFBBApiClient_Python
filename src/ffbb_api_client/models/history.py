@@ -1,3 +1,5 @@
+"""Model for History returned by the FFBB API."""
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Optional
@@ -9,6 +11,18 @@ from .type_association import TypeAssociation
 
 @dataclass
 class History:
+    """
+    Data class for History information.
+
+    Attributes:
+        cessation: Value from the API.
+        affiliation_date: Value from the API.
+        reaffiliation_date: Value from the API.
+        season: Value from the API.
+        creation_date: Value from the API.
+        association_type: Value from the API.
+    """
+
     cessation: None
     affiliation_date: Optional[datetime] = None
     reaffiliation_date: Optional[datetime] = None
@@ -18,6 +32,7 @@ class History:
 
     @staticmethod
     def from_dict(obj: Any) -> "History":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         cessation = from_union([from_datetime, from_none], obj.get("cessation"))
         affiliation_date = from_union(
@@ -41,6 +56,7 @@ class History:
         )
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.cessation is not None:
             result["cessation"] = from_none(self.cessation)

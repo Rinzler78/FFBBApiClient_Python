@@ -1,3 +1,5 @@
+"""Model for BasketballCourt returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -6,12 +8,22 @@ from ..utils.converters import from_int, from_none, from_str, from_union
 
 @dataclass
 class BasketballCourt:
+    """
+    Data class for BasketballCourt information.
+
+    Attributes:
+        number: Value from the API.
+        id: Value from the API.
+        label: Value from the API.
+    """
+
     number: Optional[None]
     id: Optional[int] = None
     label: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "BasketballCourt":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         numero = from_none(obj.get("numero"))
         id = from_union([from_int, from_none], obj.get("id"))
@@ -19,6 +31,7 @@ class BasketballCourt:
         return BasketballCourt(numero, id, libelle)
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.number is not None:
             result["numero"] = from_none(self.number)

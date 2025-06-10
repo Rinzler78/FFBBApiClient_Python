@@ -1,3 +1,5 @@
+"""Model for Championship returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, List, Optional
 
@@ -6,12 +8,22 @@ from ..utils.converters import from_list, from_none, from_str, from_union, to_cl
 
 @dataclass
 class Championship:
+    """
+    Data class for Championship information.
+
+    Attributes:
+        name: Value from the API.
+        id: Value from the API.
+        type: Value from the API.
+    """
+
     name: Optional[str] = None
     id: Optional[str] = None
     type: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "Championship":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         name = from_union([from_str, from_none], obj.get("name"))
         id = from_union([from_str, from_none], obj.get("id"))
@@ -19,6 +31,7 @@ class Championship:
         return Championship(name, id, type)
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.name is not None:
             result["name"] = from_union([from_str, from_none], self.name)

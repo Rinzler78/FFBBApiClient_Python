@@ -1,5 +1,4 @@
-"""
-Club details data model for FFBB API responses.
+"""Club details data model for FFBB API responses.
 
 This module contains the ClubDetails dataclass which represents detailed
 information about a basketball club, including its facilities, teams, and
@@ -80,6 +79,7 @@ class ClubDetails:
         return ClubDetails(infos, fields, teams)
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.infos is not None:
             result["infos"] = from_union(

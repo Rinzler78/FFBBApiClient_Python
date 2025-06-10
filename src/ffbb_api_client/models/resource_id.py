@@ -1,3 +1,5 @@
+"""Model for ResourceID returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -6,17 +8,27 @@ from ..utils.converters import from_none, from_str, from_union
 
 @dataclass
 class ResourceID:
+    """
+    Data class for ResourceID information.
+
+    Attributes:
+        kind: Value from the API.
+        video_id: Value from the API.
+    """
+
     kind: Optional[str] = None
     video_id: Optional[str] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "ResourceID":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         kind = from_union([from_str, from_none], obj.get("kind"))
         video_id = from_union([from_str, from_none], obj.get("videoId"))
         return ResourceID(kind, video_id)
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.kind is not None:
             result["kind"] = from_union([from_str, from_none], self.kind)

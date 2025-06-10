@@ -1,3 +1,5 @@
+"""Model for Field returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, Optional
 

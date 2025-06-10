@@ -1,3 +1,5 @@
+"""Model for GeoLocation returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -13,6 +15,18 @@ from ..utils.converters import (
 
 @dataclass
 class GeoLocation:
+    """
+    Data class for GeoLocation information.
+
+    Attributes:
+        postal_code: Value from the API.
+        latitude: Value from the API.
+        longitude: Value from the API.
+        title: Value from the API.
+        adress: Value from the API.
+        city: Value from the API.
+    """
+
     postal_code: Optional[int] = None
     latitude: Optional[float] = None
     longitude: Optional[float] = None
@@ -22,6 +36,7 @@ class GeoLocation:
 
     @staticmethod
     def from_dict(obj: Any) -> "GeoLocation":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         postal_code = from_union(
             [from_none, lambda x: int(from_str(x))], obj.get("codePostal")
@@ -34,6 +49,7 @@ class GeoLocation:
         return GeoLocation(postal_code, latitude, longitude, title, adress, city)
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.postal_code is not None:
             result["codePostal"] = from_union(

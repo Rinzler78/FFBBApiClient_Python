@@ -1,3 +1,5 @@
+"""Model for PageInfo returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, Optional
 

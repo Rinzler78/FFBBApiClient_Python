@@ -1,3 +1,5 @@
+"""Model for AgendaAndResults returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, List, Optional
 
@@ -10,6 +12,18 @@ from .standing import Standing
 
 @dataclass
 class AgendaAndResults:
+    """
+    Data class for AgendaAndResults information.
+
+    Attributes:
+        sub_competitions: Value from the API.
+        groups: Value from the API.
+        days: Value from the API.
+        current_day: Value from the API.
+        matchs: Value from the API.
+        standings: Value from the API.
+    """
+
     sub_competitions: Optional[List[Group]] = None
     groups: Optional[List[Group]] = None
     days: Optional[List[Day]] = None
@@ -19,6 +33,7 @@ class AgendaAndResults:
 
     @staticmethod
     def from_dict(obj: Any) -> "AgendaAndResults":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         sub_competitions = from_union(
             [lambda x: from_list(Group.from_dict, x), from_none],
@@ -43,6 +58,7 @@ class AgendaAndResults:
         )
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.sub_competitions is not None:
             result["subCompetitions"] = from_union(

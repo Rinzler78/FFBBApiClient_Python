@@ -1,3 +1,5 @@
+"""Model for Season returned by the FFBB API."""
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Optional
@@ -15,6 +17,18 @@ from ..utils.converters import (
 
 @dataclass
 class Season:
+    """
+    Data class for Season information.
+
+    Attributes:
+        active: Value from the API.
+        id: Value from the API.
+        code: Value from the API.
+        label: Value from the API.
+        start_date: Value from the API.
+        end_date: Value from the API.
+    """
+
     active: Optional[bool] = None
     id: Optional[int] = None
     code: Optional[str] = None
@@ -24,6 +38,7 @@ class Season:
 
     @staticmethod
     def from_dict(obj: Any) -> "Season":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         active = from_union(
             [from_none, lambda x: from_stringified_bool(from_str(x))], obj.get("actif")
@@ -36,6 +51,7 @@ class Season:
         return Season(active, id, code, label, start_date, end_date)
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.active is not None:
             result["actif"] = from_union(
