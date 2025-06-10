@@ -322,22 +322,18 @@ class FFBBApiClient:
 
     def get_videos(
         self,
-        id_cmne: str = None,
-        org_name: str = None,
         cached_session: CachedSession = None,
     ) -> Videos:
         """
         Get the videos.
 
         Args:
-            id_cmne (str, optional): The ID of the commune.
-            org_name (str, optional): The name of the organization.
             cached_session (CachedSession, optional): Enable caching.
 
         Returns:
             Videos: The videos.
         """
-        params = {"idCmne": id_cmne, "nomOrg": org_name}
+        params = {}
         url = f"{self.api_url}videos.php"
         return catch_result(
             lambda: videos_from_dict(

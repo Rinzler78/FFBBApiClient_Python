@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pytest tests/test_get_videos.py -v)",
+      "Bash(pip install:*)",
+      "Bash(python -m pytest tests/test_api_client_core.py::TestFFBBApiClientCore::test_get_videos -v)",
+      "Bash(tox)"
+    ],
+    "deny": []
+  }
+}
