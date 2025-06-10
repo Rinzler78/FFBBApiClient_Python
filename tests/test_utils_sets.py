@@ -10,6 +10,7 @@ from ffbb_api_client import (
     Municipality,
     Team,
     catch_result,
+    CatchResultError,
 )
 from ffbb_api_client.club_details_helper import merge_club_details
 from ffbb_api_client.clubs_infos_helper import create_set_of_clubs
@@ -59,3 +60,6 @@ class TestUtilities(unittest.TestCase):
             raise json.decoder.JSONDecodeError("Expecting value", "", 0)
 
         self.assertIsNone(catch_result(bad))
+
+        with self.assertRaises(CatchResultError):
+            catch_result(lambda: (_ for _ in ()).throw(ValueError("boom")))
