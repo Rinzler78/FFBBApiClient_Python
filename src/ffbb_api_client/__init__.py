@@ -67,7 +67,7 @@ class FFBBApiClient:
         api_url: str = "https://mobiles.ffbb.com/php/v1_0_5/",
         ws_url: str = "https://mobiles.ffbb.com/webservices/v1/",
         debug: bool = False,
-        cached_session: CachedSession = default_cached_session,
+        cached_session: CachedSession = default_cached_session(),
     ):
         """
         Initializes the FFBBApiClient.
