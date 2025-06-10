@@ -10,7 +10,7 @@ from .basketball_court import BasketballCourt  # noqa
 
 # Import du cache helper
 from .cached_session_helper import default_cached_session
-from .catch_result_helper import catch_result
+from .catch_result_helper import catch_result, CatchResultError
 from .category import Category  # noqa
 from .championship import Championship, championship_from_dict  # noqa
 from .club_details import ClubDetails, club_details_from_dict  # noqa
@@ -23,13 +23,13 @@ from .day import Day  # noqa
 from .default import Default  # noqa
 from .field import Field  # noqa
 from .geo_location import GeoLocation  # noqa
-from .geographycale_zone import GeographycaleZone  # noqa
+from .geographical_zone import GeographycaleZone  # noqa
 from .group import Group  # noqa
 from .history import History  # noqa
 from .http_requests_utils import http_get_json, http_post_json, url_with_params  # noqa
 from .item import Item  # noqa
 from .league import League, league_from_dict  # noqa
-from .logger import logger
+from .logger import configure_logging, logger
 from .match import Match  # noqa
 from .match_detail import MatchDetail, match_detail_from_dict  # noqa
 from .member import Member  # noqa
@@ -80,6 +80,15 @@ class FFBBApiClient:
             debug (bool, optional): Enable debug mode.
             cached_session (bool, optional): Enable caching.
         """
+        if not basic_auth_user:
+            raise ValueError("basic_auth_user must be provided")
+        if not basic_auth_pass:
+            raise ValueError("basic_auth_pass must be provided")
+        if not api_url:
+            raise ValueError("api_url must be provided")
+        if not ws_url:
+            raise ValueError("ws_url must be provided")
+
         self.api_url = api_url
         self.ws_url = ws_url
         self.basic_auth_user = basic_auth_user
