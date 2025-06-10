@@ -109,7 +109,7 @@ jobs:
     needs: finalize
     runs-on: ubuntu-latest
     steps:
-      - uses: readthedocs/actions/trigger@v1
+      - uses: readthedocs/actions@v1
         with:
           project-slug: ffbbapiclient-python
           token: ${{ secrets.READTHEDOCS_TOKEN }}
