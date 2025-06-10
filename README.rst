@@ -93,6 +93,7 @@ Quick start
         basic_auth_pass=basic_auth_pass
     )
 
+
 Environment variables
 =====================
 
@@ -109,10 +110,28 @@ They can be exported in your shell or stored in a ``.env`` file:
     FFBB_BASIC_AUTH_USER=my_user
     FFBB_BASIC_AUTH_PASS=my_password
 
+Logging
+=======
+
+Use :func:`ffbb_api_client.logger.configure_logging` to quickly enable
+logging output. By default the logger is silent unless configured::
+
+    import logging
+    from ffbb_api_client.logger import configure_logging
+
+    configure_logging(logging.DEBUG)
+
 Examples
 ========
 
 See ``quick_start.py`` for a complete usage example.
+
+Error handling
+==============
+
+Unexpected errors raised by callbacks executed through ``catch_result`` are
+wrapped in :class:`ffbb_api_client.CatchResultError`.  This makes it possible to
+distinguish network or decoding issues from other failures.
 
 Note
 ====

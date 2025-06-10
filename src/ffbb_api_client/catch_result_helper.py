@@ -2,6 +2,10 @@ import json
 from requests.exceptions import ConnectionError, ReadTimeout
 
 
+class CatchResultError(Exception):
+    """Raised when ``catch_result`` fails to execute the callback."""
+
+
 def catch_result(callback, is_retrieving: bool = False):
     """
     Catch the result of a callback function.
@@ -10,7 +14,11 @@ def catch_result(callback, is_retrieving: bool = False):
         callback: The callback function.
 
     Returns:
-        The result of the callback function or None if an exception occurs.
+        The result of the callback function or ``None`` if a JSON decoding error
+        occurs.
+
+    Raises:
+        CatchResultError: If ``callback`` raises an unexpected exception.
     """
 
     try:
@@ -28,4 +36,4 @@ def catch_result(callback, is_retrieving: bool = False):
             return catch_result(callback, True)
         raise e
     except Exception as e:
-        raise e 
+        raise CatchResultError(str(e)) from e
