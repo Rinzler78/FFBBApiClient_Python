@@ -93,6 +93,14 @@ Quick start
         basic_auth_pass=basic_auth_pass
     )
 
+.. note::
+
+   A ``.env.example`` file is provided to illustrate the required
+   environment variables::
+
+       FFBB_BASIC_AUTH_USER=your_username
+       FFBB_BASIC_AUTH_PASS=your_password
+
 Examples
 ========
 
