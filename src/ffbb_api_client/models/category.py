@@ -1,5 +1,4 @@
-"""
-Basketball category classification for FFBB competitions.
+"""Basketball category classification for FFBB competitions.
 
 This module defines the Category enum which represents different age and skill
 categories used in French basketball competitions, from youth categories (U7-U20)

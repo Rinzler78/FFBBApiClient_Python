@@ -1,3 +1,5 @@
+"""Model for Match returned by the FFBB API."""
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Optional
@@ -8,6 +10,21 @@ from .score import Score
 
 @dataclass
 class Match:
+    """
+    Data class for Match information.
+
+    Attributes:
+        formatted_date: Value from the API.
+        time: Value from the API.
+        hometeam: Value from the API.
+        visitorteam: Value from the API.
+        score: Value from the API.
+        date: Value from the API.
+        remise: Value from the API.
+        round: Value from the API.
+        match_id: Value from the API.
+    """
+
     formatted_date: Optional[datetime] = None
     time: Optional[str] = None
     hometeam: Optional[str] = None
@@ -20,6 +37,7 @@ class Match:
 
     @staticmethod
     def from_dict(obj: Any) -> "Match":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         formatted_date_str = from_union([from_int, from_none], obj.get("formattedDate"))
         formatted_date = (
@@ -63,6 +81,7 @@ class Match:
         )
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.formatted_date is not None:
             result["formattedDate"] = int(self.formatted_date.timestamp())

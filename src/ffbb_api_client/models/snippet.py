@@ -1,3 +1,5 @@
+"""Model for Snippet returned by the FFBB API."""
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Optional
@@ -16,6 +18,23 @@ from .thumbnails import Thumbnails
 
 @dataclass
 class Snippet:
+    """
+    Data class for Snippet information.
+
+    Attributes:
+        published_at: Value from the API.
+        channel_id: Value from the API.
+        title: Value from the API.
+        description: Value from the API.
+        thumbnails: Value from the API.
+        channel_title: Value from the API.
+        playlist_id: Value from the API.
+        position: Value from the API.
+        resource_id: Value from the API.
+        video_owner_channel_title: Value from the API.
+        video_owner_channel_id: Value from the API.
+    """
+
     published_at: Optional[datetime] = None
     channel_id: Optional[str] = None
     title: Optional[str] = None
@@ -30,6 +49,7 @@ class Snippet:
 
     @staticmethod
     def from_dict(obj: Any) -> "Snippet":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         published_at = from_union([from_datetime, from_none], obj.get("publishedAt"))
         channel_id = from_union([from_str, from_none], obj.get("channelId"))
@@ -65,6 +85,7 @@ class Snippet:
         )
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.published_at is not None:
             result["publishedAt"] = from_union(

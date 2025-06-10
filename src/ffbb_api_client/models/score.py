@@ -1,8 +1,18 @@
+"""Model for Score returned by the FFBB API."""
+
 from dataclasses import dataclass
 
 
 @dataclass
 class Score:
+    """
+    Data class for Score information.
+
+    Attributes:
+        home: Value from the API.
+        visitor: Value from the API.
+    """
+
     home: int
     visitor: int
 

@@ -1,3 +1,5 @@
+"""Model for Standing returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, Optional, Union
 
@@ -13,6 +15,28 @@ from ..utils.converters import (
 
 @dataclass
 class Standing:
+    """
+    Data class for Standing information.
+
+    Attributes:
+        pos: Value from the API.
+        points: Value from the API.
+        day: Value from the API.
+        win: Value from the API.
+        lost: Value from the API.
+        draw: Value from the API.
+        penalties: Value from the API.
+        forfeited: Value from the API.
+        defaults: Value from the API.
+        arb: Value from the API.
+        ent: Value from the API.
+        scored: Value from the API.
+        conceded: Value from the API.
+        quotient: Value from the API.
+        club: Value from the API.
+        initi: Value from the API.
+    """
+
     pos: Optional[Union[int, str]] = None
     points: Optional[Union[int, str]] = None
     day: Optional[Union[int, str]] = None
@@ -32,6 +56,7 @@ class Standing:
 
     @staticmethod
     def from_dict(obj: Any) -> "Standing":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         pos = from_union([from_int, from_str, from_none], obj.get("pos"))
         points = from_union([from_int, from_str, from_none], obj.get("points"))
@@ -69,6 +94,7 @@ class Standing:
         )
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.pos is not None:
             result["pos"] = from_union([from_int, from_str, from_none], self.pos)

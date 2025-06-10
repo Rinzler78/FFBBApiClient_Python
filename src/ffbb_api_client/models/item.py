@@ -1,3 +1,5 @@
+"""Model for Item returned by the FFBB API."""
+
 from dataclasses import dataclass
 from typing import Any, Optional
 
@@ -7,17 +9,27 @@ from .snippet import Snippet
 
 @dataclass
 class Item:
+    """
+    Data class for Item information.
+
+    Attributes:
+        id: Value from the API.
+        snippet: Value from the API.
+    """
+
     id: Optional[str] = None
     snippet: Optional[Snippet] = None
 
     @staticmethod
     def from_dict(obj: Any) -> "Item":
+        """Create an instance from a dictionary."""
         assert isinstance(obj, dict)
         id = from_union([from_str, from_none], obj.get("id"))
         snippet = from_union([Snippet.from_dict, from_none], obj.get("snippet"))
         return Item(id, snippet)
 
     def to_dict(self) -> dict:
+        """Convert the instance to a dictionary."""
         result: dict = {}
         if self.id is not None:
             result["id"] = from_union([from_str, from_none], self.id)

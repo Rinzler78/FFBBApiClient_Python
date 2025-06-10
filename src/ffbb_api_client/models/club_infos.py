@@ -1,3 +1,5 @@
+"""Model for ClubInfos returned by the FFBB API."""
+
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, List, Optional
