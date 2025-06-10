@@ -93,6 +93,17 @@ Quick start
         basic_auth_pass=basic_auth_pass
     )
 
+Logging
+=======
+
+Use :func:`ffbb_api_client.logger.configure_logging` to quickly enable
+logging output. By default the logger is silent unless configured::
+
+    import logging
+    from ffbb_api_client.logger import configure_logging
+
+    configure_logging(logging.DEBUG)
+
 Examples
 ========
 

@@ -29,7 +29,7 @@ from .history import History  # noqa
 from .http_requests_utils import http_get_json, http_post_json, url_with_params  # noqa
 from .item import Item  # noqa
 from .league import League, league_from_dict  # noqa
-from .logger import logger
+from .logger import configure_logging, logger
 from .match import Match  # noqa
 from .match_detail import MatchDetail, match_detail_from_dict  # noqa
 from .member import Member  # noqa
