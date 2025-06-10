@@ -10,11 +10,11 @@ from ffbb_api_client import (
     Municipality,
     Team,
     catch_result,
-    create_set_of_clubs,
-    create_set_of_municipalities,
-    merge_club_details,
 )
+from ffbb_api_client.club_details_helper import merge_club_details
+from ffbb_api_client.clubs_infos_helper import create_set_of_clubs
 from ffbb_api_client.http_requests_utils import encode_params, url_with_params
+from ffbb_api_client.municipalities_helper import create_set_of_municipalities
 
 
 class TestUtilities(unittest.TestCase):

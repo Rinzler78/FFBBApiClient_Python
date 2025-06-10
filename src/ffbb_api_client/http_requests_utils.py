@@ -1,5 +1,4 @@
 import json
-import logging
 import time
 from typing import Any, Dict
 from urllib.parse import urlencode
@@ -8,7 +7,7 @@ import requests
 from requests import Response
 from requests_cache import CachedSession
 
-logger = logging.getLogger(__name__)
+from .logger import logger
 
 
 def to_json_from_response(response: Response) -> Dict[str, Any]:

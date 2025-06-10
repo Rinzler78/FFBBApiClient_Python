@@ -1,7 +1,6 @@
-import logging
 from enum import Enum
 
-logger = logging.getLogger(__name__)
+from .logger import logger
 
 
 class Sex(Enum):

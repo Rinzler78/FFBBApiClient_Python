@@ -1,21 +1,22 @@
 import base64
-import json
-import logging
 from importlib.metadata import PackageNotFoundError, version  # pragma: no cover
 from typing import List
 
-from requests.exceptions import ConnectionError, ReadTimeout
 from requests_cache import CachedSession
-
-logger = logging.getLogger(__name__)
 
 from .agenda_and_results import AgendaAndResults, agenda_and_results_from_dict  # noqa
 from .area import Area, area_from_dict  # noqa
 from .basketball_court import BasketballCourt  # noqa
+
+# Import du cache helper
+from .cached_session_helper import default_cached_session
+from .catch_result_helper import catch_result
 from .category import Category  # noqa
 from .championship import Championship, championship_from_dict  # noqa
 from .club_details import ClubDetails, club_details_from_dict  # noqa
+from .club_details_helper import merge_club_details
 from .club_infos import ClubInfos, club_infos_from_dict  # noqa
+from .clubs_infos_helper import create_set_of_clubs
 from .competition import Competition, competition_from_dict  # noqa
 from .competition_type import CompetitionType  # noqa
 from .day import Day  # noqa
@@ -28,9 +29,11 @@ from .history import History  # noqa
 from .http_requests_utils import http_get_json, http_post_json, url_with_params  # noqa
 from .item import Item  # noqa
 from .league import League, league_from_dict  # noqa
+from .logger import logger
 from .match import Match  # noqa
 from .match_detail import MatchDetail, match_detail_from_dict  # noqa
 from .member import Member  # noqa
+from .municipalities_helper import create_set_of_municipalities
 from .municipality import Municipality, commune_from_dict  # noqa
 from .news import News, news_from_dict  # noqa
 from .page_info import PageInfo  # noqa
@@ -46,23 +49,6 @@ from .thumbnails import Thumbnails  # noqa
 from .type_association import TypeAssociation  # noqa
 from .videos import Videos, videos_from_dict  # noqa
 
-
-# Default cached session sqlite backend with 30 minutes expiration
-def create_cache_key(request, **kwargs):
-    url = request.url
-    method = request.method
-    data_hash = request.body if request.body else "empty"
-    return f"{method} {url} {data_hash}"
-
-
-default_cached_session = CachedSession(
-    "http_cache",
-    backend="sqlite",
-    expire_after=1800,
-    allowable_methods=("GET", "POST"),
-    key_fn=create_cache_key,
-)
-
 try:
     # Change here if project is renamed and does not equal the package name
     dist_name = "ffbb_api_client"
@@ -71,142 +57,6 @@ except PackageNotFoundError:  # pragma: no cover
     __version__ = "unknown"
 finally:
     del version, PackageNotFoundError
-
-
-def catch_result(callback, is_retrieving: bool = False):
-    """
-    Catch the result of a callback function.
-
-    Args:
-        callback: The callback function.
-
-    Returns:
-        The result of the callback function or None if an exception occurs.
-    """
-
-    try:
-        return callback()
-    except json.decoder.JSONDecodeError as e:
-        if e.msg == "Expecting value":
-            return None
-        raise e
-    except ReadTimeout as e:
-        if not is_retrieving:
-            return catch_result(callback, True)
-        raise e
-    except ConnectionError as e:
-        if not is_retrieving:
-            return catch_result(callback, True)
-        raise e
-    except Exception as e:
-        raise e
-
-
-def merge_club_details(
-    club_details: ClubDetails, other_club_details: ClubDetails
-) -> ClubDetails:
-    """
-    Merge two club details.
-
-    Args:
-        club_details (ClubDetails): The club details.
-        other_club_details (ClubDetails): The other club details.
-
-    Returns:
-        ClubDetails: The merged club details.
-    """
-    if club_details == other_club_details:
-        return club_details
-    if club_details is None:
-        return other_club_details
-    if other_club_details is None:
-        return club_details
-
-    results = ClubDetails()
-
-    if club_details.fields is not None and other_club_details.fields is not None:
-        results.fields = set(club_details.fields + other_club_details.fields)
-    elif club_details.fields is not None:
-        results.fields = set(club_details.fields)
-    elif other_club_details.fields is not None:
-        results.fields = set(other_club_details.fields)
-    else:
-        results.fields = set()
-
-    if club_details.infos is not None and other_club_details.infos is not None:
-        results.infos = set(club_details.infos + other_club_details.infos)
-    elif club_details.infos is not None:
-        results.infos = set(club_details.infos)
-    elif other_club_details.infos is not None:
-        results.infos = set(other_club_details.infos)
-    else:
-        results.infos = set()
-
-    if club_details.teams is not None and other_club_details.teams is not None:
-        results.teams = set(club_details.teams + other_club_details.teams)
-    elif club_details.teams is not None:
-        results.teams = set(club_details.teams)
-    elif other_club_details.teams is not None:
-        results.teams = set(other_club_details.teams)
-    else:
-        results.teams = set()
-
-    results.teams = sorted(
-        results.teams,
-        key=lambda team: team.name,
-    )
-
-    return results
-
-
-def create_set_of_municipalities(
-    municipalities: List[Municipality],
-) -> List[Municipality]:
-    """
-    Create a set of municipalities from a list of Municipality.
-
-    Args:
-        municipalities (List[Municipality]): The list of Municipality.
-
-    Returns:
-        set: The set of municipalities.
-    """
-
-    if len(municipalities) == 1:
-        return municipalities
-
-    dict_municipalities = {}
-    for municipality in municipalities:
-        try:
-            dict_municipalities[municipality.id]
-        except KeyError:
-            dict_municipalities[municipality.id] = municipality
-    return list(dict_municipalities.values())
-
-
-def create_set_of_clubs(clubs: List[ClubInfos]) -> List[ClubInfos]:
-    """
-    Create a set of clubs from a list of ClubInfos.
-
-    Args:
-        clubs (List[ClubInfos]): The list of ClubInfos.
-
-    Returns:
-        set: The set of clubs.
-    """
-
-    if len(clubs) == 1:
-        return clubs
-
-    dict_clubs = {}
-    for club in clubs:
-        try:
-            dict_clubs[club.id]
-
-        except KeyError:
-            dict_clubs[club.id] = club
-
-    return list(dict_clubs.values())
 
 
 class FFBBApiClient:

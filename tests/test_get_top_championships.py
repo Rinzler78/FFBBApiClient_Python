@@ -17,10 +17,10 @@ class Test_GetTopChampionships(TestFFBBApiClient):
 
     def test_championship(self):
         result = self.api_client.get_top_championships(CompetitionType.CHAMPIONSHIP)
-        
+
         if result is None:
             self.skipTest("Result is None")
-        
+
         self.assertIsNotNone(result)
         self.assertIsInstance(result, List)
         self.assertGreater(len(result), 0)
@@ -33,4 +33,3 @@ class Test_GetTopChampionships(TestFFBBApiClient):
 
         self.assertIsInstance(result, List)
         self.assertGreater(len(result), 0)
-
